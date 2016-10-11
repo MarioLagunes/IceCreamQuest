@@ -137,17 +137,17 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 
 	private void imagenesFondo() {
 		manager.load("menuPrincipal.png",Texture.class);
-		manager.load("botonConfig.png",Texture.class);
-		manager.load("botonJugar.png",Texture.class);
-		manager.load("botonPuntaje.png",Texture.class);
-		manager.load("botonInfo.png",Texture.class);
+		manager.load("BtnConfig.png",Texture.class);
+		manager.load("BtnJugar.png",Texture.class);
+		manager.load("BtnCopa.png",Texture.class);
+		manager.load("BtnInf.png",Texture.class);
 		manager.finishLoading();
 
 		texturaFondoMenu = manager.get("menuPrincipal.png");
-		texturaBtonAjustes = manager.get("botonConfig.png");
-		texturaBtonJugar = manager.get("botonJugar.png");
-		texturaBtonPuntaje = manager.get("botonPuntaje.png");
-		texturaBtonAcercaDe = manager.get("botonInfo.png");
+		texturaBtonAjustes = manager.get("BtnConfig.png");
+		texturaBtonJugar = manager.get("BtnJugar.png");
+		texturaBtonPuntaje = manager.get("BtnCopa.png");
+		texturaBtonAcercaDe = manager.get("BtnInf.png");
 	}
 
 	@Override
