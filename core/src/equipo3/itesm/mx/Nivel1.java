@@ -65,7 +65,7 @@ public class Nivel1 implements Screen {
 
     private void cargarTexturas() {
         AssetManager manager = juego.getManager();
-        manager.load("mapa3.tmx",TiledMap.class);
+        manager.load("mapa4.tmx",TiledMap.class);
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("back.png",Texture.class);
         manager.finishLoading();
@@ -73,7 +73,7 @@ public class Nivel1 implements Screen {
 
     private void crearObjetos(){
         AssetManager manager = juego.getManager();
-        mapa = manager.get("mapa3.tmx");
+        mapa = manager.get("mapa4.tmx");
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
         rendererMapa.setView(camara);
         texuturaPersonaje = manager.get("PinguinoChido2.png");
