@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- * Created by Mario Lagunes on 25/09/2016.
+ * Created by Andres Calva on 25/09/2016.
  */
 public class PantallaPuntaje implements Screen {
     private final Juego juego;
