@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
 /**
- * Created by Mario Lagunes on 26/09/2016.
+ * Created by Mario Lagunes(1) on 26/09/2016.
  */
 public class Personaje {
     private Sprite sprite;
