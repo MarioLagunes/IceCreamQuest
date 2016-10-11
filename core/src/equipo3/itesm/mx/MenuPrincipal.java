@@ -136,6 +136,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 	}
 
 	private void imagenesFondo() {
+		//imagenes fondo
 		manager.load("menuPrincipal.png",Texture.class);
 		manager.load("BtnConfig.png",Texture.class);
 		manager.load("BtnJugar.png",Texture.class);
