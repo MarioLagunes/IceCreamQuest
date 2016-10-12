@@ -23,7 +23,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class PantallaAcercaDe implements Screen, InputProcessor {
     private final Juego juego;
-    private Texture texturaBack, texturaAcercaDe;
+    private Texture texturaBack, texturaAcercaDe,mario,infoMario,andres,infoAndres,santi,infoSanti,dany,infoDany,moka,infoMoka;
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
@@ -53,7 +53,69 @@ public class PantallaAcercaDe implements Screen, InputProcessor {
         TextureRegionDrawable back = new TextureRegionDrawable(new TextureRegion(texturaBack));
         ImageButton btonBack = new ImageButton(back);
         btonBack.setPosition(0,0);
+        //Botones Nombres
+
+        TextureRegionDrawable mario1 = new TextureRegionDrawable(new TextureRegion(mario));
+        ImageButton btnMario = new ImageButton(mario1);
+        btnMario.setPosition(435,385);
+
+        TextureRegionDrawable andres1 = new TextureRegionDrawable(new TextureRegion(andres));
+        ImageButton btnAndres = new ImageButton(andres1);
+        btnAndres.setPosition(660,385);
+
+
+        TextureRegionDrawable santi1 = new TextureRegionDrawable(new TextureRegion(santi));
+        ImageButton btnSanti = new ImageButton(santi1);
+        btnSanti.setPosition(290,185);
+
+        TextureRegionDrawable dany1 = new TextureRegionDrawable(new TextureRegion(dany));
+        ImageButton btnDany = new ImageButton(dany1);
+        btnDany.setPosition(520,186);
+
+        TextureRegionDrawable moka1 = new TextureRegionDrawable(new TextureRegion(moka));
+        ImageButton btnMoka = new ImageButton(moka1);
+        btnMoka.setPosition(780,186);
+
+        //Botones Info Texturas
+        TextureRegionDrawable marioinf = new TextureRegionDrawable(new TextureRegion(infoMario));
+        final ImageButton btnMarioInf = new ImageButton(marioinf);
+        btnMarioInf.setPosition(0,0);
+        btnMarioInf.setVisible(false);
+
+        TextureRegionDrawable andresinf = new TextureRegionDrawable(new TextureRegion(infoAndres));
+        final ImageButton btnAndresInf = new ImageButton(andresinf);
+        btnAndresInf.setPosition(0,0);
+        btnAndresInf.setVisible(false);
+
+        TextureRegionDrawable santiinf = new TextureRegionDrawable(new TextureRegion(infoSanti));
+        final ImageButton btnSantiInf = new ImageButton(santiinf);
+        btnSantiInf.setPosition(0,0);
+        btnSantiInf.setVisible(false);
+
+        TextureRegionDrawable danyinf = new TextureRegionDrawable(new TextureRegion(infoDany));
+        final ImageButton btnDanyInf= new ImageButton(danyinf);
+        btnDanyInf.setPosition(0,0);
+        btnDanyInf.setVisible(false);
+
+        TextureRegionDrawable mokainf = new TextureRegionDrawable(new TextureRegion(infoMoka));
+        final ImageButton btnMokaInf = new ImageButton(mokainf);
+        btnMokaInf.setPosition(0,0);
+        btnMokaInf.setVisible(false);
+
         escena.addActor(btonBack);
+        escena.addActor(btnMario);
+        escena.addActor(btnAndres);
+        escena.addActor(btnSanti);
+        escena.addActor(btnDany);
+        escena.addActor(btnMoka);
+
+
+
+        escena.addActor(btnMarioInf);
+        escena.addActor(btnAndresInf);
+        escena.addActor(btnSantiInf);
+        escena.addActor(btnDanyInf);
+        escena.addActor(btnMokaInf);
 
         btonBack.addListener(new ClickListener(){
             @Override
@@ -61,6 +123,79 @@ public class PantallaAcercaDe implements Screen, InputProcessor {
                 juego.setScreen(new MenuPrincipal(juego));
             }
         });
+
+        //Botones Nombres
+        btnMario.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnMarioInf.setVisible(true);
+            }
+        });
+
+        btnAndres.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnAndresInf.setVisible(true);
+            }
+        });
+
+        btnSanti.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnSantiInf.setVisible(true);
+            }
+        });
+
+        btnDany.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnDanyInf.setVisible(true);
+            }
+        });
+
+        btnMoka.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnMokaInf.setVisible(true);
+            }
+        });
+
+        //Botones Texturas
+        btnMarioInf.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnMarioInf.setVisible(false);
+            }
+        });
+
+        btnAndresInf.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnAndresInf.setVisible(false);
+            }
+        });
+
+        btnSantiInf.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnSantiInf.setVisible(false);
+            }
+        });
+
+        btnDanyInf.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnDanyInf.setVisible(false);
+            }
+        });
+
+        btnMokaInf.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnMokaInf.setVisible(false);
+            }
+        });
+
     }
 
     private void cargarFondo() {
@@ -73,9 +208,42 @@ public class PantallaAcercaDe implements Screen, InputProcessor {
     private void cargarImagenes() {
         manager.load("AcercaDe.png",Texture.class);
         manager.load("botonRegresar.png",Texture.class);
+
+        manager.load("Boton_mario.png",Texture.class);
+        manager.load("AcercaDeMarioSF-01.png",Texture.class);
+
+        manager.load("Boton_andres.png",Texture.class);
+        manager.load("AcercaDeAndresSF-01.png",Texture.class);
+
+        manager.load("Boton_santi.png",Texture.class);
+        manager.load("AcercaDeSantiSF-01.png",Texture.class);
+
+        manager.load("Boton_dany.png",Texture.class);
+        manager.load("AcercaDeDanySF-01.png",Texture.class);
+
+        manager.load("Boton_moka.png",Texture.class);
+        manager.load("AcercaDeMokaSF-01.png",Texture.class);
+
         manager.finishLoading();
+
         texturaAcercaDe = manager.get("AcercaDe.png");
         texturaBack = manager.get("botonRegresar.png");
+
+        mario = manager.get("Boton_mario.png");
+        infoMario = manager.get("AcercaDeMarioSF-01.png");
+
+        andres = manager.get("Boton_andres.png");
+        infoAndres = manager.get("AcercaDeAndresSF-01.png");
+
+        santi = manager.get("Boton_santi.png");
+        infoSanti = manager.get("AcercaDeSantiSF-01.png");
+
+        dany = manager.get("Boton_dany.png");
+        infoDany = manager.get("AcercaDeDanySF-01.png");
+
+        moka = manager.get("Boton_moka.png");
+        infoMoka = manager.get("AcercaDeMokaSF-01.png");
+
     }
 
     @Override

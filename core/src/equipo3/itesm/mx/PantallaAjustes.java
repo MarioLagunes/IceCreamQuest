@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class PantallaAjustes implements Screen {
     private final Juego juego;
-    private Texture texturaBack, texturaAjustes;
+    private Texture texturaBack, texturaAjustes, texturaSonido, texturaMusica;
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
@@ -53,10 +53,30 @@ public class PantallaAjustes implements Screen {
         btonBack.setPosition(0,0);
         escena.addActor(btonBack);
 
+        TextureRegionDrawable musica = new TextureRegionDrawable(new TextureRegion(texturaMusica));
+        ImageButton btnMusica = new ImageButton(musica);
+        btnMusica.setPosition(400,300);
+        escena.addActor(btnMusica);
+
+        TextureRegionDrawable sonido = new TextureRegionDrawable(new TextureRegion(texturaSonido));
+        ImageButton btnSonido = new ImageButton(sonido);
+        btnSonido.setPosition(650,300);
+        escena.addActor(btnSonido);
+
+
+
+
         btonBack.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new MenuPrincipal(juego));
+            }
+        });
+
+        btnMusica.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
             }
         });
     }
@@ -70,10 +90,16 @@ public class PantallaAjustes implements Screen {
 
     private void cargarImagenes() {
         manager.load("menu-ajustes.png",Texture.class);
-        manager.load("back.png",Texture.class);
+        manager.load("botonRegresar.png",Texture.class);
+        manager.load("BtnMusica.png",Texture.class);
+        manager.load("BtnSonido.png",Texture.class);
         manager.finishLoading();
+
+
         texturaAjustes = manager.get("menu-ajustes.png");
-        texturaBack = manager.get("back.png");
+        texturaBack = manager.get("botonRegresar.png");
+        texturaSonido = manager.get("BtnSonido.png");
+        texturaMusica = manager.get("BtnMusica.png");
     }
 
     @Override
