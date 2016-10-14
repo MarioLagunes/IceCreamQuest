@@ -13,12 +13,17 @@
   <image source="heladorosa.png" width="128" height="128"/>
   <tile id="0">
    <properties>
-    <property name="tipo" value="heladoEspecial"/>
+    <property name="tipo" value="helado"/>
    </properties>
   </tile>
  </tileset>
  <tileset firstgid="26" name="heladoesp" tilewidth="128" tileheight="128" tilecount="1" columns="1">
   <image source="heladoesp.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="tipo" value="heladoespecial"/>
+   </properties>
+  </tile>
  </tileset>
  <imagelayer name="Capa de Imagen 1">
   <image source="Fondocompleto.png" width="6400" height="896"/>
