@@ -35,10 +35,11 @@ public class Nivel1 implements Screen {
     private OrthographicCamera camaraHUD;
     private EstadosJuego estadoJuego;
     private Texto texto;
-    private Texture texturaSalto,texturaFondo;
-    private Boton btnSalto;
+    private Texture texturaSalto,texturaBoomeran;
+    private Boton btnSalto,btnDisparar;
     private int heladosRecolectados = 0;
     private static final int celda = 128;
+    private Boomerang boomerang;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -68,6 +69,8 @@ public class Nivel1 implements Screen {
         manager.load("mapa4.tmx",TiledMap.class);
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("back.png",Texture.class);
+        manager.load("boomeran.png",Texture.class);
+        manager.load("BtnMusica.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -82,6 +85,12 @@ public class Nivel1 implements Screen {
         texturaSalto = manager.get("back.png");
         btnSalto = new Boton(texturaSalto);
         btnSalto.setPosicion(celda, 5 * celda);
+        texturaBoomeran = manager.get("boomeran.png");
+        boomerang = new Boomerang(texturaBoomeran);
+        texturaSalto = manager.get("BtnMusica.png");
+        btnDisparar = new Boton(texturaSalto);
+        btnDisparar.setPosicion(1000, celda);
+
     }
 
     @Override
@@ -95,17 +104,16 @@ public class Nivel1 implements Screen {
         rendererMapa.setView(camara);
         rendererMapa.render();
 
-
-
         batch.begin();
             pinguino.render(batch);
+            boomerang.render(batch);
             pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
-
         batch.end();
 
         batch.setProjectionMatrix(camaraHUD.combined);
         batch.begin();
             btnSalto.render(batch);
+            btnDisparar.render(batch);
             texto.mostrarMensaje(batch,"Puntos: " + heladosRecolectados,Juego.ancho/2,Juego.alto * 0.95f);
         batch.end();
     }
@@ -155,6 +163,14 @@ public class Nivel1 implements Screen {
         switch (pinguino.getEstadoSalto()){
             case SUBIENDO: case BAJANDO:
                 pinguino.actualizarSalto();
+                break;
+        }
+    }
+
+    private void moverBoomerang(){
+        switch (boomerang.getBoom()){
+            case LANZADO: case REGRESANDO:
+                boomerang.actualizarBoom();
                 break;
         }
     }
@@ -221,6 +237,7 @@ public class Nivel1 implements Screen {
     public void dispose() {
         AssetManager manager1 = juego.getManager();
         manager1.unload("pinguidoChido2.png");
+        manager1.unload("boomeran.png");
     }
 
     public class ProcesadorEntrada extends InputAdapter{
@@ -232,6 +249,19 @@ public class Nivel1 implements Screen {
             transformarCoordenadas(screenX,screenY);
             if(btnSalto.contiene(x,y)){
                 pinguino.saltar();
+            }
+            if(btnDisparar.contiene(x,y)){
+                boomerang = new Boomerang(texturaBoomeran);
+                boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
+                boomerang.salir();
+                boomerang.actualizarBoom();
+                if(boomerang.getX() > pinguino.getX()){
+                    boomerang.setBoom(Boomerang.boom.REGRESANDO);
+                    boomerang.actualizarBoom();
+                }
+                //boomerang.draw(boomerang);
+                //boomerang.actualizar();
+                System.out.println("Me clicliestas");
             }
             return true;
         }
