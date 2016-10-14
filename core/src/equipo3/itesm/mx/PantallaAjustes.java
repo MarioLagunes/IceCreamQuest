@@ -78,6 +78,7 @@ public class PantallaAjustes implements Screen {
         escena.addActor(btnMusica);
         escena.addActor(btnMusica1);
         escena.addActor(btnSonido);
+
         escena.addActor(btnSonido1);
 
 
