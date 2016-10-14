@@ -167,13 +167,13 @@ public class Nivel1 implements Screen {
         }
     }
 
-    private void moverBoomerang(){
+    /*private void moverBoomerang(){
         switch (boomerang.getBoom()){
             case LANZADO: case REGRESANDO:
                 boomerang.actualizarBoom();
                 break;
         }
-    }
+    }*/
 
     private void probarColisiones() {
         Personaje.EstadoMovimiento estado = pinguino.getEstadoMovimiento();
@@ -254,11 +254,23 @@ public class Nivel1 implements Screen {
                 boomerang = new Boomerang(texturaBoomeran);
                 boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
                 boomerang.salir();
-                boomerang.actualizarBoom();
-                if(boomerang.getX() > pinguino.getX()){
-                    boomerang.setBoom(Boomerang.boom.REGRESANDO);
+                System.out.println("Velocidad = " + boomerang.getVelocidadX());
+                /*if(boomerang.getVelocidadX() >= 10){
+                    System.out.println("Velocidad = " + boomerang.getVelocidadX());
+                    boomerang.regresar();
+                }*/
+
+
+
+
+                //boomerang.actualizarSalir();
+               //boomerang.actualizarBoom();
+                //boomerang.setBoom(Boomerang.boom.REGRESANDO);
+                /*if(boomerang.getX() >= 300){
+
                     boomerang.actualizarBoom();
-                }
+                    System.out.println("ya llegue a los 200");
+                }*/
                 //boomerang.draw(boomerang);
                 //boomerang.actualizar();
                 System.out.println("Me clicliestas");

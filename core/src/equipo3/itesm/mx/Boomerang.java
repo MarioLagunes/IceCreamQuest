@@ -18,7 +18,7 @@ import java.util.prefs.BackingStoreException;
 public class Boomerang {
 
     private Boomerang boomerang;
-    private Animation animacion;
+    private Animation animacion,animacionRegreso;
     private float tiempoAnimar;
     private Sprite sprite;
     private boom estadosBoomerang;
@@ -35,8 +35,10 @@ public class Boomerang {
         TextureRegion texturaCompleta = new TextureRegion(textura);
         TextureRegion[][] texturaBoomeran = texturaCompleta.split(128,128);
         animacion = new Animation(0.10f,texturaBoomeran[0][1], texturaBoomeran[0][2], texturaBoomeran[0][3],
-                texturaBoomeran[0][4],texturaBoomeran[0][5],texturaBoomeran[0][6],texturaBoomeran[0][7]);
+                texturaBoomeran[0][4]);
+        animacionRegreso = new Animation(0.10f,texturaBoomeran[0][5],texturaBoomeran[0][6],texturaBoomeran[0][7]);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
+        animacionRegreso.setPlayMode(Animation.PlayMode.LOOP);
         tiempoAnimar = 0;
         sprite = new Sprite(texturaBoomeran[0][0]);
         estadosBoomerang = boom.GUARDADO;
@@ -60,22 +62,30 @@ public class Boomerang {
     public void render(SpriteBatch batch){
         switch (estadosBoomerang){
             case LANZADO:
-                VelocidadX += 10;
+                VelocidadX += 20;
                 tiempoAnimar += Gdx.graphics.getDeltaTime();
                 TextureRegion region = animacion.getKeyFrame(tiempoAnimar);
                 if(region.isFlipX()){
                     region.flip(true,false);
                 }
                 batch.draw(region,sprite.getX()+VelocidadX,sprite.getY());
+                System.out.println("velo = "+VelocidadX);
+                if(VelocidadX >= 1000.0){
+                    regresar();
+                }
                 break;
             case REGRESANDO:
-                VelocidadX -= 10;
-                tiempoAnimar -= Gdx.graphics.getDeltaTime();
-                TextureRegion region1 = animacion.getKeyFrame(tiempoAnimar);
+                VelocidadX -= 20;
+                tiempoAnimar += Gdx.graphics.getDeltaTime();
+                TextureRegion region1 = animacionRegreso.getKeyFrame(tiempoAnimar);
                 if(region1.isFlipX()){
                     region1.flip(true,false);
                 }
                 batch.draw(region1,sprite.getX()+VelocidadX,sprite.getY());
+                System.out.println("velreg = " + VelocidadX);
+                if(VelocidadX <= 400){
+                    destruirBoomerang();
+                }
                 break;
             case GUARDADO:
                 VelocidadX = 0;
@@ -85,7 +95,11 @@ public class Boomerang {
 
     }
 
-    public void actualizarBoom(){
+    private void destruirBoomerang() {
+        estadosBoomerang = estadosBoomerang.GUARDADO;
+    }
+
+    /*public void actualizarBoom(){
         float nuevaX = sprite.getX();
         switch(estadosBoomerang){
             case LANZADO:
@@ -96,7 +110,7 @@ public class Boomerang {
                 break;
             case REGRESANDO:
                 nuevaX -= VelocidadX;
-                if(nuevaX <= Nivel1.ancho_mapa - sprite.getWidth() ){
+                if(nuevaX >= Nivel1.ancho_mapa - sprite.getWidth() ){
                     sprite.setX(nuevaX);
                 }
                 break;
@@ -114,15 +128,29 @@ public class Boomerang {
             sprite.setX(xInicial);
             estadosBoomerang = estadosBoomerang.REGRESANDO;
         }
-    }
+    }*/
 
     public void salir(){
-        if(estadosBoomerang == estadosBoomerang.GUARDADO){
-            tiempoTotal = 0;
-            xInicial = sprite.getX();
+        //if(estadosBoomerang == estadosBoomerang.GUARDADO){
+            //tiempoTotal = 0;
+            //xInicial = sprite.getX();
             estadosBoomerang = estadosBoomerang.LANZADO;
-            tiempoDistancia = 2 * VelocidadX / resistencia;
-        }
+            System.out.print("vel:" + VelocidadX);
+            //tiempoDistancia = 2 * VelocidadX / resistencia;
+        //}
+    }
+
+    public float getVelocidadX(){
+        return VelocidadX;
+    }
+
+    public void regresar(){
+        //if(estadosBoomerang == estadosBoomerang.LANZADO){
+            //tiempoTotal = 0;
+            //xInicial = sprite.getX();
+            estadosBoomerang = estadosBoomerang.REGRESANDO;
+            //tiempoDistancia = 2 * VelocidadX / resistencia;
+        //}
     }
 
     public Sprite getSprite(){
