@@ -151,7 +151,7 @@ public class Nivel1 implements Screen {
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
-            if((celdaAbajo == null && celdaDerecha == null) || esHongo(celdaAbajo) || esHongo(celdaDerecha)){
+            if((celdaAbajo == null && celdaDerecha == null) || esHelado(celdaAbajo) || esHelado(celdaDerecha)){
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
             }
@@ -188,11 +188,11 @@ public class Nivel1 implements Screen {
             celdaX++;
         }
         int celdaY = (int)(pinguino.getY()/celda); 
-        TiledMapTileLayer capaPlataforma = (TiledMapTileLayer) mapa.getLayers().get(1);
-        if(capaPlataforma.getCell(celdaX,celdaY) != null || capaPlataforma.getCell(celdaX,celdaY+1) != null){
-            if(esHongo(capaPlataforma.getCell(celdaX,celdaY))){
+        TiledMapTileLayer capaPlataforma1 = (TiledMapTileLayer) mapa.getLayers().get(2);
+        if(capaPlataforma1.getCell(celdaX,celdaY) != null || capaPlataforma1.getCell(celdaX,celdaY+1) != null){
+            if(esHelado(capaPlataforma1.getCell(celdaX,celdaY))){
                 heladosRecolectados ++;
-                capaPlataforma.setCell(celdaX,celdaY,null);
+                capaPlataforma1.setCell(celdaX,celdaY,null);
             }
             else{
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
@@ -204,13 +204,20 @@ public class Nivel1 implements Screen {
 
     }
 
-    private boolean esHongo(TiledMapTileLayer.Cell cell) {
-
+    private boolean esHelado(TiledMapTileLayer.Cell cell) {
         if(cell == null){
             return  false;
         }
-            Object propiedad = cell.getTile().getProperties().get("tipo");
-            return "helado".equals(propiedad);
+        Object propiedad = cell.getTile().getProperties().get("tipo");
+        return "helado".equals(propiedad);
+    }
+
+    private boolean esHeladoEspecial(TiledMapTileLayer.Cell cell){
+        if(cell == null){
+            return false;
+        }
+        Object propiedad = cell.getTile().getProperties().get("tipo");
+        return "helado".equals(propiedad);
     }
 
     @Override
