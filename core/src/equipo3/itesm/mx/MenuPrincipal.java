@@ -27,7 +27,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 	private Texture texturaFondoMenu,texturaBtonAjustes,texturaBtonJugar,texturaBtonPuntaje,texturaAcercaDe,texturaAjustes,texturaInstrucciones,texturaBtonAcercaDe;
 	private OrthographicCamera camara;
 	private Viewport vista;
-	private Music musica;
+	public Music musica;
 	private ImageButton[] botones1;
 	private final AssetManager manager = new AssetManager();
 	private ImageButton btonPuntaje,btonJugar,btonAcercaDe,btonAjustes;
@@ -88,6 +88,9 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaAjustes(juego));
+
+
+
 			}
 		});
 
