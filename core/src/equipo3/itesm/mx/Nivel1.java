@@ -66,7 +66,7 @@ public class Nivel1 implements Screen {
 
     private void cargarTexturas() {
         AssetManager manager = juego.getManager();
-        manager.load("mapa4.tmx",TiledMap.class);
+        manager.load("Fondo.tmx",TiledMap.class);
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("back.png",Texture.class);
         manager.load("boomeran.png",Texture.class);
@@ -76,7 +76,7 @@ public class Nivel1 implements Screen {
 
     private void crearObjetos(){
         AssetManager manager = juego.getManager();
-        mapa = manager.get("mapa4.tmx");
+        mapa = manager.get("Fondo.tmx");
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
         rendererMapa.setView(camara);
         texuturaPersonaje = manager.get("PinguinoChido2.png");
@@ -151,7 +151,7 @@ public class Nivel1 implements Screen {
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
-            if((celdaAbajo == null && celdaDerecha == null) || esHongo(celdaAbajo) || esHongo(celdaDerecha)){
+            if((celdaAbajo == null && celdaDerecha == null) || esHelado(celdaAbajo) || esHelado(celdaDerecha)){
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
             }
@@ -188,11 +188,15 @@ public class Nivel1 implements Screen {
             celdaX++;
         }
         int celdaY = (int)(pinguino.getY()/celda); 
-        TiledMapTileLayer capaPlataforma = (TiledMapTileLayer) mapa.getLayers().get(1);
-        if(capaPlataforma.getCell(celdaX,celdaY) != null || capaPlataforma.getCell(celdaX,celdaY+1) != null){
-            if(esHongo(capaPlataforma.getCell(celdaX,celdaY))){
-                heladosRecolectados ++;
-                capaPlataforma.setCell(celdaX,celdaY,null);
+        TiledMapTileLayer capaPlataforma1 = (TiledMapTileLayer) mapa.getLayers().get(2);
+        if(capaPlataforma1.getCell(celdaX,celdaY) != null || capaPlataforma1.getCell(celdaX,celdaY+1) != null){
+            if(esHelado(capaPlataforma1.getCell(celdaX,celdaY))){
+                heladosRecolectados +=500;
+                capaPlataforma1.setCell(celdaX,celdaY,null);
+            }
+            else if(esHeladoEspecial(capaPlataforma1.getCell(celdaX,celdaY))){
+                heladosRecolectados += 1000;
+                capaPlataforma1.setCell(celdaX,celdaY,null);
             }
             else{
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
@@ -204,13 +208,20 @@ public class Nivel1 implements Screen {
 
     }
 
-    private boolean esHongo(TiledMapTileLayer.Cell cell) {
-
+    private boolean esHelado(TiledMapTileLayer.Cell cell) {
         if(cell == null){
             return  false;
         }
-            Object propiedad = cell.getTile().getProperties().get("tipo");
-            return "helado".equals(propiedad);
+        Object propiedad = cell.getTile().getProperties().get("tipo");
+        return "helado".equals(propiedad);
+    }
+
+    private boolean esHeladoEspecial(TiledMapTileLayer.Cell cell){
+        if(cell == null){
+            return false;
+        }
+        Object propiedad = cell.getTile().getProperties().get("tipo");
+        return "helado".equals(propiedad);
     }
 
     @Override
