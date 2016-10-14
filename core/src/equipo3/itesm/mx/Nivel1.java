@@ -191,7 +191,11 @@ public class Nivel1 implements Screen {
         TiledMapTileLayer capaPlataforma1 = (TiledMapTileLayer) mapa.getLayers().get(2);
         if(capaPlataforma1.getCell(celdaX,celdaY) != null || capaPlataforma1.getCell(celdaX,celdaY+1) != null){
             if(esHelado(capaPlataforma1.getCell(celdaX,celdaY))){
-                heladosRecolectados ++;
+                heladosRecolectados +=500;
+                capaPlataforma1.setCell(celdaX,celdaY,null);
+            }
+            else if(esHeladoEspecial(capaPlataforma1.getCell(celdaX,celdaY))){
+                heladosRecolectados += 1000;
                 capaPlataforma1.setCell(celdaX,celdaY,null);
             }
             else{
