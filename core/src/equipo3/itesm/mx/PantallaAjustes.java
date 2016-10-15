@@ -3,6 +3,7 @@ package equipo3.itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class PantallaAjustes implements Screen {
     private final Juego juego;
-    private Texture texturaBack, texturaAjustes, texturaSonido, texturaMusica;
+    private Texture texturaBack, texturaAjustes, texturaSonido, texturaMusica,texturaSonidoO,texturaMusicaO;
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
@@ -29,6 +30,7 @@ public class PantallaAjustes implements Screen {
     public PantallaAjustes(Juego juego) {
         this.juego = juego;
     }
+
 
     @Override
     public void show() {
@@ -53,32 +55,75 @@ public class PantallaAjustes implements Screen {
         btonBack.setPosition(0,0);
         escena.addActor(btonBack);
 
-        TextureRegionDrawable musica = new TextureRegionDrawable(new TextureRegion(texturaMusica));
+        final TextureRegionDrawable musica = new TextureRegionDrawable(new TextureRegion(texturaMusica));
         ImageButton btnMusica = new ImageButton(musica);
         btnMusica.setPosition(400,300);
-        escena.addActor(btnMusica);
+
+        TextureRegionDrawable musica1 = new TextureRegionDrawable(new TextureRegion(texturaMusicaO));
+        final ImageButton btnMusica1 = new ImageButton(musica1);
+        btnMusica1.setPosition(400,300);
+        btnMusica1.setVisible(false);
 
         TextureRegionDrawable sonido = new TextureRegionDrawable(new TextureRegion(texturaSonido));
         ImageButton btnSonido = new ImageButton(sonido);
-        btnSonido.setPosition(650,300);
+        btnSonido.setPosition(700,300);
+
+
+        TextureRegionDrawable sonido1 = new TextureRegionDrawable(new TextureRegion(texturaSonidoO));
+        final ImageButton btnSonido1 = new ImageButton(sonido1);
+        btnSonido1.setPosition(700,300);
+        btnSonido1.setVisible(false);
+
+
+        escena.addActor(btnMusica);
+        escena.addActor(btnMusica1);
         escena.addActor(btnSonido);
 
-
+        escena.addActor(btnSonido1);
 
 
         btonBack.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new MenuPrincipal(juego));
+
             }
         });
 
         btnMusica.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                btnMusica1.setVisible(true);
 
             }
         });
+
+        btnMusica1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnMusica1.setVisible(false);
+
+
+            }
+        });
+
+        btnSonido.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnSonido1.setVisible(true);
+
+            }
+        });
+
+        btnSonido1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnSonido1.setVisible(false);
+
+
+            }
+        });
+
     }
 
     private void cargarFondo() {
@@ -92,7 +137,9 @@ public class PantallaAjustes implements Screen {
         manager.load("menu-ajustes.png",Texture.class);
         manager.load("botonRegresar.png",Texture.class);
         manager.load("BtnMusica.png",Texture.class);
+        manager.load("BtnMusica_Osc.png",Texture.class);
         manager.load("BtnSonido.png",Texture.class);
+        manager.load("BtnSonido_Osc.png",Texture.class);
         manager.finishLoading();
 
 
@@ -100,6 +147,8 @@ public class PantallaAjustes implements Screen {
         texturaBack = manager.get("botonRegresar.png");
         texturaSonido = manager.get("BtnSonido.png");
         texturaMusica = manager.get("BtnMusica.png");
+        texturaSonidoO = manager.get("BtnSonido_Osc.png");
+        texturaMusicaO = manager.get("BtnMusica_Osc.png");
     }
 
     @Override
