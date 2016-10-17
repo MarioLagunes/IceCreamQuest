@@ -23,7 +23,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * Created by Mario Lagunes on 26/09/2016.
  */
 public class Nivel1 implements Screen {
-    public static final float ancho_mapa = 6000;
+    public static final float ancho_mapa = 7000;
     private Juego juego;
     private OrthographicCamera camara;
     private TiledMap mapa;
@@ -221,7 +221,7 @@ public class Nivel1 implements Screen {
             return false;
         }
         Object propiedad = cell.getTile().getProperties().get("tipo");
-        return "helado".equals(propiedad);
+        return "heladoespecial".equals(propiedad);
     }
 
     @Override
