@@ -17,13 +17,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by Mario Lagunes on 26/09/2016.
  */
 public class Nivel1 implements Screen {
-    public static final float ancho_mapa = 7000;
+    public static final float ancho_mapa = 6400;
     private Juego juego;
     private OrthographicCamera camara;
     private TiledMap mapa;
@@ -35,9 +36,10 @@ public class Nivel1 implements Screen {
     private OrthographicCamera camaraHUD;
     private EstadosJuego estadoJuego;
     private Texto texto;
-    private Texture texturaSalto,texturaBoomeran;
-    private Boton btnSalto,btnDisparar;
+    private Texture texturaSalto,texturaBoomeran,texturaGano;
+    private Boton btnSalto,btnDisparar,btnGanar;
     private int heladosRecolectados = 0;
+    private int vidas = 3;
     private static final int celda = 128;
     private Boomerang boomerang;
 
@@ -71,6 +73,7 @@ public class Nivel1 implements Screen {
         manager.load("back.png",Texture.class);
         manager.load("boomeran.png",Texture.class);
         manager.load("BtnMusica.png",Texture.class);
+        manager.load("btnGana.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -88,6 +91,8 @@ public class Nivel1 implements Screen {
         texturaBoomeran = manager.get("boomeran.png");
         boomerang = new Boomerang(texturaBoomeran);
         texturaSalto = manager.get("BtnMusica.png");
+        texturaGano = manager.get("btnGana.png");
+        btnGanar = new Boton(texturaGano);
         btnDisparar = new Boton(texturaSalto);
         btnDisparar.setPosicion(1000, celda);
 
@@ -112,9 +117,17 @@ public class Nivel1 implements Screen {
 
         batch.setProjectionMatrix(camaraHUD.combined);
         batch.begin();
-            btnSalto.render(batch);
-            btnDisparar.render(batch);
-            texto.mostrarMensaje(batch,"Puntos: " + heladosRecolectados,Juego.ancho/2,Juego.alto * 0.95f);
+
+            if(estadoJuego == EstadosJuego.GANO ){
+                btnGanar.render(batch);
+            }
+            else{
+                btnSalto.render(batch);
+                btnDisparar.render(batch);
+                texto.mostrarMensaje(batch,"Puntos: " + heladosRecolectados,Juego.ancho/2,Juego.alto * 0.95f);
+                texto.mostrarMensaje(batch,"Vidas: " + vidas,1200,Juego.alto * 0.95f);
+            }
+
         batch.end();
     }
 
@@ -124,7 +137,10 @@ public class Nivel1 implements Screen {
             camara.position.set((int)posX,camara.position.y,0);
         }
         else if(posX > ancho_mapa - Juego.ancho/2){
-            camara.position.set((int)posX, camara.position.y,0);
+            camara.position.set(ancho_mapa-Juego.ancho/2, camara.position.y,0);
+        }
+        else if(posX < Juego.ancho/2){
+            camara.position.set(Juego.ancho/2,Juego.alto/2,0);
         }
         camara.update();
     }
@@ -139,13 +155,27 @@ public class Nivel1 implements Screen {
                 if(celda1 == null){
                     pinguino.caer();
                 }
+                else if(!esHelado(celda1) || !esHeladoEspecial(celda1)){
+                    pinguino.setPosicion(pinguino.getX(),(celdaY+1)* celda);
+                    pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+                }
                 break;
             case DER:
                 pinguino.actualizar();
                 probarColisiones();
                 break;
         }
-        if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
+        /*if(pinguino.getY() == 1000){
+            estadoJuego = estadoJuego.PERDIO;
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    juego.setScreen(new MenuPrincipal(juego));
+                }
+            },3);
+        }*/
+        if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO &&
+                (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
             int celdaX = (int) (pinguino.getX() / celda);
             int celdaY = (int) ((pinguino.getY() + pinguino.velocidadY) / celda);
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
@@ -158,7 +188,40 @@ public class Nivel1 implements Screen {
             else{
                 pinguino.setPosicion(pinguino.getX(),(celdaY +1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
+
             }
+            if(pinguino.getX() >= 6000){
+                estadoJuego = estadoJuego.GANO;
+            }
+            else if(pinguino.getY() <= 10){
+                vidas --;
+                pinguino.getSprite().setPosition(Juego.ancho/10,Juego.alto * 0.1f);
+                camara.position.set(Juego.ancho/pinguino.getX(),camara.position.y,0);
+                camara.update();
+                camaraHUD.update();
+                camaraHUD.position.set(Juego.ancho/10,camaraHUD.position.y,0);
+                actualizarCamara();
+                /*batch.setProjectionMatrix(camara.combined);
+                rendererMapa.setView(camara);
+                rendererMapa.render();
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.INICIANDO);*/
+            }
+            if(vidas == 0){
+                pinguino.setPosicion(-200,-200);
+                estadoJuego = estadoJuego.PERDIO;
+            }
+            if(estadoJuego == estadoJuego.PERDIO){
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        juego.setScreen(new MenuPrincipal(juego));
+                    }
+                },3);
+            }
+            /*if(pinguino.getY() >= -10){
+                estadoJuego = estadoJuego.PERDIO;
+
+            }*/
         }
         switch (pinguino.getEstadoSalto()){
             case SUBIENDO: case BAJANDO:
@@ -285,6 +348,11 @@ public class Nivel1 implements Screen {
                 //boomerang.draw(boomerang);
                 //boomerang.actualizar();
                 System.out.println("Me clicliestas");
+            }
+            else if(estadoJuego == EstadosJuego.GANO){
+                if(btnGanar.contiene(x,y)){
+                    Gdx.app.exit();
+                }
             }
             return true;
         }

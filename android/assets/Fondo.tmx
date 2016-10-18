@@ -25,6 +25,9 @@
    </properties>
   </tile>
  </tileset>
+ <tileset firstgid="27" name="fondo" tilewidth="6400" tileheight="896" tilecount="1" columns="1">
+  <image source="Fondocompleto.png" width="6400" height="896"/>
+ </tileset>
  <imagelayer name="Capa de Imagen 1">
   <image source="Fondocompleto.png" width="6400" height="896"/>
  </imagelayer>
