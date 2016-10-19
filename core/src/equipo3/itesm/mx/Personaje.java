@@ -13,13 +13,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Created by Mario Lagunes(3) on 26/09/2016.
  */
 public class Personaje {
-    private Sprite sprite;
+    private Sprite sprite,spriteEnemigo;
     public static final float velocidadY = -4f;
-    public static  float velocidadX;
-    private Animation animacion;
-    private float timerAnimacion;
+    public static  float velocidadX,velX;
+    private Animation animacion,animar;
+    private float timerAnimacion,tiempoAnimar;
     private EstadoMovimiento estadoMovimiento;
     private EstadoSalto estadoSalto;
+    private EstadosEnemigo estadoEnemigo;
     private static final float V0 = 60;
     private static final float G = 9.81f;
     private static final float G_2 = G/2;
@@ -34,6 +35,12 @@ public class Personaje {
         CAIDALIBRE
     }
 
+    public enum EstadosEnemigo{
+        INICIO,
+        DERECHA,
+        IZQUIERDA
+    }
+
     public  Personaje(Texture textura){
         TextureRegion texturaCompleta = new TextureRegion(textura);
         TextureRegion[][] texturaPersonaje = texturaCompleta.split(128,128);
@@ -45,6 +52,17 @@ public class Personaje {
         sprite = new Sprite(texturaPersonaje[0][0]);
         estadoMovimiento = EstadoMovimiento.INICIANDO;
         estadoSalto = EstadoSalto.ABAJO;
+    }
+
+    public void PersonajeEnemigo(Texture textur,float vel){
+        TextureRegion texturaEnemigoFull = new TextureRegion(textur);
+        TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(128,128);
+        animar = new Animation(0.10f,texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],
+                texturaEnemigo[0][4],texturaEnemigo[0][5]);
+        animar.setPlayMode(Animation.PlayMode.LOOP);
+        tiempoAnimar = 0;
+        spriteEnemigo = new Sprite(texturaEnemigo[0][0]);
+        estadoEnemigo = EstadosEnemigo.INICIO;
     }
 
     public void render(SpriteBatch batch){
@@ -76,6 +94,39 @@ public class Personaje {
                 quieto(batch);
         }
     }
+
+    public void renderEnemigo(SpriteBatch batch){
+        switch(estadoEnemigo){
+            case DERECHA:
+                velX += 5;
+                tiempoAnimar += Gdx.graphics.getDeltaTime();
+                TextureRegion region = animar.getKeyFrame(tiempoAnimar);
+                if(region.isFlipX()){
+                    region.flip(true,false);
+                }
+                batch.draw(region,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
+                if(velX >= 500){
+                    moverEnemigosIzq();
+                }
+                break;
+            case IZQUIERDA:
+                velX -= 5;
+                tiempoAnimar += Gdx.graphics.getDeltaTime();
+                TextureRegion region1 = animar.getKeyFrame(tiempoAnimar);
+                if(region1.isFlipX()){
+                    region1.flip(true,false);
+                }
+                batch.draw(region1,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
+                if(velX <= -500){
+                    moverEnemigosDer();
+                }
+                break;
+            case INICIO:
+                velX = 0;
+                break;
+        }
+    }
+
 
     public void actualizar(){
         float nuevaX = sprite.getX();
@@ -126,6 +177,10 @@ public class Personaje {
         sprite.setPosition(x,y);
     }
 
+    public void setEstadoEnemigo(EstadosEnemigo estadoEnemigo){
+        this.estadoEnemigo = estadoEnemigo;
+    }
+
     public EstadoMovimiento getEstadoMovimiento(){
         return estadoMovimiento;
     }
@@ -149,6 +204,14 @@ public class Personaje {
 
     public EstadoSalto getEstadoSalto(){
         return estadoSalto;
+    }
+
+    public void moverEnemigosDer(){
+        estadoEnemigo = EstadosEnemigo.DERECHA;
+    }
+
+    public void moverEnemigosIzq(){
+        estadoEnemigo = EstadosEnemigo.IZQUIERDA;
     }
 
     public enum EstadoMovimiento {

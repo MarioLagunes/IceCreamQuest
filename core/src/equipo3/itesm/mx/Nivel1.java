@@ -27,13 +27,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * Created by Mario Lagunes on 26/09/2016.
  */
 public class Nivel1 implements Screen {
-    public static final float ancho_mapa = 6400;
+    public static final float ancho_mapa = 12000;
     private Juego juego;
     private OrthographicCamera camara;
     private TiledMap mapa;
     private OrthogonalTiledMapRenderer rendererMapa;
     private Viewport vista;
-    private SpriteBatch imagenFondo;
     private SpriteBatch batch;
     private Texture texuturaPersonaje;
     private Personaje pinguino;
@@ -41,14 +40,14 @@ public class Nivel1 implements Screen {
     private StretchViewport vistaHUD;
     private EstadosJuego estadoJuego;
     private Texto texto;
-    private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo;
-    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnPausado;
+    private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo1,texturaFondo2,texturaFondo3,texturaScore;
+    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnPausado,btnScore;
     private int heladosRecolectados = 0;
     private int vidas = 3;
     private static final int celda = 128;
     private Boomerang boomerang;
-    private Personaje enemigo,enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
-    private Fondo fondo,fondo2,fondo3;
+    private Personaje enemigo;//,enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
+    private Fondo fondo,fondo2,fondo3,fondo4;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -86,7 +85,10 @@ public class Nivel1 implements Screen {
         manager.load("BtnPausa.png",Texture.class);
         manager.load("mole.png",Texture.class);
         manager.load("boomeran.png",Texture.class);
-        manager.load("FondocompletoPrueba.png",Texture.class);
+        manager.load("FondonivelLoop.png",Texture.class);
+        manager.load("FondonivelLoop2.png",Texture.class);
+        manager.load("Salida.png",Texture.class);
+        manager.load("CuadroScore.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -100,38 +102,42 @@ public class Nivel1 implements Screen {
         pinguino.getSprite().setPosition(Juego.ancho/10,Juego.alto * 0.1f);
         texturaSalto = manager.get("BtnArriba.png");
         btnSalto = new Boton(texturaSalto);
-        btnSalto.setPosicion(100,Juego.alto * 0.01f);
+        btnSalto.setPosicion(10,Juego.alto * 0.01f);
         texturaBoomeran = manager.get("SpriteBoom.png");
         boomerang = new Boomerang(texturaBoomeran);
         texturaDisparo = manager.get("BtnBoom.png");
         texturaGano = manager.get("btnGana.png");
         btnGanar = new Boton(texturaGano);
         btnDisparar = new Boton(texturaDisparo);
-        btnDisparar.setPosicion(1000,Juego.alto * 0.01f);
+        btnDisparar.setPosicion(1100,Juego.alto * 0.01f);
         texturaPausa = manager.get("BtnPausa.png");
         btnPausa = new Boton((texturaPausa));
-        btnPausa.setPosicion(1200,Juego.alto*0.8f);
+        btnPausa.setPosicion(1100,Juego.alto*0.8f);
         texturaPausado = manager.get("mole.png");
         btnPausado = new Boton(texturaPausado);
         texturaEnemigo = manager.get("boomeran.png");
-        enemigo = new Personaje(texturaEnemigo);
-        enemigo1 = new Personaje(texturaEnemigo);
-        enemigo2 = new Personaje(texturaEnemigo);
-        enemigo3 = new Personaje(texturaEnemigo);
-        enemigo4 = new Personaje(texturaEnemigo);
-        enemigo5 = new Personaje(texturaEnemigo);
-        enemigo.getSprite().setPosition(200,Juego.alto*0.06f);
-        enemigo1.getSprite().setPosition(400,Juego.alto*0.06f);
-        enemigo2.getSprite().setPosition(600,Juego.alto*0.06f);
-        enemigo3.getSprite().setPosition(700,Juego.alto*0.06f);
-        enemigo4.getSprite().setPosition(800,Juego.alto*0.06f);
-        enemigo5.getSprite().setPosition(3000,Juego.alto*0.06f);
-        texturaFondo = manager.get("FondocompletoPrueba.png");
-        fondo = new Fondo(texturaFondo);
-        fondo2 = new Fondo(texturaFondo);
-        fondo3 = new Fondo(texturaFondo);
-
-
+        //enemigo.PersonajeEnemigo(texturaEnemigo,10);
+        //enemigo1 = new Personaje(texturaEnemigo);
+        //enemigo2 = new Personaje(texturaEnemigo);
+        //enemigo3 = new Personaje(texturaEnemigo);
+        //enemigo4 = new Personaje(texturaEnemigo);
+        //enemigo5 = new Personaje(texturaEnemigo);
+        //enemigo.getSprite().setPosition(300,Juego.alto*0.06f);
+        //enemigo1.getSprite().setPosition(400,Juego.alto*0.06f);
+        //enemigo2.getSprite().setPosition(600,Juego.alto*0.06f);
+        //enemigo3.getSprite().setPosition(700,Juego.alto*0.06f);
+        //enemigo4.getSprite().setPosition(800,Juego.alto*0.06f);
+        //enemigo5.getSprite().setPosition(3000,Juego.alto*0.06f);
+        texturaFondo1 = manager.get("FondonivelLoop.png");
+        texturaFondo2 = manager.get("FondonivelLoop.png");
+        texturaFondo3 = manager.get("Salida.png");
+        fondo = new Fondo(texturaFondo1);
+        fondo2 = new Fondo(texturaFondo2);
+        fondo3 = new Fondo(texturaFondo1);
+        fondo4 = new Fondo(texturaFondo3);
+        texturaScore = manager.get("CuadroScore.png");
+        btnScore = new Boton(texturaScore);
+        btnScore.setPosicion(0,Juego.alto*0.7f);
 
     }
 
@@ -146,22 +152,23 @@ public class Nivel1 implements Screen {
         batch.setProjectionMatrix(camara.combined);
         rendererMapa.setView(camara);
         batch.begin();
-        if(pinguino.getX() == Juego.ancho/10){
-            fondo.setPosicion(0,Juego.alto/160);
-
-        }
-        else if(pinguino.getX() >= 2500){
-            fondo2.setPosicion(Juego.ancho+2220,Juego.alto/160);
-        }
-        fondo.draw(batch);
-        fondo2.draw(batch);
+            fondo.setPosicion(0,Juego.alto/165);
+            fondo2.setPosicion(Juego.ancho+1720,Juego.alto/165);
+            fondo3.setPosicion(Juego.ancho + 4720,Juego.alto/165 );
+            fondo4.setPosicion(Juego.ancho + 7720,Juego.alto/165);
+            fondo.draw(batch);
+            fondo2.draw(batch);
+            fondo3.draw(batch);
+            fondo4.draw(batch);
         batch.end();
         rendererMapa.render();
+
         batch.begin();
             pinguino.render(batch);
             boomerang.render(batch);
-            enemigo.render(batch);
-            enemigo.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
+            //enemigo.renderEnemigo(batch);
+            //enemigo.setEstadoEnemigo(Personaje.EstadosEnemigo.DERECHA);
+            //enemigo.moverEnemigosDer();
             /*enemigo1.render(batch);
             enemigo2.render(batch);
             enemigo3.render(batch);
@@ -190,8 +197,9 @@ public class Nivel1 implements Screen {
                 btnSalto.render(batch);
                 btnDisparar.render(batch);
                 btnPausa.render(batch);
-                texto.mostrarMensaje(batch,"Puntos: " + heladosRecolectados,100,Juego.alto * 0.9f);
-                texto.mostrarMensaje(batch,"Vidas: " + vidas,100,Juego.alto * 0.95f);
+                btnScore.render(batch);
+                texto.mostrarMensaje(batch," " + heladosRecolectados,150,Juego.alto * 0.93f);
+                texto.mostrarMensaje(batch," " + vidas,150,Juego.alto * 0.85f);
             }
 
         batch.end();
@@ -247,8 +255,8 @@ public class Nivel1 implements Screen {
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
 
             }
-            if(pinguino.getX() >= 6000){
-                pinguino.setPosicion(6500,6500);
+            if(pinguino.getX() >= 11000){
+                pinguino.setPosicion(-1000,0);
                 estadoJuego = estadoJuego.GANO;
             }
             else if(pinguino.getY() <= 10){
