@@ -28,8 +28,8 @@
  <tileset firstgid="27" name="fondo" tilewidth="6400" tileheight="896" tilecount="1" columns="1">
   <image source="Fondocompleto.png" width="6400" height="896"/>
  </tileset>
- <imagelayer name="Capa de Imagen 1">
-  <image source="Fondocompleto.png" width="6400" height="896"/>
+ <imagelayer name="Capa de Imagen 1" visible="0">
+  <image source="FondocompletoPrueba.png" width="3500" height="896"/>
  </imagelayer>
  <layer name="Capa de patrones 1" width="50" height="7">
   <data encoding="csv">

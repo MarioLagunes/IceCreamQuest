@@ -11,13 +11,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
@@ -30,18 +33,22 @@ public class Nivel1 implements Screen {
     private TiledMap mapa;
     private OrthogonalTiledMapRenderer rendererMapa;
     private Viewport vista;
+    private SpriteBatch imagenFondo;
     private SpriteBatch batch;
     private Texture texuturaPersonaje;
     private Personaje pinguino;
     private OrthographicCamera camaraHUD;
+    private StretchViewport vistaHUD;
     private EstadosJuego estadoJuego;
     private Texto texto;
-    private Texture texturaSalto,texturaBoomeran,texturaGano;
-    private Boton btnSalto,btnDisparar,btnGanar;
+    private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo;
+    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnPausado;
     private int heladosRecolectados = 0;
     private int vidas = 3;
     private static final int celda = 128;
     private Boomerang boomerang;
+    private Personaje enemigo,enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
+    private Fondo fondo,fondo2,fondo3;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -57,7 +64,9 @@ public class Nivel1 implements Screen {
 
         batch = new SpriteBatch();
         PantallaDatos camaraHUD1 = new PantallaDatos(camaraHUD);
+        PantallaDatos vistaHUD1 = new PantallaDatos(vistaHUD);
         camaraHUD = camaraHUD1.crearCamara(camaraHUD);
+        vistaHUD = vistaHUD1.crearVistaHUD(camaraHUD,vistaHUD);
         cargarTexturas();
         crearObjetos();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
@@ -70,10 +79,14 @@ public class Nivel1 implements Screen {
         AssetManager manager = juego.getManager();
         manager.load("Fondo.tmx",TiledMap.class);
         manager.load("PinguinoChido2.png",Texture.class);
-        manager.load("back.png",Texture.class);
-        manager.load("boomeran.png",Texture.class);
-        manager.load("BtnMusica.png",Texture.class);
+        manager.load("BtnBoom.png",Texture.class);
+        manager.load("SpriteBoom.png",Texture.class);
+        manager.load("BtnArriba.png",Texture.class);
         manager.load("btnGana.png",Texture.class);
+        manager.load("BtnPausa.png",Texture.class);
+        manager.load("mole.png",Texture.class);
+        manager.load("boomeran.png",Texture.class);
+        manager.load("FondocompletoPrueba.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -85,16 +98,40 @@ public class Nivel1 implements Screen {
         texuturaPersonaje = manager.get("PinguinoChido2.png");
         pinguino = new Personaje(texuturaPersonaje);
         pinguino.getSprite().setPosition(Juego.ancho/10,Juego.alto * 0.1f);
-        texturaSalto = manager.get("back.png");
+        texturaSalto = manager.get("BtnArriba.png");
         btnSalto = new Boton(texturaSalto);
-        btnSalto.setPosicion(celda, 5 * celda);
-        texturaBoomeran = manager.get("boomeran.png");
+        btnSalto.setPosicion(100,Juego.alto * 0.01f);
+        texturaBoomeran = manager.get("SpriteBoom.png");
         boomerang = new Boomerang(texturaBoomeran);
-        texturaSalto = manager.get("BtnMusica.png");
+        texturaDisparo = manager.get("BtnBoom.png");
         texturaGano = manager.get("btnGana.png");
         btnGanar = new Boton(texturaGano);
-        btnDisparar = new Boton(texturaSalto);
-        btnDisparar.setPosicion(1000, celda);
+        btnDisparar = new Boton(texturaDisparo);
+        btnDisparar.setPosicion(1000,Juego.alto * 0.01f);
+        texturaPausa = manager.get("BtnPausa.png");
+        btnPausa = new Boton((texturaPausa));
+        btnPausa.setPosicion(1200,Juego.alto*0.8f);
+        texturaPausado = manager.get("mole.png");
+        btnPausado = new Boton(texturaPausado);
+        texturaEnemigo = manager.get("boomeran.png");
+        enemigo = new Personaje(texturaEnemigo);
+        enemigo1 = new Personaje(texturaEnemigo);
+        enemigo2 = new Personaje(texturaEnemigo);
+        enemigo3 = new Personaje(texturaEnemigo);
+        enemigo4 = new Personaje(texturaEnemigo);
+        enemigo5 = new Personaje(texturaEnemigo);
+        enemigo.getSprite().setPosition(200,Juego.alto*0.06f);
+        enemigo1.getSprite().setPosition(400,Juego.alto*0.06f);
+        enemigo2.getSprite().setPosition(600,Juego.alto*0.06f);
+        enemigo3.getSprite().setPosition(700,Juego.alto*0.06f);
+        enemigo4.getSprite().setPosition(800,Juego.alto*0.06f);
+        enemigo5.getSprite().setPosition(3000,Juego.alto*0.06f);
+        texturaFondo = manager.get("FondocompletoPrueba.png");
+        fondo = new Fondo(texturaFondo);
+        fondo2 = new Fondo(texturaFondo);
+        fondo3 = new Fondo(texturaFondo);
+
+
 
     }
 
@@ -105,14 +142,37 @@ public class Nivel1 implements Screen {
             actualizarCamara();
         }
         borrarPantalla();
+
         batch.setProjectionMatrix(camara.combined);
         rendererMapa.setView(camara);
-        rendererMapa.render();
+        batch.begin();
+        if(pinguino.getX() == Juego.ancho/10){
+            fondo.setPosicion(0,Juego.alto/160);
 
+        }
+        else if(pinguino.getX() >= 2500){
+            fondo2.setPosicion(Juego.ancho+2220,Juego.alto/160);
+        }
+        fondo.draw(batch);
+        fondo2.draw(batch);
+        batch.end();
+        rendererMapa.render();
         batch.begin();
             pinguino.render(batch);
             boomerang.render(batch);
+            enemigo.render(batch);
+            enemigo.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
+            /*enemigo1.render(batch);
+            enemigo2.render(batch);
+            enemigo3.render(batch);
+            enemigo4.render(batch);
+            enemigo5.render(batch);*/
             pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
+            /*if(pinguino.getX() > 800){
+                batch.begin();
+                fondo.setPosicion(1280,800);
+                fondo.draw(batch);
+            }*/
         batch.end();
 
         batch.setProjectionMatrix(camaraHUD.combined);
@@ -121,11 +181,17 @@ public class Nivel1 implements Screen {
             if(estadoJuego == EstadosJuego.GANO ){
                 btnGanar.render(batch);
             }
+            else if(estadoJuego == EstadosJuego.PAUSADO){
+                btnPausado.setPosicion(Juego.ancho/2,Juego.alto/2);
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+                btnPausado.render(batch);
+            }
             else{
                 btnSalto.render(batch);
                 btnDisparar.render(batch);
-                texto.mostrarMensaje(batch,"Puntos: " + heladosRecolectados,Juego.ancho/2,Juego.alto * 0.95f);
-                texto.mostrarMensaje(batch,"Vidas: " + vidas,1200,Juego.alto * 0.95f);
+                btnPausa.render(batch);
+                texto.mostrarMensaje(batch,"Puntos: " + heladosRecolectados,100,Juego.alto * 0.9f);
+                texto.mostrarMensaje(batch,"Vidas: " + vidas,100,Juego.alto * 0.95f);
             }
 
         batch.end();
@@ -165,15 +231,6 @@ public class Nivel1 implements Screen {
                 probarColisiones();
                 break;
         }
-        /*if(pinguino.getY() == 1000){
-            estadoJuego = estadoJuego.PERDIO;
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    juego.setScreen(new MenuPrincipal(juego));
-                }
-            },3);
-        }*/
         if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO &&
                 (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
             int celdaX = (int) (pinguino.getX() / celda);
@@ -191,15 +248,16 @@ public class Nivel1 implements Screen {
 
             }
             if(pinguino.getX() >= 6000){
+                pinguino.setPosicion(6500,6500);
                 estadoJuego = estadoJuego.GANO;
             }
             else if(pinguino.getY() <= 10){
                 vidas --;
                 pinguino.getSprite().setPosition(Juego.ancho/10,Juego.alto * 0.1f);
                 camara.position.set(Juego.ancho/pinguino.getX(),camara.position.y,0);
+                camaraHUD.position.set(Juego.ancho/2,camaraHUD.position.y,0);
                 camara.update();
                 camaraHUD.update();
-                camaraHUD.position.set(Juego.ancho/10,camaraHUD.position.y,0);
                 actualizarCamara();
                 /*batch.setProjectionMatrix(camara.combined);
                 rendererMapa.setView(camara);
@@ -218,10 +276,6 @@ public class Nivel1 implements Screen {
                     }
                 },3);
             }
-            /*if(pinguino.getY() >= -10){
-                estadoJuego = estadoJuego.PERDIO;
-
-            }*/
         }
         switch (pinguino.getEstadoSalto()){
             case SUBIENDO: case BAJANDO:
@@ -229,14 +283,6 @@ public class Nivel1 implements Screen {
                 break;
         }
     }
-
-    /*private void moverBoomerang(){
-        switch (boomerang.getBoom()){
-            case LANZADO: case REGRESANDO:
-                boomerang.actualizarBoom();
-                break;
-        }
-    }*/
 
     private void probarColisiones() {
         Personaje.EstadoMovimiento estado = pinguino.getEstadoMovimiento();
@@ -290,6 +336,7 @@ public class Nivel1 implements Screen {
     @Override
     public void resize(int width, int height) {
         vista.update(width,height);
+        vistaHUD.update(width, height);
     }
 
     @Override
@@ -329,25 +376,18 @@ public class Nivel1 implements Screen {
                 boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
                 boomerang.salir();
                 System.out.println("Velocidad = " + boomerang.getVelocidadX());
-                /*if(boomerang.getVelocidadX() >= 10){
-                    System.out.println("Velocidad = " + boomerang.getVelocidadX());
-                    boomerang.regresar();
-                }*/
-
-
-
-
-                //boomerang.actualizarSalir();
-               //boomerang.actualizarBoom();
-                //boomerang.setBoom(Boomerang.boom.REGRESANDO);
-                /*if(boomerang.getX() >= 300){
-
-                    boomerang.actualizarBoom();
-                    System.out.println("ya llegue a los 200");
-                }*/
-                //boomerang.draw(boomerang);
-                //boomerang.actualizar();
                 System.out.println("Me clicliestas");
+            }
+            else if(btnPausa.contiene(x,y)){
+                estadoJuego = estadoJuego.PAUSADO;
+
+            }
+            else if(btnPausado.contiene(x,y)){
+                estadoJuego = estadoJuego.JUGANDO;
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
+                btnPausado.setPosicion(-1000,-1000);
+                moverPersonaje();
+
             }
             else if(estadoJuego == EstadosJuego.GANO){
                 if(btnGanar.contiene(x,y)){

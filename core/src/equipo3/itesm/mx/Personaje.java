@@ -58,6 +58,15 @@ public class Personaje {
                 }
                 batch.draw(region,sprite.getX(),sprite.getY());
                 break;
+            case IZQ:
+                velocidadX = 2;
+                timerAnimacion += Gdx.graphics.getDeltaTime();
+                TextureRegion region2 = animacion.getKeyFrame(timerAnimacion);
+                if(region2.isFlipX()){
+                    region2.flip(true,false);
+                }
+                batch.draw(region2,sprite.getX(),sprite.getY());
+                break;
             case INICIANDO:
                 velocidadX = 0;
                 sprite.draw(batch);
@@ -146,5 +155,6 @@ public class Personaje {
         INICIANDO,
         QUIETO,
         DER,
+        IZQ
     }
 }

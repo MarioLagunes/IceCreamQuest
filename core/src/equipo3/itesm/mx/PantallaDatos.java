@@ -26,6 +26,7 @@ public class PantallaDatos {
         this.vista = vista;
     }
 
+
     public OrthographicCamera crearCamara(OrthographicCamera camara){
         camara = new OrthographicCamera(ancho,alto);
         camara.position.set(ancho/2,alto/2,0);
@@ -37,14 +38,7 @@ public class PantallaDatos {
         return vista = new StretchViewport(ancho,alto,camara);
     }
 
-    public OrthographicCamera crearCamaraMovimiento(OrthographicCamera camara, float velocidad){
-        camara = new OrthographicCamera(ancho,alto);
-        camara.position.set(ancho/2,alto/2,0);
-        for(int i=0; i<ancho; i++){
-            camara.translate(camara.position.set(ancho/2+i,alto/2,0));
-            camara.update();
-        }
-        return camara;
+    public StretchViewport crearVistaHUD(OrthographicCamera camara,StretchViewport vista){
+        return vista = new StretchViewport(ancho,alto,camara);
     }
-
 }

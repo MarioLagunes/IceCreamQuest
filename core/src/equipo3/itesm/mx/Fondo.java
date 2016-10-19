@@ -17,4 +17,8 @@ public class Fondo {
     public void draw(SpriteBatch batch){
         sprite.draw(batch);
     }
+
+    public void setPosicion(float x, float y){
+        sprite.setPosition(x,y);
+    }
 }
