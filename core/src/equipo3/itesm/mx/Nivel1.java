@@ -224,7 +224,7 @@ public class Nivel1 implements Screen {
             case INICIANDO:
                 int celdaX = (int)(pinguino.getX()/celda);
                 int celdaY = (int)((pinguino.getY() + pinguino.velocidadY)/celda);
-                TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(1);
+                TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);
                 TiledMapTileLayer.Cell celda1 = capa.getCell(celdaX,celdaY);
                 if(celda1 == null){
                     pinguino.caer();
@@ -243,7 +243,7 @@ public class Nivel1 implements Screen {
                 (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
             int celdaX = (int) (pinguino.getX() / celda);
             int celdaY = (int) ((pinguino.getY() + pinguino.velocidadY) / celda);
-            TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
+            TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
             if((celdaAbajo == null && celdaDerecha == null) || esHelado(celdaAbajo) || esHelado(celdaDerecha)){
@@ -305,7 +305,7 @@ public class Nivel1 implements Screen {
             celdaX++;
         }
         int celdaY = (int)(pinguino.getY()/celda); 
-        TiledMapTileLayer capaPlataforma1 = (TiledMapTileLayer) mapa.getLayers().get(2);
+        TiledMapTileLayer capaPlataforma1 = (TiledMapTileLayer) mapa.getLayers().get(1);
         if(capaPlataforma1.getCell(celdaX,celdaY) != null || capaPlataforma1.getCell(celdaX,celdaY+1) != null){
             if(esHelado(capaPlataforma1.getCell(celdaX,celdaY))){
                 heladosRecolectados +=500;

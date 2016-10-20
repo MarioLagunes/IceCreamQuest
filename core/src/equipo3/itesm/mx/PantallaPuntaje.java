@@ -61,10 +61,10 @@ public class PantallaPuntaje implements Screen {
     }
 
     private void cargarImagenes() {
-        manager.load("Puntajes.jpg",Texture.class);
+        manager.load("ScorePantalla.png",Texture.class);
         manager.load("back.png",Texture.class);
         manager.finishLoading();
-        texturaInstrucciones = manager.get("Puntajes.jpg");
+        texturaInstrucciones = manager.get("ScorePantalla.png");
         texturaBack = manager.get("back.png");
     }
 
