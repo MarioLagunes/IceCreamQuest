@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,6 +29,7 @@ public class PantallaAcercaDe implements Screen, InputProcessor {
     private OrthographicCamera camara;
     private Viewport vista;
     private final AssetManager manager = new AssetManager();
+    public Music musica;
 
     public PantallaAcercaDe(Juego juego) {
         this.juego = juego;
@@ -46,7 +48,15 @@ public class PantallaAcercaDe implements Screen, InputProcessor {
             cargarImagenes();
             cargarFondo();
             cargarBotones();
+            cargarMusica();
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
+    }
+
+    public void cargarMusica(){
+        musica = Gdx.audio.newMusic(Gdx.files.internal("Score.mp3"));
+        musica.setVolume(0.75f);
+        musica.play();
+
     }
 
     private void cargarBotones() {
@@ -121,6 +131,7 @@ public class PantallaAcercaDe implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new MenuPrincipal(juego));
+                musica.stop();
             }
         });
 

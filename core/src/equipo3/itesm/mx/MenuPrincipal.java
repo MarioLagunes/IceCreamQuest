@@ -58,7 +58,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 		// *** FIN DE CARGAR MUSICA ***\\
 	}
 
-	private void cargarMusica() {
+	public void cargarMusica() {
 		musica = Gdx.audio.newMusic(Gdx.files.internal("Menu-VidJu.mp3"));
 		musica.setVolume(0.75f);
 		musica.play();
@@ -81,6 +81,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaAcercaDe(juego));
+				musica.stop();
 			}
 		});
 
