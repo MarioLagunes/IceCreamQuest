@@ -59,7 +59,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 	}
 
 	private void cargarMusica() {
-		musica = Gdx.audio.newMusic(Gdx.files.internal("cancionChida.mp3"));
+		musica = Gdx.audio.newMusic(Gdx.files.internal("Menu-VidJu.mp3"));
 		musica.setVolume(0.75f);
 		musica.play();
 	}
