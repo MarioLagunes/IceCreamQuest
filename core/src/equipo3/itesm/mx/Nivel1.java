@@ -19,15 +19,18 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.util.ArrayList;
 
 /**
  * Created by Mario Lagunes on 26/09/2016.
  */
 public class Nivel1 implements Screen {
-    public static final float ancho_mapa = 12000;
+    public static final float ancho_mapa = 12800;
     private Juego juego;
     private OrthographicCamera camara;
     private TiledMap mapa;
@@ -40,14 +43,16 @@ public class Nivel1 implements Screen {
     private StretchViewport vistaHUD;
     private EstadosJuego estadoJuego;
     private Texto texto;
-    private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo1,texturaFondo2,texturaFondo3,texturaScore;
-    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnPausado,btnScore;
+    private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo1,texturaFondo2,texturaFondo3,texturaScore,texturaDardo,
+            texturaSal,texturaQui,texturaSalir,texturaResumen;
+    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir;
     private int heladosRecolectados = 0;
     private int vidas = 3;
     private static final int celda = 128;
     private Boomerang boomerang;
     private Personaje enemigo;//,enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
-    private Fondo fondo,fondo2,fondo3,fondo4;
+    private Fondo fondo,fondo2,fondo3,fondoPausa;
+    private Dardos dardo;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -71,6 +76,7 @@ public class Nivel1 implements Screen {
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         estadoJuego = EstadosJuego.JUGANDO;
         texto = new Texto();
+        enemigo.moverEnemigosDer();
 
     }
 
@@ -83,12 +89,17 @@ public class Nivel1 implements Screen {
         manager.load("BtnArriba.png",Texture.class);
         manager.load("btnGana.png",Texture.class);
         manager.load("BtnPausa.png",Texture.class);
-        manager.load("mole.png",Texture.class);
+        manager.load("Pausa.png",Texture.class);
         manager.load("boomeran.png",Texture.class);
         manager.load("FondonivelLoop.png",Texture.class);
         manager.load("FondonivelLoop2.png",Texture.class);
         manager.load("Salida.png",Texture.class);
         manager.load("CuadroScore.png",Texture.class);
+        manager.load("dardo.png",Texture.class);
+        manager.load("Parado.png",Texture.class);
+        manager.load("Saltar.png",Texture.class);
+        manager.load("BTN_Resumen.png",Texture.class);
+        manager.load("BTN_Salir.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -98,7 +109,9 @@ public class Nivel1 implements Screen {
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
         rendererMapa.setView(camara);
         texuturaPersonaje = manager.get("PinguinoChido2.png");
-        pinguino = new Personaje(texuturaPersonaje);
+        texturaSal = manager.get("Saltar.png");
+        texturaQui= manager.get("Parado.png");
+        pinguino = new Personaje(texuturaPersonaje,texturaSal,texturaQui);
         pinguino.getSprite().setPosition(Juego.ancho/10,Juego.alto * 0.1f);
         texturaSalto = manager.get("BtnArriba.png");
         btnSalto = new Boton(texturaSalto);
@@ -113,9 +126,15 @@ public class Nivel1 implements Screen {
         texturaPausa = manager.get("BtnPausa.png");
         btnPausa = new Boton((texturaPausa));
         btnPausa.setPosicion(1100,Juego.alto*0.8f);
-        texturaPausado = manager.get("mole.png");
-        btnPausado = new Boton(texturaPausado);
+        texturaPausado = manager.get("Pausa.png");
+        fondoPausa = new Fondo(texturaPausado);
+        texturaResumen = manager.get("BTN_Resumen.png");
+        btnResumen = new Boton(texturaResumen);
+        texturaSalir = manager.get("BTN_Salir.png");
+        btnSalir = new Boton(texturaSalir);
         texturaEnemigo = manager.get("boomeran.png");
+        enemigo = new Personaje(texturaEnemigo,10);
+        enemigo.setPosicionEnemiga(300,Juego.alto*0.6f);
         //enemigo.PersonajeEnemigo(texturaEnemigo,10);
         //enemigo1 = new Personaje(texturaEnemigo);
         //enemigo2 = new Personaje(texturaEnemigo);
@@ -133,11 +152,11 @@ public class Nivel1 implements Screen {
         texturaFondo3 = manager.get("Salida.png");
         fondo = new Fondo(texturaFondo1);
         fondo2 = new Fondo(texturaFondo2);
-        fondo3 = new Fondo(texturaFondo1);
-        fondo4 = new Fondo(texturaFondo3);
+        fondo3 = new Fondo(texturaFondo3);
         texturaScore = manager.get("CuadroScore.png");
         btnScore = new Boton(texturaScore);
         btnScore.setPosicion(0,Juego.alto*0.7f);
+        texturaDardo = manager.get("dardo.png");
 
     }
 
@@ -152,22 +171,41 @@ public class Nivel1 implements Screen {
         batch.setProjectionMatrix(camara.combined);
         rendererMapa.setView(camara);
         batch.begin();
-            fondo.setPosicion(0,Juego.alto/165);
-            fondo2.setPosicion(Juego.ancho+1720,Juego.alto/165);
-            fondo3.setPosicion(Juego.ancho + 4720,Juego.alto/165 );
-            fondo4.setPosicion(Juego.ancho + 7720,Juego.alto/165);
+            fondo.setPosicion(0,0);
+            fondo2.setPosicion(3000,0);
+            fondo.draw(batch);
+            fondo2.draw(batch);
+            fondo.setPosicion(6000,0);
+            fondo2.setPosicion(9000,0);
+            fondo3.setPosicion(12000,0);
             fondo.draw(batch);
             fondo2.draw(batch);
             fondo3.draw(batch);
-            fondo4.draw(batch);
         batch.end();
+
         rendererMapa.render();
 
         batch.begin();
             pinguino.render(batch);
             boomerang.render(batch);
+            enemigo.renderEnemigo(batch);
             //enemigo.renderEnemigo(batch);
-            //enemigo.setEstadoEnemigo(Personaje.EstadosEnemigo.DERECHA);
+            dardo = new Dardos(texturaDardo,pinguino,enemigo);
+            dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
+            dardo.render(batch);
+            if(dardo.getX() == pinguino.getX() && dardo.getY() == pinguino.getY()){
+                vidas--;
+            }
+            /*dardo = new Dardos(texturaDardo,pinguino,enemigo);
+            dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
+            dardo.render(batch);
+            dardo = new Dardos(texturaDardo,pinguino,enemigo);
+            dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
+            dardo.render(batch);*/
+
+
+
+            //dardo.disparar(2,pinguino,enemigo);
             //enemigo.moverEnemigosDer();
             /*enemigo1.render(batch);
             enemigo2.render(batch);
@@ -189,9 +227,13 @@ public class Nivel1 implements Screen {
                 btnGanar.render(batch);
             }
             else if(estadoJuego == EstadosJuego.PAUSADO){
-                btnPausado.setPosicion(Juego.ancho/2,Juego.alto/2);
+                fondoPausa.setPosicion(Juego.ancho/4,Juego.alto/16);
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-                btnPausado.render(batch);
+                fondoPausa.draw(batch);
+                btnResumen.setPosicion(Juego.ancho/3,Juego.alto*0.45f);
+                btnSalir.setPosicion(Juego.ancho/3,Juego.alto*0.15f);
+                btnResumen.render(batch);
+                btnSalir.render(batch);
             }
             else{
                 btnSalto.render(batch);
@@ -222,7 +264,7 @@ public class Nivel1 implements Screen {
     private void moverPersonaje(){
         switch (pinguino.getEstadoMovimiento()){
             case INICIANDO:
-                int celdaX = (int)(pinguino.getX()/celda);
+                int celdaX = (int)((pinguino.getX()+ pinguino.getSprite().getWidth())/celda);
                 int celdaY = (int)((pinguino.getY() + pinguino.velocidadY)/celda);
                 TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);
                 TiledMapTileLayer.Cell celda1 = capa.getCell(celdaX,celdaY);
@@ -241,7 +283,7 @@ public class Nivel1 implements Screen {
         }
         if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO &&
                 (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
-            int celdaX = (int) (pinguino.getX() / celda);
+            int celdaX = (int) ((pinguino.getX() + pinguino.getSprite().getWidth()/2) /celda );
             int celdaY = (int) ((pinguino.getY() + pinguino.velocidadY) / celda);
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
@@ -255,8 +297,8 @@ public class Nivel1 implements Screen {
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
 
             }
-            if(pinguino.getX() >= 11000){
-                pinguino.setPosicion(-1000,0);
+            if(pinguino.getX() >= 12672){
+                pinguino.setPosicion(-10000,0);
                 estadoJuego = estadoJuego.GANO;
             }
             else if(pinguino.getY() <= 10){
@@ -390,12 +432,19 @@ public class Nivel1 implements Screen {
                 estadoJuego = estadoJuego.PAUSADO;
 
             }
-            else if(btnPausado.contiene(x,y)){
+            else if(btnResumen.contiene(x,y)){
                 estadoJuego = estadoJuego.JUGANDO;
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
-                btnPausado.setPosicion(-1000,-1000);
+                fondoPausa.setPosicion(-13444,-12435);
                 moverPersonaje();
-
+            }
+            else if(btnSalir.contiene(x,y)){
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        juego.setScreen(new MenuPrincipal(juego));
+                    }
+                },1);
             }
             else if(estadoJuego == EstadosJuego.GANO){
                 if(btnGanar.contiene(x,y)){
