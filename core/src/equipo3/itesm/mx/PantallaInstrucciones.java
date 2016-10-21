@@ -81,11 +81,11 @@ public class PantallaInstrucciones implements Screen {
     }
 
     private void cargarImagenes() {
-        manager.load("Instrucciones1.png",Texture.class);
+        manager.load("Instrucciones-01.png",Texture.class);
         manager.load("back.png",Texture.class);
         manager.load("next.png",Texture.class);
         manager.finishLoading();
-        texturaInstrucciones = manager.get("Instrucciones1.png");
+        texturaInstrucciones = manager.get("Instrucciones-01.png");
         texturaBack = manager.get("back.png");
         texturaNext = manager.get("next.png");
     }
