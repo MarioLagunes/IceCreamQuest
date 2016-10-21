@@ -13,10 +13,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Created by Mario Lagunes(3) on 26/09/2016.
  */
 public class Personaje {
-    private Sprite sprite,spriteEnemigo;
+    private Sprite sprite,spriteEnemigo,spriteSalto,spriteQuieto;
     public static final float velocidadY = -4f;
     public static  float velocidadX,velX;
-    private Animation animacion,animar;
+    private Animation animacion,animar,animarSalto,animarQuieto,animarReg;
     private float timerAnimacion,tiempoAnimar;
     private EstadoMovimiento estadoMovimiento;
     private EstadoSalto estadoSalto;
@@ -27,6 +27,7 @@ public class Personaje {
     private float yInicial;
     private float tiempoVuelo;
     private  float tiempoSalto;
+    private TextureRegion textfinalSalto;
 
     public enum EstadoSalto {
         ABAJO,
@@ -41,12 +42,21 @@ public class Personaje {
         IZQUIERDA
     }
 
-    public  Personaje(Texture textura){
+    public  Personaje(Texture textura,Texture texturaSaltos,Texture texturaQuieto){
         TextureRegion texturaCompleta = new TextureRegion(textura);
+        TextureRegion texturaSalto = new TextureRegion(texturaSaltos);
+        TextureRegion texturaQuietos = new TextureRegion(texturaQuieto);
         TextureRegion[][] texturaPersonaje = texturaCompleta.split(128,128);
+        TextureRegion[][] texturaSaltar = texturaSalto.split(128,128);
+        TextureRegion[][] texturaQuies = texturaQuietos.split(128,128);
         animacion = new Animation(0.10f,texturaPersonaje[0][1], texturaPersonaje[0][2], texturaPersonaje[0][3],
                 texturaPersonaje[0][4],texturaPersonaje[0][5]);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
+        animarSalto = new Animation(0.10f,texturaSaltar[0][1]);
+        textfinalSalto = new TextureRegion(texturaSaltar[0][1]);
+        //animarSalto.setPlayMode(Animation.PlayMode.LOOP);
+        animarQuieto = new Animation(0.10f,texturaQuies[0][1]);
+        animarQuieto.setPlayMode(Animation.PlayMode.LOOP);
         timerAnimacion = 0;
 
         sprite = new Sprite(texturaPersonaje[0][0]);
@@ -54,12 +64,13 @@ public class Personaje {
         estadoSalto = EstadoSalto.ABAJO;
     }
 
-    public void PersonajeEnemigo(Texture textur,float vel){
-        TextureRegion texturaEnemigoFull = new TextureRegion(textur);
+    public Personaje(Texture textura,float vel){
+        TextureRegion texturaEnemigoFull = new TextureRegion(textura);
         TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(128,128);
-        animar = new Animation(0.10f,texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],
-                texturaEnemigo[0][4],texturaEnemigo[0][5]);
+        animar = new Animation(0.10f,texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3]);
+        animarReg = new Animation(0.10f,texturaEnemigo[0][4],texturaEnemigo[0][5],texturaEnemigo[0][6]);
         animar.setPlayMode(Animation.PlayMode.LOOP);
+        animarReg.setPlayMode(Animation.PlayMode.LOOP);
         tiempoAnimar = 0;
         spriteEnemigo = new Sprite(texturaEnemigo[0][0]);
         estadoEnemigo = EstadosEnemigo.INICIO;
@@ -76,7 +87,7 @@ public class Personaje {
                 }
                 batch.draw(region,sprite.getX(),sprite.getY());
                 break;
-            case IZQ:
+            /*case IZQ:
                 velocidadX = 2;
                 timerAnimacion += Gdx.graphics.getDeltaTime();
                 TextureRegion region2 = animacion.getKeyFrame(timerAnimacion);
@@ -84,40 +95,53 @@ public class Personaje {
                     region2.flip(true,false);
                 }
                 batch.draw(region2,sprite.getX(),sprite.getY());
-                break;
-            case INICIANDO:
+                break;*/
+            case INICIANDO:case QUIETO:
                 velocidadX = 0;
                 sprite.draw(batch);
                 break;
-            case QUIETO:
-                velocidadX = 0;
-                quieto(batch);
+        }
+        switch (estadoSalto){
+            case SUBIENDO: case BAJANDO: case CAIDALIBRE:
+                timerAnimacion = 0;
+                //timerAnimacion += Gdx.graphics.getDeltaTime();
+                //TextureRegion regionSalto = animarSalto.getKeyFrame(timerAnimacion);
+                sprite.setRegion(textfinalSalto);
+                //if(estadoMovimiento){
+
+                //}
+                sprite.draw(batch);
+
+
+                break;
         }
     }
 
     public void renderEnemigo(SpriteBatch batch){
         switch(estadoEnemigo){
             case DERECHA:
-                velX += 5;
+                velX += 2;
                 tiempoAnimar += Gdx.graphics.getDeltaTime();
-                TextureRegion region = animar.getKeyFrame(tiempoAnimar);
-                if(region.isFlipX()){
-                    region.flip(true,false);
+                TextureRegion region4 = animar.getKeyFrame(tiempoAnimar);
+                if(region4.isFlipX()){
+                    region4.flip(true,false);
                 }
-                batch.draw(region,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
-                if(velX >= 500){
+                batch.draw(region4,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
+                System.out.println("vel =" + velX);
+                if(velX > 50.0){
+                    System.out.print("estouy aqui");
                     moverEnemigosIzq();
                 }
                 break;
             case IZQUIERDA:
-                velX -= 5;
+                velX -= 2;
                 tiempoAnimar += Gdx.graphics.getDeltaTime();
-                TextureRegion region1 = animar.getKeyFrame(tiempoAnimar);
-                if(region1.isFlipX()){
-                    region1.flip(true,false);
+                TextureRegion region5 = animarReg.getKeyFrame(tiempoAnimar);
+                if(region5.isFlipX()){
+                    region5.flip(true,false);
                 }
-                batch.draw(region1,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
-                if(velX <= -500){
+                batch.draw(region5,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
+                if(velX <= 0){
                     moverEnemigosDer();
                 }
                 break;
@@ -141,6 +165,7 @@ public class Personaje {
     }
 
     public void caer(){
+        timerAnimacion = 0;
         sprite.setY(sprite.getY() + velocidadY);
     }
 
@@ -149,6 +174,7 @@ public class Personaje {
     }
 
     public void actualizarSalto(){
+        timerAnimacion = 0;
         float y = V0 * tiempoSalto - G_2 * tiempoSalto * tiempoSalto;
         if(tiempoSalto > tiempoVuelo/2){
             estadoSalto = EstadoSalto.BAJANDO;
@@ -177,6 +203,18 @@ public class Personaje {
         sprite.setPosition(x,y);
     }
 
+    public void setPosicionEnemiga(float x, float y){
+        spriteEnemigo.setPosition(x,y);
+    }
+
+    public float getXEnemiga(){
+        return spriteEnemigo.getX();
+    }
+
+    public float getYEnemiga(){
+        return spriteEnemigo.getY();
+    }
+
     public void setEstadoEnemigo(EstadosEnemigo estadoEnemigo){
         this.estadoEnemigo = estadoEnemigo;
     }
@@ -195,6 +233,7 @@ public class Personaje {
 
     public void saltar(){
         if(estadoSalto == EstadoSalto.ABAJO){
+            timerAnimacion = 0;
             tiempoSalto = 0;
             yInicial = sprite.getY();
             estadoSalto = EstadoSalto.SUBIENDO;

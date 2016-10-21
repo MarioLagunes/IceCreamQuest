@@ -69,7 +69,6 @@ public class Boomerang {
                     region.flip(true,false);
                 }
                 batch.draw(region,sprite.getX()+VelocidadX,sprite.getY());
-                System.out.println("velo = "+VelocidadX);
                 if(VelocidadX >= 1000.0){
                     regresar();
                 }
@@ -82,7 +81,6 @@ public class Boomerang {
                     region1.flip(true,false);
                 }
                 batch.draw(region1,sprite.getX()+VelocidadX,sprite.getY());
-                System.out.println("velreg = " + VelocidadX);
                 if(VelocidadX <= 400){
                     destruirBoomerang();
                 }
