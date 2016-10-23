@@ -5,6 +5,106 @@
  </properties>
  <tileset firstgid="1" name="Piso" tilewidth="128" tileheight="128" tilecount="20" columns="20">
   <image source="Piso.png" width="2560" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="15">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="21" name="heladoesp" tilewidth="128" tileheight="128" tilecount="1" columns="1">
   <image source="heladoesp.png" width="128" height="128"/>
@@ -24,12 +124,32 @@
  </tileset>
  <tileset firstgid="23" name="Cuadropiso" tilewidth="128" tileheight="128" tilecount="1" columns="1">
   <image source="Cuadropiso.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="24" name="CuadroScore" tilewidth="128" tileheight="128" tilecount="4" columns="2">
   <image source="CuadroScore.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="28" name="Plataforma" tilewidth="128" tileheight="128" tilecount="3" columns="3">
   <image source="Plataforma.png" width="384" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="tipo" value="esCuadroPiso"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Capa de patrones 1" width="100" height="7">
   <data encoding="csv">
@@ -38,8 +158,8 @@
 0,0,0,0,0,0,0,0,28,30,0,0,29,0,0,0,0,0,0,0,28,29,29,29,30,0,0,0,0,0,28,29,29,30,0,0,29,0,0,0,0,0,0,29,0,0,28,29,29,29,30,0,0,0,0,0,0,0,0,29,0,0,0,0,0,0,0,0,0,0,28,29,29,29,30,0,0,0,0,0,29,0,0,0,0,0,28,29,29,29,30,0,0,0,0,0,28,30,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,29,30,0,0,0,0,0,0,0,0,0,28,30,0,0,0,0,0,0,0,0,0,0,0,28,29,30,0,0,0,0,0,0,0,0,0,0,29,0,28,29,30,0,0,0,0,0,0,0,28,29,30,0,0,0,0,0,0,0,0,0,0,28,30,0,0,0,0,0,0,29,0,0,0,0,0,0,0,0,0,29,0,0,0,0,
 0,0,0,0,28,29,30,0,0,0,0,0,0,0,0,0,0,0,0,23,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,0,0,0,0,0,0,29,0,0,0,0,0,0,0,0,0,0,0,0,28,29,30,0,0,0,0,0,28,29,29,30,0,0,0,0,0,0,0,
-0,0,23,0,0,0,0,0,29,0,0,23,0,0,0,0,0,23,23,23,0,0,29,0,0,23,0,0,0,23,0,0,29,0,0,23,23,23,23,0,0,0,28,30,0,0,0,23,23,0,0,0,0,0,0,0,0,23,0,0,0,23,23,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-1,2,3,4,0,0,0,0,0,0,11,12,13,14,15,0,17,18,19,20,1,0,0,0,5,6,7,8,9,10,0,0,0,0,0,16,17,18,19,20,1,0,0,0,0,6,1,2,3,0,0,28,29,30,0,0,11,12,13,14,15,16,17,0,0,0,1,2,3,4,5,6,7,8,9,10,0,29,0,0,15,16,17,18,0,29,0,0,3,4,5,6,0,0,0,10,11,12,13,14
+0,0,23,0,0,0,0,0,29,0,0,23,0,0,0,0,0,23,23,23,0,0,29,0,0,23,0,0,0,23,0,0,29,0,0,23,23,23,23,0,0,0,0,0,0,0,0,23,23,0,0,0,0,0,0,0,0,23,0,0,0,23,23,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,2,3,4,0,0,0,0,0,0,11,12,13,14,15,0,17,18,19,20,1,0,0,0,5,6,7,8,9,10,0,0,0,0,0,16,17,18,19,20,1,0,0,0,1,1,0,2,3,0,0,28,29,30,0,0,11,12,13,14,15,16,17,0,0,0,1,2,3,4,5,6,7,8,9,10,0,29,0,0,15,16,17,18,0,29,0,0,3,4,5,6,0,0,0,10,11,12,13,14
 </data>
  </layer>
  <layer name="Capa de patrones 2" width="100" height="7">
@@ -48,8 +168,8 @@
 0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,21,0,0,22,22,22,0,0,0,0,0,0,0,22,22,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,22,22,0,0,0,0,0,0,0,0,0,21,0,0,0,0,0,0,0,0,0,0,0,22,22,22,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,22,22,0,0,0,0,0,22,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,22,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,21,0,0,0,0,0,0,22,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,0,22,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,22,0,0,22,0,22,0,0,0,0,0,21,0,0,0,0,0,0,0,22,0,0,0,0,0,0,22,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,0,0,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,21,0,0,0,0,21,0,0,0,0,0,0,0,22,0,0,0,0,0,0,22,0,0,0,0,0,0,0,0,22,0,0,22,0,22,0,0,0,0,0,21,0,0,0,0,0,0,0,22,0,0,0,0,0,0,22,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
