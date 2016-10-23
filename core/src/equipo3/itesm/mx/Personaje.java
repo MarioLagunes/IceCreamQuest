@@ -28,6 +28,7 @@ public class Personaje {
     private float tiempoVuelo;
     private  float tiempoSalto;
     private TextureRegion textfinalSalto;
+    private Dardos dardos;
 
     public enum EstadoSalto {
         ABAJO,
@@ -64,11 +65,13 @@ public class Personaje {
         estadoSalto = EstadoSalto.ABAJO;
     }
 
-    public Personaje(Texture textura,float vel){
+    public Personaje(Texture textura,Texture textura2){
         TextureRegion texturaEnemigoFull = new TextureRegion(textura);
+        TextureRegion texturaEnemiegoReg = new TextureRegion(textura2);
         TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(128,128);
-        animar = new Animation(0.10f,texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3]);
-        animarReg = new Animation(0.10f,texturaEnemigo[0][4],texturaEnemigo[0][5],texturaEnemigo[0][6]);
+        TextureRegion[][] texturaEnemigoRegreso = texturaEnemiegoReg.split(128,128);
+        animar = new Animation(0.10f,texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],texturaEnemigo[0][4],texturaEnemigo[0][5],texturaEnemigo[0][6]);
+        animarReg = new Animation(0.10f,texturaEnemigoRegreso[0][6],texturaEnemigoRegreso[0][5],texturaEnemigoRegreso[0][4],texturaEnemigoRegreso[0][3],texturaEnemigoRegreso[0][2],texturaEnemigoRegreso[0][1]);
         animar.setPlayMode(Animation.PlayMode.LOOP);
         animarReg.setPlayMode(Animation.PlayMode.LOOP);
         tiempoAnimar = 0;
@@ -79,7 +82,7 @@ public class Personaje {
     public void render(SpriteBatch batch){
         switch (estadoMovimiento){
             case DER:
-                velocidadX = 2;
+                velocidadX = 4;
                 timerAnimacion += Gdx.graphics.getDeltaTime();
                 TextureRegion region = animacion.getKeyFrame(timerAnimacion);
                 if(region.isFlipX()){
@@ -127,9 +130,10 @@ public class Personaje {
                     region4.flip(true,false);
                 }
                 batch.draw(region4,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
-                System.out.println("vel =" + velX);
-                if(velX > 50.0){
-                    System.out.print("estouy aqui");
+                //System.out.println("vel =" + velX);
+                if(velX > 200.0){
+                    //dardos.render(batch);
+                  //  System.out.print("estouy aqui");
                     moverEnemigosIzq();
                 }
                 break;

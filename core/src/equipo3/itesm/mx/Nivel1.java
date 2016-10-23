@@ -44,8 +44,8 @@ public class Nivel1 implements Screen {
     private EstadosJuego estadoJuego;
     private Texto texto;
     private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo1,texturaFondo2,texturaFondo3,texturaScore,texturaDardo,
-            texturaSal,texturaQui,texturaSalir,texturaResumen;
-    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir;
+            texturaSal,texturaQui,texturaSalir,texturaResumen,texturaPerdiste,texturaEnemigoReg;
+    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir,btnPerdiste;
     private int heladosRecolectados = 0;
     private int vidas = 3;
     private static final int celda = 128;
@@ -76,6 +76,7 @@ public class Nivel1 implements Screen {
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         estadoJuego = EstadosJuego.JUGANDO;
         texto = new Texto();
+        pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
         enemigo.moverEnemigosDer();
 
     }
@@ -87,10 +88,11 @@ public class Nivel1 implements Screen {
         manager.load("BtnBoom.png",Texture.class);
         manager.load("SpriteBoom.png",Texture.class);
         manager.load("BtnArriba.png",Texture.class);
-        manager.load("btnGana.png",Texture.class);
+        manager.load("Ganaste.png",Texture.class);
         manager.load("BtnPausa.png",Texture.class);
         manager.load("Pausa.png",Texture.class);
-        manager.load("boomeran.png",Texture.class);
+        manager.load("zook.png",Texture.class);
+        manager.load("zookreg.png",Texture.class);
         manager.load("FondonivelLoop.png",Texture.class);
         manager.load("FondonivelLoop2.png",Texture.class);
         manager.load("Salida.png",Texture.class);
@@ -100,6 +102,7 @@ public class Nivel1 implements Screen {
         manager.load("Saltar.png",Texture.class);
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
+        manager.load("Perdiste.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -119,8 +122,9 @@ public class Nivel1 implements Screen {
         texturaBoomeran = manager.get("SpriteBoom.png");
         boomerang = new Boomerang(texturaBoomeran);
         texturaDisparo = manager.get("BtnBoom.png");
-        texturaGano = manager.get("btnGana.png");
+        texturaGano = manager.get("Ganaste.png");
         btnGanar = new Boton(texturaGano);
+        btnGanar.setPosicion(Juego.ancho/4,Juego.alto/16);
         btnDisparar = new Boton(texturaDisparo);
         btnDisparar.setPosicion(1100,Juego.alto * 0.01f);
         texturaPausa = manager.get("BtnPausa.png");
@@ -132,8 +136,12 @@ public class Nivel1 implements Screen {
         btnResumen = new Boton(texturaResumen);
         texturaSalir = manager.get("BTN_Salir.png");
         btnSalir = new Boton(texturaSalir);
-        texturaEnemigo = manager.get("boomeran.png");
-        enemigo = new Personaje(texturaEnemigo,10);
+        texturaEnemigo = manager.get("zook.png");
+        texturaEnemigoReg = manager.get("zookreg.png");
+        texturaPerdiste = manager.get("Perdiste.png");
+        btnPerdiste = new Boton(texturaPerdiste);
+        btnPerdiste.setPosicion(Juego.ancho/4,Juego.alto/16);
+        enemigo = new Personaje(texturaEnemigo,texturaEnemigoReg);
         enemigo.setPosicionEnemiga(300,Juego.alto*0.6f);
         //enemigo.PersonajeEnemigo(texturaEnemigo,10);
         //enemigo1 = new Personaje(texturaEnemigo);
@@ -157,6 +165,8 @@ public class Nivel1 implements Screen {
         btnScore = new Boton(texturaScore);
         btnScore.setPosicion(0,Juego.alto*0.7f);
         texturaDardo = manager.get("dardo.png");
+        dardo = new Dardos(texturaDardo,pinguino,enemigo);
+        dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
 
     }
 
@@ -190,12 +200,13 @@ public class Nivel1 implements Screen {
             boomerang.render(batch);
             enemigo.renderEnemigo(batch);
             //enemigo.renderEnemigo(batch);
-            dardo = new Dardos(texturaDardo,pinguino,enemigo);
-            dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
-            dardo.render(batch);
-            if(dardo.getX() == pinguino.getX() && dardo.getY() == pinguino.getY()){
+            //dardo.render(batch);//,pinguino,vidas);
+            if(pinguino.getSprite().getX() == dardo.getSprite().getX()){
+                System.out.println("lo toque");
                 vidas--;
+                dardo.velocidadX = 0;
             }
+
             /*dardo = new Dardos(texturaDardo,pinguino,enemigo);
             dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
             dardo.render(batch);
@@ -212,7 +223,7 @@ public class Nivel1 implements Screen {
             enemigo3.render(batch);
             enemigo4.render(batch);
             enemigo5.render(batch);*/
-            pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
+
             /*if(pinguino.getX() > 800){
                 batch.begin();
                 fondo.setPosicion(1280,800);
@@ -234,6 +245,9 @@ public class Nivel1 implements Screen {
                 btnSalir.setPosicion(Juego.ancho/3,Juego.alto*0.15f);
                 btnResumen.render(batch);
                 btnSalir.render(batch);
+            }
+            else if(estadoJuego == EstadosJuego.PERDIO){
+                btnPerdiste.render(batch);
             }
             else{
                 btnSalto.render(batch);
@@ -277,31 +291,38 @@ public class Nivel1 implements Screen {
                 }
                 break;
             case DER:
-                pinguino.actualizar();
+                //pinguino.actualizar();
                 probarColisiones();
                 break;
         }
         if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO &&
                 (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
-            int celdaX = (int) ((pinguino.getX() + pinguino.getSprite().getWidth()/2) /celda );
-            int celdaY = (int) ((pinguino.getY() + pinguino.velocidadY) / celda);
+            int celdaX = (int) ((pinguino.getX()+ pinguino.getSprite().getWidth()/2)/celda);
+            int celdaY = (int) ((pinguino.getY()+pinguino.velocidadY) / celda);
+            //System.out.println("x="+celdaX);
+            //System.out.println("y="+celdaY);
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
-            if((celdaAbajo == null && celdaDerecha == null) || esHelado(celdaAbajo) || esHelado(celdaDerecha)){
+            if((celdaAbajo == null && celdaDerecha == null) || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
+            }
+            else if(esCuadroPiso(celdaAbajo) || esCuadroPiso(celdaDerecha)){
+                pinguino.setPosicion(pinguino.getX(),(celdaY+1)* celda);
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
             }
             else{
                 pinguino.setPosicion(pinguino.getX(),(celdaY +1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
 
             }
-            if(pinguino.getX() >= 12672){
-                pinguino.setPosicion(-10000,0);
+            if(pinguino.getX() >= 12650){
+                pinguino.velocidadX = 0;
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
                 estadoJuego = estadoJuego.GANO;
             }
-            else if(pinguino.getY() <= 10){
+            else if(pinguino.getY() <= 0){
                 vidas --;
                 pinguino.getSprite().setPosition(Juego.ancho/10,Juego.alto * 0.1f);
                 camara.position.set(Juego.ancho/pinguino.getX(),camara.position.y,0);
@@ -315,17 +336,12 @@ public class Nivel1 implements Screen {
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.INICIANDO);*/
             }
             if(vidas == 0){
-                pinguino.setPosicion(-200,-200);
+                pinguino.velocidadX=0;
                 estadoJuego = estadoJuego.PERDIO;
             }
-            if(estadoJuego == estadoJuego.PERDIO){
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        juego.setScreen(new MenuPrincipal(juego));
-                    }
-                },3);
-            }
+            //if(estadoJuego == estadoJuego.PERDIO){
+
+            //}
         }
         switch (pinguino.getEstadoSalto()){
             case SUBIENDO: case BAJANDO:
@@ -346,7 +362,7 @@ public class Nivel1 implements Screen {
         if(pinguino.getEstadoMovimiento() == Personaje.EstadoMovimiento.DER){
             celdaX++;
         }
-        int celdaY = (int)(pinguino.getY()/celda); 
+        int celdaY = (int)(pinguino.getY()/celda);
         TiledMapTileLayer capaPlataforma1 = (TiledMapTileLayer) mapa.getLayers().get(1);
         if(capaPlataforma1.getCell(celdaX,celdaY) != null || capaPlataforma1.getCell(celdaX,celdaY+1) != null){
             if(esHelado(capaPlataforma1.getCell(celdaX,celdaY))){
@@ -357,13 +373,23 @@ public class Nivel1 implements Screen {
                 heladosRecolectados += 1000;
                 capaPlataforma1.setCell(celdaX,celdaY,null);
             }
-            else{
+            else {
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
             }
         }
         else{
             pinguino.actualizar();
         }
+        /*TiledMapTileLayer capaPlatadorma2 = (TiledMapTileLayer)mapa.getLayers().get(0);
+        if(capaPlatadorma2.getCell(celdaX,celdaY) != null || capaPlatadorma2.getCell(celdaX,celdaY+1) != null){
+            if(esCuadroPiso(capaPlatadorma2.getCell(celdaX,celdaY))){
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+            }
+        }
+        else{
+            pinguino.actualizar();
+        }*/
+
 
     }
 
@@ -381,6 +407,14 @@ public class Nivel1 implements Screen {
         }
         Object propiedad = cell.getTile().getProperties().get("tipo");
         return "heladoespecial".equals(propiedad);
+    }
+
+    private boolean esCuadroPiso(TiledMapTileLayer.Cell cell) {
+        if(cell == null){
+            return false;
+        }
+        Object propiedad = cell.getTile().getProperties().get("tipo");
+        return "cuadroPiso".equals(propiedad);
     }
 
     @Override
@@ -446,9 +480,22 @@ public class Nivel1 implements Screen {
                     }
                 },1);
             }
+            else if(btnPerdiste.contiene(x,y)){
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        juego.setScreen(new MenuPrincipal(juego));
+                    }
+                },1);
+            }
             else if(estadoJuego == EstadosJuego.GANO){
                 if(btnGanar.contiene(x,y)){
-                    Gdx.app.exit();
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            juego.setScreen(new MenuPrincipal(juego));
+                        }
+                    },1);
                 }
             }
             return true;

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="7" tilewidth="128" tileheight="128" nextobjectid="1">
+ <properties>
+  <property name="tipo" value="cuadroPiso"/>
+ </properties>
  <tileset firstgid="1" name="Piso" tilewidth="128" tileheight="128" tilecount="20" columns="20">
   <image source="Piso.png" width="2560" height="128"/>
  </tileset>
