@@ -17,15 +17,14 @@ public class Dardos {
 
     private Sprite sprite;
     private float angulo,vel;
-    public float velocidadX;
+    public float velocidadX=-2;
     private SpriteBatch batch;
+    private float x,y;
 
     public Dardos (Texture textura, Personaje pinguino, Personaje enemigo){
         TextureRegion texturaDardo = new TextureRegion(textura);
         sprite = new Sprite(texturaDardo);
-        float x = enemigo.getXEnemiga() - pinguino.getX();
-        float y = enemigo.getYEnemiga() - pinguino.getY();
-        angulo = y/x;
+
 
     }
 
@@ -34,14 +33,17 @@ public class Dardos {
         //sprite.translate(vel,vel*angulo);
         //sprite.draw(batch);
         //System.out.println(angulo);
-        velocidadX -= 2;
+      //  velocidadX = 2;
 
         //timerAnimacion += Gdx.graphics.getDeltaTime();
         TextureRegion region = sprite;
         //if(region.isFlipX()){
         //    region.flip(true,false);
         //}
-        batch.draw(region,sprite.getX()+velocidadX,sprite.getY());
+
+        x=sprite.getX()+velocidadX;
+        sprite.setX(x);
+        batch.draw(region,sprite.getX(),sprite.getY());
         /*if(pinguino.getX() == sprite.getX()){
             velocidadX = 0;
             vidas--;
@@ -74,7 +76,7 @@ public class Dardos {
     }
 
     public float getX(){
-        return sprite.getX();
+        return this.x;
     }
 
     public float getY(){

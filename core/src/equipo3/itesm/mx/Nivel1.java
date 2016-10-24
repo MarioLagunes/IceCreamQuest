@@ -221,14 +221,42 @@ public class Nivel1 implements Screen {
             dardo.render(batch);//,pinguino,vidas);
             dardo1.render(batch);
             dardo2.render(batch);
-            if(pinguino.getSprite().getX()/2 == dardo.getSprite().getX()/2 && pinguino.getSprite().getY()/2 == dardo.getSprite().getY()/2){
+            if((dardo.getX() >= pinguino.getX() && dardo.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
+                    (dardo.getY() >= pinguino.getY() && dardo.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo.velocidadX = 0;
+                System.out.println("me mataste con cero");
                 dardo.setPosicion(0,3000);
             }
-            if(boomerang.getSprite().getX() == enemigo.getSpriteEnemigo().getX()){
-                enemigo.setPosicionEnemiga(10,3000);
-                System.out.println("me mataste");
+        //Gdx.app.log("Dardo",""+dardo.getX()+"Pinguino "+pinguino.getX());
+            if((dardo2.getX() >= pinguino.getX() && dardo2.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
+                    (dardo2.getY() >= pinguino.getY() && dardo2.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
+                vidas--;
+                dardo2.velocidadX = 0;
+                System.out.println("me mataste con cero");
+                dardo2.setPosicion(0,3000);
+            }
+            if((dardo1.getX() >= pinguino.getX() && dardo1.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
+                    (dardo1.getY() >= pinguino.getY() && dardo1.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
+                vidas--;
+                dardo1.velocidadX = 0;
+                System.out.println("me mataste con cero");
+                dardo1.setPosicion(0,3000);
+            }
+            if((boomerang.getX() >= enemigo.getXEnemiga() && boomerang.getX()<= (enemigo.getXEnemiga()+enemigo.getSpriteEnemigo().getWidth()))&&
+                    (boomerang.getY() >= enemigo.getYEnemiga() && boomerang.getY()<= (enemigo.getYEnemiga()+enemigo.getSpriteEnemigo().getHeight()))){
+                    enemigo.setPosicionEnemiga(10,3000);
+
+            }
+            if((boomerang.getX() >= enemigo2.getXEnemiga() && boomerang.getX()<= (enemigo2.getXEnemiga()+enemigo2.getSpriteEnemigo().getWidth()))&&
+                    (boomerang.getY() >= enemigo2.getYEnemiga() && boomerang.getY()<= (enemigo2.getYEnemiga()+enemigo2.getSpriteEnemigo().getHeight()))){
+                enemigo2.setPosicionEnemiga(10,3000);
+
+            }
+            if((boomerang.getX() >= enemigo1.getXEnemiga() && boomerang.getX()<= (enemigo1.getXEnemiga()+enemigo1.getSpriteEnemigo().getWidth()))&&
+                    (boomerang.getY() >= enemigo1.getYEnemiga() && boomerang.getY()<= (enemigo1.getYEnemiga()+enemigo1.getSpriteEnemigo().getHeight()))){
+                enemigo1.setPosicionEnemiga(10,3000);
+
             }
             /*if(boomerang.getSprite().getX() == enemigo.getSprite().getX()){
                 enemigo.setPosicionEnemiga(10,3000);
@@ -526,7 +554,7 @@ public class Nivel1 implements Screen {
             if(btnSalto.contiene(x,y)){
                 pinguino.saltar();
             }
-            if(btnDisparar.contiene(x,y)){
+            else if(btnDisparar.contiene(x,y)){
                 boomerang = new Boomerang(texturaBoomeran);
                 boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
                 boomerang.salir();
@@ -566,7 +594,7 @@ public class Nivel1 implements Screen {
                         @Override
                         public void run() {
                             juego.setScreen(new MenuPrincipal(juego));
-                        }
+                    }
                     },1);
                 }
             }
