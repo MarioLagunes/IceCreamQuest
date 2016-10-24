@@ -50,9 +50,9 @@ public class Nivel1 implements Screen {
     private int vidas = 3;
     private static final int celda = 128;
     private Boomerang boomerang;
-    private Personaje enemigo;//,enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
+    private Personaje enemigo,enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
     private Fondo fondo,fondo2,fondo3,fondoPausa;
-    private Dardos dardo;
+    private Dardos dardo,dardo1,dardo2;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -78,6 +78,13 @@ public class Nivel1 implements Screen {
         texto = new Texto();
         pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
         enemigo.moverEnemigosDer();
+        enemigo1.moverEnemigosDer();
+        enemigo2.moverEnemigosDer();
+        /*if(enemigo.getSpriteEnemigo().getX() >= 3072 ){
+            enemigo.moverEnemigosIzq();
+        }else if(enemigo.getSpriteEnemigo().getX() <= 2700){
+            enemigo.moverEnemigosDer();
+        }*/
 
     }
 
@@ -144,11 +151,16 @@ public class Nivel1 implements Screen {
         enemigo = new Personaje(texturaEnemigo,texturaEnemigoReg);
         enemigo.setPosicionEnemiga(2688,640);
         //enemigo.PersonajeEnemigo(texturaEnemigo,10);
-        //enemigo1 = new Personaje(texturaEnemigo);
+        enemigo1 = new Personaje(texturaEnemigo,texturaEnemigoReg);
+        enemigo2 = new Personaje(texturaEnemigo,texturaEnemigoReg);
+        //enemigo3 = new Personaje(texturaEnemigo,texturaEnemigoReg);
+        //enemigo4 = new Personaje(texturaEnemigo,texturaEnemigoReg);
         //enemigo2 = new Personaje(texturaEnemigo);
         //enemigo3 = new Personaje(texturaEnemigo);
         //enemigo4 = new Personaje(texturaEnemigo);
         //enemigo5 = new Personaje(texturaEnemigo);
+        enemigo1.setPosicionEnemiga(5888,640);
+        enemigo2.setPosicionEnemiga(128*64,512);
         //enemigo.getSprite().setPosition(300,Juego.alto*0.06f);
         //enemigo1.getSprite().setPosition(400,Juego.alto*0.06f);
         //enemigo2.getSprite().setPosition(600,Juego.alto*0.06f);
@@ -166,7 +178,11 @@ public class Nivel1 implements Screen {
         btnScore.setPosicion(0,Juego.alto*0.7f);
         texturaDardo = manager.get("dardo.png");
         dardo = new Dardos(texturaDardo,pinguino,enemigo);
+        dardo1 = new Dardos(texturaDardo,pinguino,enemigo);
+        dardo2 = new Dardos(texturaDardo,pinguino,enemigo);
         dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
+        dardo1.setPosicion(enemigo1.getXEnemiga(),enemigo1.getYEnemiga());
+        dardo2.setPosicion(enemigo2.getXEnemiga(),enemigo2.getYEnemiga());
 
     }
 
@@ -199,16 +215,25 @@ public class Nivel1 implements Screen {
             pinguino.render(batch);
             boomerang.render(batch);
             enemigo.renderEnemigo(batch);
+            enemigo1.renderEnemigo(batch);
+            enemigo2.renderEnemigo(batch);
             //enemigo.renderEnemigo(batch);
             dardo.render(batch);//,pinguino,vidas);
-            if(pinguino.getSprite().getX() == dardo.getSprite().getX()){
+            dardo1.render(batch);
+            dardo2.render(batch);
+            if(pinguino.getSprite().getX()/2 == dardo.getSprite().getX()/2 && pinguino.getSprite().getY()/2 == dardo.getSprite().getY()/2){
                 vidas--;
                 dardo.velocidadX = 0;
+                dardo.setPosicion(0,3000);
             }
-            if(boomerang.getSprite().getX() == enemigo.getXEnemiga()){
-                enemigo.setPosicionEnemiga(enemigo.getXEnemiga(),enemigo.getYEnemiga()+1000);
+            if(boomerang.getSprite().getX() == enemigo.getSpriteEnemigo().getX()){
+                enemigo.setPosicionEnemiga(10,3000);
                 System.out.println("me mataste");
             }
+            /*if(boomerang.getSprite().getX() == enemigo.getSprite().getX()){
+                enemigo.setPosicionEnemiga(10,3000);
+                System.out.println("me mataste");
+            }*/
             /*dardo = new Dardos(texturaDardo,pinguino,enemigo);
             dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
             dardo.render(batch);
@@ -505,7 +530,9 @@ public class Nivel1 implements Screen {
                 boomerang = new Boomerang(texturaBoomeran);
                 boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
                 boomerang.salir();
+
             }
+
             else if(btnPausa.contiene(x,y)){
                 estadoJuego = estadoJuego.PAUSADO;
 
@@ -543,6 +570,7 @@ public class Nivel1 implements Screen {
                     },1);
                 }
             }
+
             return true;
         }
 

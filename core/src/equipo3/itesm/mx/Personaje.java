@@ -145,7 +145,7 @@ public class Personaje {
                 //System.out.println("vel =" + velX);
                 if(velX > 300.0){
                     //dardos.render(batch);
-                  //  System.out.print("estouy aqui");
+                  System.out.print(velX);
                     moverEnemigosIzq();
                 }
                 break;
@@ -157,7 +157,8 @@ public class Personaje {
                     region5.flip(true,false);
                 }
                 batch.draw(region5,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
-                if(velX == 10){
+                if(velX <= 10){
+                    System.out.print(velX);
                     moverEnemigosDer();
                 }
                 break;
