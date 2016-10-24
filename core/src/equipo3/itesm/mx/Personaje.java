@@ -19,7 +19,7 @@ public class Personaje {
     private Sprite sprite,spriteEnemigo,spriteSalto,spriteQuieto;
     public static final float velocidadY = -4f;
     public static  float velX;
-    public static  float velocidadX = 4;
+    public float velocidadX = 4;
     private Animation animacion,animar,animarSalto,animarQuieto,animarReg;
     public float timerAnimacion,tiempoAnimar;
     private EstadoMovimiento estadoMovimiento;

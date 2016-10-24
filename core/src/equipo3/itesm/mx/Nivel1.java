@@ -534,14 +534,32 @@ public class Nivel1 implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
         AssetManager manager1 = juego.getManager();
-        manager1.unload("pinguidoChido2.png");
-        manager1.unload("boomeran.png");
+        manager1.unload("Fondo.tmx");
+        manager1.unload("PinguinoChido2.png");
+        manager1.unload("BtnBoom.png");
+        manager1.unload("SpriteBoom.png");
+        manager1.unload("BtnArriba.png");
+        manager1.unload("Ganaste.png");
+        manager1.unload("BtnPausa.png");
+        manager1.unload("Pausa.png");
+        manager1.unload("zook.png");
+        manager1.unload("zookreg.png");
+        manager1.unload("FondonivelLoop.png");
+        manager1.unload("FondonivelLoop2.png");
+        manager1.unload("Salida.png");
+        manager1.unload("CuadroScore.png");
+        manager1.unload("dardo.png");
+        manager1.unload("Parado.png");
+        manager1.unload("Saltar.png");
+        manager1.unload("BTN_Resumen.png");
+        manager1.unload("BTN_Salir.png");
+        manager1.unload("Perdiste.png");
     }
 
     public class ProcesadorEntrada extends InputAdapter{
