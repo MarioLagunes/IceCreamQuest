@@ -74,7 +74,7 @@ public class Personaje {
         TextureRegion texturaEnemiegoReg = new TextureRegion(textura2);
         TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(128,128);
         TextureRegion[][] texturaEnemigoRegreso = texturaEnemiegoReg.split(128,128);
-        animar = new Animation(0.10f,texturaEnemigo[0][0],texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],texturaEnemigo[0][4],texturaEnemigo[0][5],texturaEnemigo[0][6]);
+        animar = new Animation(0.10f,texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],texturaEnemigo[0][4],texturaEnemigo[0][5],texturaEnemigo[0][6]);
         animarReg = new Animation(0.10f,texturaEnemigoRegreso[0][6],texturaEnemigoRegreso[0][5],texturaEnemigoRegreso[0][4],texturaEnemigoRegreso[0][3],texturaEnemigoRegreso[0][2],texturaEnemigoRegreso[0][1]);
         animar.setPlayMode(Animation.PlayMode.LOOP);
         animarReg.setPlayMode(Animation.PlayMode.LOOP);
@@ -89,17 +89,19 @@ public class Personaje {
                 //velocidadX = 4;
                 timerAnimacion += Gdx.graphics.getDeltaTime();
                 TextureRegion region = animacion.getKeyFrame(timerAnimacion);
+                //sprite.setRegion(region);
                 //if(region.isFlipX()){
                   //  region.flip(true,false);
                 //}
+               // sprite.draw(batch);
                 batch.draw(region,sprite.getX(),sprite.getY());
-                if(timerAnimacion == 0){
+                /*if(timerAnimacion == 0){
                     sprite.setRegion(pinguQuieto);
-                }
-                if(estadoMovimiento.equals(EstadoSalto.SUBIENDO)){
+                }*/
+                /*if(estadoMovimiento.equals(EstadoSalto.SUBIENDO)){
                     timerAnimacion=0;
                     sprite.setRegion(textfinalSalto);
-                }
+                }*/
                 break;
             /*case IZQ:
                 velocidadX = 2;
@@ -113,7 +115,9 @@ public class Personaje {
             case INICIANDO:case QUIETO:
                 //timerAnimacion = 0;
                 //estadoMovimiento = EstadoMovimiento.QUIETO;
+                //region = pinguQuieto;
                 sprite.setRegion(pinguQuieto);
+                //batch.draw(s);
                 sprite.draw(batch);
                 break;
         }
@@ -122,11 +126,14 @@ public class Personaje {
                 timerAnimacion = 0;
                 //timerAnimacion += Gdx.graphics.getDeltaTime();
                 //TextureRegion regionSalto = animarSalto.getKeyFrame(timerAnimacion);
-                sprite.setRegion(textfinalSalto);
+                TextureRegion region = textfinalSalto;
+                sprite.setRegion(region);
+                batch.draw(region,sprite.getX(),sprite.getY());
+
                 //if(estadoMovimiento){
 
                 //}
-                sprite.draw(batch);
+                //sprite.draw(batch);
 
 
                 break;

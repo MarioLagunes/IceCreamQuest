@@ -21,7 +21,7 @@ public class Dardos {
     private SpriteBatch batch;
     private float x,y;
 
-    public Dardos (Texture textura, Personaje pinguino, Personaje enemigo){
+    public Dardos (Texture textura){
         TextureRegion texturaDardo = new TextureRegion(textura);
         sprite = new Sprite(texturaDardo);
 

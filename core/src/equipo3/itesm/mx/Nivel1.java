@@ -54,7 +54,7 @@ public class Nivel1 implements Screen {
     private Boomerang boomerang;
     private Personaje enemigo,enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
     private Fondo fondo,fondo2,fondo3,fondoPausa;
-    private Dardos dardo,dardo1,dardo2;
+    private Dardos dardo,dardo1,dardo2,dardo3;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -186,12 +186,14 @@ public class Nivel1 implements Screen {
         btnScore = new Boton(texturaScore);
         btnScore.setPosicion(0,Juego.alto*0.7f);
         texturaDardo = manager.get("dardo.png");
-        dardo = new Dardos(texturaDardo,pinguino,enemigo);
-        dardo1 = new Dardos(texturaDardo,pinguino,enemigo);
-        dardo2 = new Dardos(texturaDardo,pinguino,enemigo);
+        dardo = new Dardos(texturaDardo);
+        dardo1 = new Dardos(texturaDardo);
+        dardo2 = new Dardos(texturaDardo);
+        dardo3 = new Dardos(texturaDardo);
         dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
         dardo1.setPosicion(enemigo1.getXEnemiga(),enemigo1.getYEnemiga());
         dardo2.setPosicion(enemigo2.getXEnemiga(),enemigo2.getYEnemiga());
+        dardo3.setPosicion(enemigo3.getXEnemiga(),enemigo3.getYEnemiga());
         musica = manager.get("Nivel1.mp3");
 
     }
@@ -242,9 +244,9 @@ public class Nivel1 implements Screen {
                     (dardo.getY() >= pinguino.getY() && dardo.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo.velocidadX = 0;
-                System.out.println("me mataste con cero");
                 dardo.setPosicion(0,3000);
             }
+
         //Gdx.app.log("boomerang",""+boomerang.getX()+"enemigo "+enemigo.getXEnemiga());
             if((dardo2.getX() >= pinguino.getX() && dardo2.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo2.getY() >= pinguino.getY() && dardo2.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
@@ -257,6 +259,12 @@ public class Nivel1 implements Screen {
                 vidas--;
                 dardo1.velocidadX = 0;
                 dardo1.setPosicion(0,3000);
+            }
+            if((dardo3.getX() >= pinguino.getX() && dardo3.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
+                    (dardo3.getY() >= pinguino.getY() && dardo3.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
+                vidas--;
+                dardo3.velocidadX = 0;
+                dardo3.setPosicion(0,3000);
             }
 
             if((boomerang.getX() >= enemigo.getXEnemiga() && boomerang.getX()<= (3000))&&
@@ -445,7 +453,7 @@ public class Nivel1 implements Screen {
                 rendererMapa.render();
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.INICIANDO);*/
             }
-            if(vidas <= 0){
+            if(vidas <= 0 || pinguino.puntos < 0){
                 pinguino.velocidadX=0;
                 estadoJuego = estadoJuego.PERDIO;
                 pinguino.setPosicion(0,10000);
