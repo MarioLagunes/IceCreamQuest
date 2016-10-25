@@ -19,23 +19,19 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Mario Lagunes on 25/09/2016.
  */
-public class PantallaAjustes extends  Musica implements Screen {
+public class PantallaAjustes  implements Screen {
     private final Juego juego;
     private Texture texturaBack, texturaAjustes, texturaSonido, texturaMusica,texturaSonidoO,texturaMusicaO;
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
     private final AssetManager manager = new AssetManager();
-    public boolean flag;
+    private Music musicaa;
 
     public PantallaAjustes(Juego juego) {
         this.juego = juego;
     }
 
-    @Override
-    public void cargarMusica(boolean flag) {
-        super.cargarMusica(flag);
-    }
 
     @Override
     public void show() {
@@ -50,23 +46,30 @@ public class PantallaAjustes extends  Musica implements Screen {
             cargarImagenes();
             cargarFondo();
             cargarBotones();
-            super.cargarMusica(flag);
+            cargarMusica();
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
 
+    }
+
+    public void cargarMusica() {
+        musicaa = Gdx.audio.newMusic(Gdx.files.internal("Score.mp3"));
+        musicaa.setVolume(0.75f);
+        musicaa.play();
     }
 
 
 
 
 
-    private void cargarBotones() {
+
+    public void cargarBotones() {
         TextureRegionDrawable back = new TextureRegionDrawable(new TextureRegion(texturaBack));
         ImageButton btonBack = new ImageButton(back);
         btonBack.setPosition(0,0);
         escena.addActor(btonBack);
 
         final TextureRegionDrawable musica = new TextureRegionDrawable(new TextureRegion(texturaMusica));
-        ImageButton btnMusica = new ImageButton(musica);
+        final ImageButton btnMusica = new ImageButton(musica);
         btnMusica.setPosition(400,300);
 
         TextureRegionDrawable musica1 = new TextureRegionDrawable(new TextureRegion(texturaMusicaO));
@@ -91,13 +94,15 @@ public class PantallaAjustes extends  Musica implements Screen {
 
         escena.addActor(btnSonido1);
 
-        flag = true;
-
 
         btonBack.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new MenuPrincipal(juego));
+                musicaa.stop();
+
+
+
    
 
 
@@ -109,8 +114,7 @@ public class PantallaAjustes extends  Musica implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnMusica1.setVisible(true);
-                flag = false;
-                PantallaAjustes.super.cargarMusica(flag);
+                Gdx.app.log("clicked","TAP sobre el boton de no sonido");
 
 
             }
@@ -120,6 +124,7 @@ public class PantallaAjustes extends  Musica implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnMusica1.setVisible(false);
+
 
 
             }
@@ -196,6 +201,7 @@ public class PantallaAjustes extends  Musica implements Screen {
     public void hide() {
         texturaBack.dispose();
         texturaAjustes.dispose();
+        musicaa.dispose();
     }
 
     @Override

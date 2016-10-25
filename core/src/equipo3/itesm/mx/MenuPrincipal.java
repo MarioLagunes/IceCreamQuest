@@ -82,6 +82,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaAcercaDe(juego));
 				musica.stop();
+
 			}
 		});
 
