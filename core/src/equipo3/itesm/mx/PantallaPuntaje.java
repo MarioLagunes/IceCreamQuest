@@ -3,6 +3,7 @@ package equipo3.itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,7 +26,7 @@ public class PantallaPuntaje implements Screen {
     private Viewport vista;
     private Texture texturaBack,texturaInstrucciones;
     private final AssetManager manager = new AssetManager();
-
+    private Music musica;
 
     public PantallaPuntaje(Juego juego) {
         this.juego = juego;
@@ -44,7 +45,13 @@ public class PantallaPuntaje implements Screen {
             cargarImagenes();
             cargarFondo();
             cargarBotones();
+            cargarMusica();
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
+    }
+    public void cargarMusica() {
+        musica = Gdx.audio.newMusic(Gdx.files.internal("Score.mp3"));
+        musica.setVolume(0.75f);
+        musica.play();
     }
 
     private void cargarBotones() {
@@ -57,6 +64,7 @@ public class PantallaPuntaje implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 //Gdx.app.log("Presionaste:", "atrás");
                 juego.setScreen(new MenuPrincipal(juego));
+                musica.stop();
             }
         });
     }
@@ -103,6 +111,7 @@ public class PantallaPuntaje implements Screen {
     public void hide() {
         texturaBack.dispose();
         texturaInstrucciones.dispose();
+        musica.dispose();
     }
 
     @Override
