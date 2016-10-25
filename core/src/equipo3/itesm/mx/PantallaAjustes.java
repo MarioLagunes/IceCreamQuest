@@ -19,13 +19,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Mario Lagunes on 25/09/2016.
  */
-public class PantallaAjustes implements Screen {
+public class PantallaAjustes extends  Musica implements Screen {
     private final Juego juego;
     private Texture texturaBack, texturaAjustes, texturaSonido, texturaMusica,texturaSonidoO,texturaMusicaO;
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
     private final AssetManager manager = new AssetManager();
+    public boolean flag,flags;
 
     public PantallaAjustes(Juego juego) {
         this.juego = juego;
@@ -39,15 +40,21 @@ public class PantallaAjustes implements Screen {
             PantallaDatos vista1 = new PantallaDatos(vista);
             camara = camara1.crearCamara(camara);
             vista = vista1.crearVista(camara,vista);
+            flag = true;
         //*** FIN DE CREAR CAMARA Y VISTA ***\\
 
         //*** CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES ***\\
             cargarImagenes();
             cargarFondo();
             cargarBotones();
+            cargarMusica(flag);
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
 
     }
+
+
+
+
 
     private void cargarBotones() {
         TextureRegionDrawable back = new TextureRegionDrawable(new TextureRegion(texturaBack));
@@ -86,6 +93,9 @@ public class PantallaAjustes implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new MenuPrincipal(juego));
+   
+
+
 
             }
         });
@@ -94,6 +104,8 @@ public class PantallaAjustes implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnMusica1.setVisible(true);
+                flag = false;
+
 
             }
         });

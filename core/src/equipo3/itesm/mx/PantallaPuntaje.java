@@ -26,6 +26,7 @@ public class PantallaPuntaje implements Screen {
     private Texture texturaBack,texturaInstrucciones;
     private final AssetManager manager = new AssetManager();
 
+
     public PantallaPuntaje(Juego juego) {
         this.juego = juego;
     }
@@ -62,10 +63,10 @@ public class PantallaPuntaje implements Screen {
 
     private void cargarImagenes() {
         manager.load("ScorePantalla.png",Texture.class);
-        manager.load("back.png",Texture.class);
+        manager.load("botonRegresar.png",Texture.class);
         manager.finishLoading();
         texturaInstrucciones = manager.get("ScorePantalla.png");
-        texturaBack = manager.get("back.png");
+        texturaBack = manager.get("botonRegresar.png");
     }
 
     private void cargarFondo() {
