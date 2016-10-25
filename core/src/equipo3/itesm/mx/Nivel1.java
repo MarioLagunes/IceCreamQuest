@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 public class Nivel1 implements Screen {
     public static final float ancho_mapa = 12800;
     private Juego juego;
+    private Music musica;
     private OrthographicCamera camara;
     private TiledMap mapa;
     private OrthogonalTiledMapRenderer rendererMapa;
@@ -80,6 +82,8 @@ public class Nivel1 implements Screen {
         enemigo.moverEnemigosDer();
         enemigo1.moverEnemigosDer();
         enemigo2.moverEnemigosDer();
+        musica.setVolume(1.5f);
+        musica.play();
         /*if(enemigo.getSpriteEnemigo().getX() >= 3072 ){
             enemigo.moverEnemigosIzq();
         }else if(enemigo.getSpriteEnemigo().getX() <= 2700){
@@ -110,6 +114,7 @@ public class Nivel1 implements Screen {
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
         manager.load("Perdiste.png",Texture.class);
+        manager.load("Nivel1.mp3", Music.class);
         manager.finishLoading();
     }
 
@@ -183,6 +188,7 @@ public class Nivel1 implements Screen {
         dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
         dardo1.setPosicion(enemigo1.getXEnemiga(),enemigo1.getYEnemiga());
         dardo2.setPosicion(enemigo2.getXEnemiga(),enemigo2.getYEnemiga());
+        musica = manager.get("Nivel1.mp3");
 
     }
 
@@ -228,7 +234,7 @@ public class Nivel1 implements Screen {
                 System.out.println("me mataste con cero");
                 dardo.setPosicion(0,3000);
             }
-        //Gdx.app.log("Dardo",""+dardo.getX()+"Pinguino "+pinguino.getX());
+        Gdx.app.log("boomerang",""+boomerang.getX()+"enemigo "+enemigo.getXEnemiga());
             if((dardo2.getX() >= pinguino.getX() && dardo2.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo2.getY() >= pinguino.getY() && dardo2.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
@@ -387,6 +393,7 @@ public class Nivel1 implements Screen {
             if(pinguino.getX() >= 12650){
                 pinguino.velocidadX = 0;
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+                pinguino.setPosicion(0,10000);
                 estadoJuego = estadoJuego.GANO;
             }
             else if(pinguino.getY() <= 0){
@@ -597,6 +604,8 @@ public class Nivel1 implements Screen {
                         juego.setScreen(new MenuPrincipal(juego));
                     }
                 },1);
+                musica.setVolume(0);
+                musica.stop();
             }
             else if(btnPerdiste.contiene(x,y)){
                 Timer.schedule(new Timer.Task() {
@@ -605,6 +614,8 @@ public class Nivel1 implements Screen {
                         juego.setScreen(new MenuPrincipal(juego));
                     }
                 },1);
+                musica.setVolume(0);
+                musica.stop();
             }
             else if(estadoJuego == EstadosJuego.GANO){
                 if(btnGanar.contiene(x,y)){
@@ -615,6 +626,8 @@ public class Nivel1 implements Screen {
                     }
                     },1);
                 }
+                musica.setVolume(0);
+                musica.stop();
             }
 
             return true;

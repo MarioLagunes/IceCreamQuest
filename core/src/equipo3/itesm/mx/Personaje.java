@@ -18,7 +18,7 @@ import com.sun.org.apache.xpath.internal.operations.String;
 public class Personaje {
     private Sprite sprite,spriteEnemigo,spriteSalto,spriteQuieto;
     public static final float velocidadY = -4f;
-    public static  float velX;
+    public float velX;
     public float velocidadX = 4;
     private Animation animacion,animar,animarSalto,animarQuieto,animarReg;
     public float timerAnimacion,tiempoAnimar;
@@ -34,6 +34,7 @@ public class Personaje {
     private TextureRegion textfinalSalto,pinguQuieto;
     private Dardos dardos;
     public int puntos;
+    float x;
 
     public enum EstadoSalto {
         ABAJO,
@@ -138,11 +139,9 @@ public class Personaje {
                 velX += 2;
                 tiempoAnimar += Gdx.graphics.getDeltaTime();
                 TextureRegion region4 = animar.getKeyFrame(tiempoAnimar);
-                if(region4.isFlipX()){
-                    region4.flip(true,false);
-                }
+                //x=spriteEnemigo.getX()+velX;
+                //spriteEnemigo.setX(x);
                 batch.draw(region4,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
-                //System.out.println("vel =" + velX);
                 if(velX > 300.0){
                     //dardos.render(batch);
                   System.out.print(velX);
@@ -156,6 +155,8 @@ public class Personaje {
                 if(region5.isFlipX()){
                     region5.flip(true,false);
                 }
+                //x=spriteEnemigo.getX()+velX;
+                //spriteEnemigo.setX(x);
                 batch.draw(region5,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
                 if(velX <= 10){
                     System.out.print(velX);
