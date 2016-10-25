@@ -144,22 +144,21 @@ public class Personaje {
                 batch.draw(region4,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
                 if(velX > 300.0){
                     //dardos.render(batch);
-                  System.out.print(velX);
-                    moverEnemigosIzq();
+                  //System.out.print(velX);
+                   moverEnemigosIzq();
                 }
                 break;
             case IZQUIERDA:
                 velX -= 2;
                 tiempoAnimar += Gdx.graphics.getDeltaTime();
                 TextureRegion region5 = animarReg.getKeyFrame(tiempoAnimar);
-                if(region5.isFlipX()){
-                    region5.flip(true,false);
-                }
+                //if(region5.isFlipX()){
+                  //  region5.flip(true,false);
+                //}
                 //x=spriteEnemigo.getX()+velX;
                 //spriteEnemigo.setX(x);
                 batch.draw(region5,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
                 if(velX <= 10){
-                    System.out.print(velX);
                     moverEnemigosDer();
                 }
                 break;
