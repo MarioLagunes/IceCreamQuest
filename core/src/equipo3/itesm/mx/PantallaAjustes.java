@@ -26,12 +26,16 @@ public class PantallaAjustes extends  Musica implements Screen {
     private OrthographicCamera camara;
     private Viewport vista;
     private final AssetManager manager = new AssetManager();
-    public boolean flag,flags;
+    public boolean flag;
 
     public PantallaAjustes(Juego juego) {
         this.juego = juego;
     }
 
+    @Override
+    public void cargarMusica(boolean flag) {
+        super.cargarMusica(flag);
+    }
 
     @Override
     public void show() {
@@ -40,14 +44,13 @@ public class PantallaAjustes extends  Musica implements Screen {
             PantallaDatos vista1 = new PantallaDatos(vista);
             camara = camara1.crearCamara(camara);
             vista = vista1.crearVista(camara,vista);
-            flag = true;
         //*** FIN DE CREAR CAMARA Y VISTA ***\\
 
         //*** CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES ***\\
             cargarImagenes();
             cargarFondo();
             cargarBotones();
-            cargarMusica(flag);
+            super.cargarMusica(flag);
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
 
     }
@@ -88,6 +91,8 @@ public class PantallaAjustes extends  Musica implements Screen {
 
         escena.addActor(btnSonido1);
 
+        flag = true;
+
 
         btonBack.addListener(new ClickListener(){
             @Override
@@ -105,6 +110,7 @@ public class PantallaAjustes extends  Musica implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 btnMusica1.setVisible(true);
                 flag = false;
+                PantallaAjustes.super.cargarMusica(flag);
 
 
             }
