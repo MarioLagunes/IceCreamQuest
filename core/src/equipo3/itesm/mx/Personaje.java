@@ -126,14 +126,14 @@ public class Personaje {
                 timerAnimacion = 0;
                 //timerAnimacion += Gdx.graphics.getDeltaTime();
                 //TextureRegion regionSalto = animarSalto.getKeyFrame(timerAnimacion);
-                TextureRegion region = textfinalSalto;
-                sprite.setRegion(region);
-                batch.draw(region,sprite.getX(),sprite.getY());
+                //TextureRegion region = textfinalSalto;
+                sprite.setRegion(textfinalSalto);
+                //batch.draw(region,sprite.getX(),sprite.getY());
 
                 //if(estadoMovimiento){
 
                 //}
-                //sprite.draw(batch);
+                sprite.draw(batch);
 
 
                 break;
