@@ -112,7 +112,7 @@ public class Nivel1 implements Screen {
         manager.load("CuadroScore.png",Texture.class);
         manager.load("dardo.png",Texture.class);
         manager.load("Parado.png",Texture.class);
-        manager.load("Saltar.png",Texture.class);
+        manager.load("Saltarenmedio.png",Texture.class);
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
         manager.load("Perdiste.png",Texture.class);
@@ -126,7 +126,7 @@ public class Nivel1 implements Screen {
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
         rendererMapa.setView(camara);
         texuturaPersonaje = manager.get("PinguinoChido2.png");
-        texturaSal = manager.get("Saltar.png");
+        texturaSal = manager.get("Saltarenmedio.png");
         texturaQui= manager.get("Parado.png");
         pinguino = new Personaje(texuturaPersonaje,texturaSal,texturaQui);
         pinguino.getSprite().setPosition(0,128);
@@ -608,7 +608,7 @@ public class Nivel1 implements Screen {
         manager1.unload("CuadroScore.png");
         manager1.unload("dardo.png");
         manager1.unload("Parado.png");
-        manager1.unload("Saltar.png");
+        manager1.unload("Saltarenmedio.png");
         manager1.unload("BTN_Resumen.png");
         manager1.unload("BTN_Salir.png");
         manager1.unload("Perdiste.png");

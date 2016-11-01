@@ -23,6 +23,7 @@ public class Personaje {
     private Animation animacion,animar,animarSalto,animarQuieto,animarReg;
     public float timerAnimacion,tiempoAnimar;
     private EstadoMovimiento estadoMovimiento;
+    private Texture texturaSalto;
     private EstadoSalto estadoSalto;
     private EstadosEnemigo estadoEnemigo;
     private static final float V0 = 60.0f;
@@ -31,7 +32,9 @@ public class Personaje {
     private float yInicial;
     private float tiempoVuelo;
     private  float tiempoSalto;
+    private TextureRegion region;
     private TextureRegion textfinalSalto,pinguQuieto;
+    private Texture salto;
     private Dardos dardos;
     public int puntos;
     float x;
@@ -52,16 +55,16 @@ public class Personaje {
 
     public  Personaje(Texture textura,Texture texturaSaltos,Texture texturaQuieto){
         TextureRegion texturaCompleta = new TextureRegion(textura);
-        TextureRegion texturaSalto = new TextureRegion(texturaSaltos);
+        texturaSalto = texturaSaltos;
         TextureRegion texturaQuietos = new TextureRegion(texturaQuieto);
         TextureRegion[][] texturaPersonaje = texturaCompleta.split(128,128);
-        TextureRegion[][] texturaSaltar = texturaSalto.split(128,128);
+        //TextureRegion[][] texturaSaltar = texturaSalto.split(128,128);
         TextureRegion[][] texturaQuies = texturaQuietos.split(128,128);
         animacion = new Animation(0.10f,texturaPersonaje[0][1], texturaPersonaje[0][2], texturaPersonaje[0][3],
                 texturaPersonaje[0][4],texturaPersonaje[0][5]);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
-        textfinalSalto = new TextureRegion(texturaSaltar[0][1]);
-        pinguQuieto = new TextureRegion(texturaQuies[0][1]);
+        //salto = new Texture(texturaSalto.getTexture().getTextureData());
+        pinguQuieto = new TextureRegion(texturaQuies[0][0]);
         timerAnimacion = 0;
 
         sprite = new Sprite(texturaPersonaje[0][0]);
@@ -88,7 +91,7 @@ public class Personaje {
             case DER:
                 //velocidadX = 4;
                 timerAnimacion += Gdx.graphics.getDeltaTime();
-                TextureRegion region = animacion.getKeyFrame(timerAnimacion);
+                region = animacion.getKeyFrame(timerAnimacion);
                 //sprite.setRegion(region);
                 //if(region.isFlipX()){
                   //  region.flip(true,false);
@@ -116,9 +119,9 @@ public class Personaje {
                 //timerAnimacion = 0;
                 //estadoMovimiento = EstadoMovimiento.QUIETO;
                 //region = pinguQuieto;
-                sprite.setRegion(pinguQuieto);
+                region.setRegion(pinguQuieto);
                 //batch.draw(s);
-                sprite.draw(batch);
+                batch.draw(region,sprite.getX(),sprite.getY());
                 break;
         }
         switch (estadoSalto){
@@ -126,14 +129,16 @@ public class Personaje {
                 timerAnimacion = 0;
                 //timerAnimacion += Gdx.graphics.getDeltaTime();
                 //TextureRegion regionSalto = animarSalto.getKeyFrame(timerAnimacion);
-                //TextureRegion region = textfinalSalto;
-                sprite.setRegion(textfinalSalto);
-                //batch.draw(region,sprite.getX(),sprite.getY());
+                Texture region1 = texturaSalto;
+                //sprite.set(texturaSalto);
+                //sprite.setTexture(texturaSalto);
+                region.setTexture(texturaSalto);
+                batch.draw(region,sprite.getX(),sprite.getY());
 
                 //if(estadoMovimiento){
 
                 //}
-                sprite.draw(batch);
+                //sprite.draw(batch);
 
 
                 break;
