@@ -101,11 +101,11 @@ public class Nivel1 implements Screen {
         manager.load("BtnBoom.png",Texture.class);
         manager.load("SpriteBoom.png",Texture.class);
         manager.load("BtnArriba.png",Texture.class);
-        manager.load("Ganaste.png",Texture.class);
+        manager.load("Ganaste_1.png",Texture.class);
         manager.load("BtnPausa.png",Texture.class);
         manager.load("Pausa.png",Texture.class);
-        manager.load("zook.png",Texture.class);
-        manager.load("zookreg.png",Texture.class);
+        manager.load("SpriteZookDerecha.png",Texture.class);
+        manager.load("SpriteZookIzquierda.png",Texture.class);
         manager.load("FondonivelLoop.png",Texture.class);
         manager.load("FondonivelLoop2.png",Texture.class);
         manager.load("Salida.png",Texture.class);
@@ -115,7 +115,7 @@ public class Nivel1 implements Screen {
         manager.load("Saltarenmedio.png",Texture.class);
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
-        manager.load("Perdiste.png",Texture.class);
+        manager.load("Perdiste_1.png",Texture.class);
         manager.load("Nivel1.mp3", Music.class);
         manager.finishLoading();
     }
@@ -136,7 +136,7 @@ public class Nivel1 implements Screen {
         texturaBoomeran = manager.get("SpriteBoom.png");
         boomerang = new Boomerang(texturaBoomeran);
         texturaDisparo = manager.get("BtnBoom.png");
-        texturaGano = manager.get("Ganaste.png");
+        texturaGano = manager.get("Ganaste_1.png");
         btnGanar = new Boton(texturaGano);
         btnGanar.setPosicion(Juego.ancho/4,Juego.alto/16);
         btnDisparar = new Boton(texturaDisparo);
@@ -150,9 +150,9 @@ public class Nivel1 implements Screen {
         btnResumen = new Boton(texturaResumen);
         texturaSalir = manager.get("BTN_Salir.png");
         btnSalir = new Boton(texturaSalir);
-        texturaEnemigo = manager.get("zook.png");
-        texturaEnemigoReg = manager.get("zookreg.png");
-        texturaPerdiste = manager.get("Perdiste.png");
+        texturaEnemigo = manager.get("SpriteZookDerecha.png");
+        texturaEnemigoReg = manager.get("SpriteZookIzquierda.png");
+        texturaPerdiste = manager.get("Perdiste_1.png");
         btnPerdiste = new Boton(texturaPerdiste);
         btnPerdiste.setPosicion(Juego.ancho/4,Juego.alto/16);
         enemigo = new Personaje(texturaEnemigo,texturaEnemigoReg);
@@ -597,11 +597,11 @@ public class Nivel1 implements Screen {
         manager1.unload("BtnBoom.png");
         manager1.unload("SpriteBoom.png");
         manager1.unload("BtnArriba.png");
-        manager1.unload("Ganaste.png");
+        manager1.unload("Ganaste_1.png");
         manager1.unload("BtnPausa.png");
         manager1.unload("Pausa.png");
-        manager1.unload("zook.png");
-        manager1.unload("zookreg.png");
+        manager1.unload("SpriteZookDerecha.png");
+        manager1.unload("SpriteZookIzquierda.png");
         manager1.unload("FondonivelLoop.png");
         manager1.unload("FondonivelLoop2.png");
         manager1.unload("Salida.png");
@@ -611,7 +611,7 @@ public class Nivel1 implements Screen {
         manager1.unload("Saltarenmedio.png");
         manager1.unload("BTN_Resumen.png");
         manager1.unload("BTN_Salir.png");
-        manager1.unload("Perdiste.png");
+        manager1.unload("Perdiste_1.png");
         manager1.unload("Nivel1.mp3");
     }
 
