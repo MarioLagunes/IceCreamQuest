@@ -57,14 +57,14 @@ public class Personaje {
         TextureRegion texturaCompleta = new TextureRegion(textura);
         texturaSalto = texturaSaltos;
         TextureRegion texturaQuietos = new TextureRegion(texturaQuieto);
-        TextureRegion[][] texturaPersonaje = texturaCompleta.split(128,128);
+        TextureRegion[][] texturaPersonaje = texturaCompleta.split(64,64);
         //TextureRegion[][] texturaSaltar = texturaSalto.split(128,128);
-        TextureRegion[][] texturaQuies = texturaQuietos.split(128,128);
+        //TextureRegion[][] texturaQuies = texturaQuietos.split(128,128);
         animacion = new Animation(0.10f,texturaPersonaje[0][1], texturaPersonaje[0][2], texturaPersonaje[0][3],
                 texturaPersonaje[0][4],texturaPersonaje[0][5]);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
         //salto = new Texture(texturaSalto.getTexture().getTextureData());
-        pinguQuieto = new TextureRegion(texturaQuies[0][0]);
+        //pinguQuieto = new TextureRegion(texturaQuies[0][0]);
         timerAnimacion = 0;
 
         sprite = new Sprite(texturaPersonaje[0][0]);
@@ -75,14 +75,14 @@ public class Personaje {
     public Personaje(Texture textura,Texture textura2){
         TextureRegion texturaEnemigoFull = new TextureRegion(textura);
         TextureRegion texturaEnemiegoReg = new TextureRegion(textura2);
-        TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(128,128);
-        TextureRegion[][] texturaEnemigoRegreso = texturaEnemiegoReg.split(128,128);
-        animar = new Animation(0.10f,texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],texturaEnemigo[0][4],texturaEnemigo[0][5],texturaEnemigo[0][6]);
+        TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(62,62);
+        TextureRegion[][] texturaEnemigoRegreso = texturaEnemiegoReg.split(62,62);
+        animar = new Animation(0.10f,texturaEnemigo[0][0],texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],texturaEnemigo[0][4],texturaEnemigo[0][5]);
         animarReg = new Animation(0.10f,texturaEnemigoRegreso[0][6],texturaEnemigoRegreso[0][5],texturaEnemigoRegreso[0][4],texturaEnemigoRegreso[0][3],texturaEnemigoRegreso[0][2],texturaEnemigoRegreso[0][1]);
         animar.setPlayMode(Animation.PlayMode.LOOP);
         animarReg.setPlayMode(Animation.PlayMode.LOOP);
         tiempoAnimar = 0;
-        spriteEnemigo = new Sprite(texturaEnemigo[0][0]);
+        spriteEnemigo = new Sprite(texturaEnemigo[0][6]);
         estadoEnemigo = EstadosEnemigo.INICIO;
     }
 
@@ -129,10 +129,10 @@ public class Personaje {
                 timerAnimacion = 0;
                 //timerAnimacion += Gdx.graphics.getDeltaTime();
                 //TextureRegion regionSalto = animarSalto.getKeyFrame(timerAnimacion);
-                Texture region1 = texturaSalto;
+                //Texture region1 = texturaSalto;
                 //sprite.set(texturaSalto);
                 //sprite.setTexture(texturaSalto);
-                region.setTexture(texturaSalto);
+                region.setRegion(texturaSalto);
                 batch.draw(region,sprite.getX(),sprite.getY());
 
                 //if(estadoMovimiento){
@@ -182,7 +182,6 @@ public class Personaje {
                 break;
         }
     }
-
 
     /*public void actualizar(TiledMap mapa){
         float nuevaX = sprite.getX();

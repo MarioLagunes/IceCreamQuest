@@ -50,7 +50,7 @@ public class Nivel1 implements Screen {
     private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir,btnPerdiste;
     private int heladosRecolectados = 0;
     private int vidas = 5;
-    private static final int celda = 128;
+    private static final int celda = 64;
     private Boomerang boomerang;
     private Personaje enemigo,enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
     private Fondo fondo,fondo2,fondo3,fondoPausa;

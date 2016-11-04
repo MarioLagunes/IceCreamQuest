@@ -33,7 +33,7 @@ public class Boomerang {
 
     public Boomerang(Texture textura){
         TextureRegion texturaCompleta = new TextureRegion(textura);
-        TextureRegion[][] texturaBoomeran = texturaCompleta.split(128,128);
+        TextureRegion[][] texturaBoomeran = texturaCompleta.split(64,64);
         animacion = new Animation(0.10f,texturaBoomeran[0][1], texturaBoomeran[0][2], texturaBoomeran[0][3],
                 texturaBoomeran[0][4]);
         animacionRegreso = new Animation(0.10f,texturaBoomeran[0][5],texturaBoomeran[0][6],texturaBoomeran[0][7]);
