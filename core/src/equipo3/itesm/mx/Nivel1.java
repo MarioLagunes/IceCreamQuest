@@ -401,11 +401,8 @@ public class Nivel1 implements Screen {
         }
         if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO &&
                 (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
-            //pinguino.probarCaida(mapa);
             int celdaX = (int) ((pinguino.getSprite().getX())/celda);
             int celdaY = (int) ((pinguino.getY()+pinguino.velocidadY) / celda);
-            //System.out.println("x="+celdaX);
-            //System.out.println("y="+celdaY);
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
             /*if(celdaAbajo != null){
@@ -428,6 +425,10 @@ public class Nivel1 implements Screen {
             else if(esCuadroPiso(celdaAbajo) || esCuadroPiso(celdaDerecha)){
                 pinguino.setPosicion(pinguino.getSprite().getX(),(celdaY+1)* celda);
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+                pinguino.caer();
+            }
+            else if(celdaAbajo == null && celdaDerecha != null){
+                pinguino.caer();
             }
             else{
                 pinguino.setPosicion(pinguino.getX(),(celdaY +1)*celda);
@@ -448,19 +449,12 @@ public class Nivel1 implements Screen {
                 camara.update();
                 camaraHUD.update();
                 actualizarCamara();
-                /*batch.setProjectionMatrix(camara.combined);
-                rendererMapa.setView(camara);
-                rendererMapa.render();
-                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.INICIANDO);*/
             }
             if(vidas <= 0 || pinguino.puntos < 0){
                 pinguino.velocidadX=0;
                 estadoJuego = estadoJuego.PERDIO;
                 pinguino.setPosicion(0,10000);
             }
-            //if(estadoJuego == estadoJuego.PERDIO){
-
-            //}
         }
         switch (pinguino.getEstadoSalto()){
             case SUBIENDO: case BAJANDO:
@@ -468,7 +462,7 @@ public class Nivel1 implements Screen {
                 break;
         }
 
-       pinguino.recolectarHelados(mapa);
+        pinguino.recolectarHelados(mapa);
     }
 
     private void moverHorizontal(){
@@ -489,10 +483,10 @@ public class Nivel1 implements Screen {
             if(celdaDerecha == null){
                 //pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
                 nuevaX += pinguino.velocidadX;
-                /*if(nuevaX <= Juego.ancho - pinguino.getSprite().getWidth()){*/
+                //if(nuevaX <= Juego.ancho - pinguino.getSprite().getWidth()){
                     pinguino.getSprite().setX(nuevaX);
                     //pinguino.caer();
-                    // pinguino.probarCaida(mapa);
+                    //pinguino.probarCaida(mapa);
                 //}
             }
         }
@@ -641,7 +635,7 @@ public class Nivel1 implements Screen {
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
                 fondoPausa.setPosicion(-13444,-12435);
                 //moverPersonaje();
-                moverPersonaje();
+                //moverPersonaje();
             }
             else if(btnSalir.contiene(x,y)){
                 Timer.schedule(new Timer.Task() {

@@ -21,10 +21,10 @@ public class Personaje {
     public float velX;
     public float velocidadX = 4;
     private Animation animacion,animar,animarSalto,animarQuieto,animarReg;
-    public float timerAnimacion,tiempoAnimar;
-    private EstadoMovimiento estadoMovimiento;
-    private Texture texturaSalto;
-    private EstadoSalto estadoSalto;
+    public float timerAnimacion,tiempoAnimar,timerSalto;
+    private EstadoMovimiento estadoMovimiento = EstadoMovimiento.INICIANDO;
+    //private Texture texturaSalto;
+    private EstadoSalto estadoSalto = EstadoSalto.ABAJO;
     private EstadosEnemigo estadoEnemigo;
     private static final float V0 = 60.0f;
     private static final float G = 9.81f;
@@ -32,7 +32,7 @@ public class Personaje {
     private float yInicial;
     private float tiempoVuelo;
     private  float tiempoSalto;
-    private TextureRegion region;
+    //private TextureRegion region;
     private TextureRegion textfinalSalto,pinguQuieto;
     private Texture salto;
     private Dardos dardos;
@@ -55,27 +55,29 @@ public class Personaje {
 
     public  Personaje(Texture textura,Texture texturaSaltos,Texture texturaQuieto){
         TextureRegion texturaCompleta = new TextureRegion(textura);
-        texturaSalto = texturaSaltos;
+        TextureRegion texturaSalto = new TextureRegion(texturaSaltos);
         TextureRegion texturaQuietos = new TextureRegion(texturaQuieto);
         TextureRegion[][] texturaPersonaje = texturaCompleta.split(64,64);
-        //TextureRegion[][] texturaSaltar = texturaSalto.split(128,128);
+        TextureRegion[][] texturaSaltar = texturaSalto.split(64,64);
         //TextureRegion[][] texturaQuies = texturaQuietos.split(128,128);
         animacion = new Animation(0.10f,texturaPersonaje[0][1], texturaPersonaje[0][2], texturaPersonaje[0][3],
                 texturaPersonaje[0][4],texturaPersonaje[0][5]);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
+        animarSalto = new Animation(0.10f,texturaSaltar[0][0]);
         //salto = new Texture(texturaSalto.getTexture().getTextureData());
         //pinguQuieto = new TextureRegion(texturaQuies[0][0]);
+        timerSalto = 0;
         timerAnimacion = 0;
         sprite = new Sprite(texturaPersonaje[0][0]);
-        estadoMovimiento = EstadoMovimiento.INICIANDO;
-        estadoSalto = EstadoSalto.ABAJO;
+        //estadoMovimiento = EstadoMovimiento.INICIANDO;
+        //estadoSalto = EstadoSalto.ABAJO;
     }
 
     public Personaje(Texture textura,Texture textura2){
         TextureRegion texturaEnemigoFull = new TextureRegion(textura);
         TextureRegion texturaEnemiegoReg = new TextureRegion(textura2);
-        TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(62,62);
-        TextureRegion[][] texturaEnemigoRegreso = texturaEnemiegoReg.split(62,62);
+        TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(63,63);
+        TextureRegion[][] texturaEnemigoRegreso = texturaEnemiegoReg.split(63,63);
         animar = new Animation(0.10f,texturaEnemigo[0][0],texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],texturaEnemigo[0][4],texturaEnemigo[0][5]);
         animarReg = new Animation(0.10f,texturaEnemigoRegreso[0][6],texturaEnemigoRegreso[0][5],texturaEnemigoRegreso[0][4],texturaEnemigoRegreso[0][3],texturaEnemigoRegreso[0][2],texturaEnemigoRegreso[0][1]);
         animar.setPlayMode(Animation.PlayMode.LOOP);
@@ -90,7 +92,7 @@ public class Personaje {
             case DER:
                 //velocidadX = 4;
                 timerAnimacion += Gdx.graphics.getDeltaTime();
-                region = animacion.getKeyFrame(timerAnimacion);
+                TextureRegion region = animacion.getKeyFrame(timerAnimacion);
                 //sprite.setRegion(region);
                 //if(region.isFlipX()){
                   //  region.flip(true,false);
@@ -118,21 +120,20 @@ public class Personaje {
                 //timerAnimacion = 0;
                 //estadoMovimiento = EstadoMovimiento.QUIETO;
                 //region = pinguQuieto;
-                region.setRegion(pinguQuieto);
+                //region.setRegion(pinguQuieto);
                 //batch.draw(s);
-                batch.draw(region,sprite.getX(),sprite.getY());
+                sprite.draw(batch);
                 break;
         }
         switch (estadoSalto){
             case SUBIENDO: case BAJANDO: case CAIDALIBRE:
-                timerAnimacion = 0;
+                timerSalto += Gdx.graphics.getDeltaTime();
                 //timerAnimacion += Gdx.graphics.getDeltaTime();
-                //TextureRegion regionSalto = animarSalto.getKeyFrame(timerAnimacion);
+                TextureRegion regionSalto = animarSalto.getKeyFrame(timerSalto);
                 //Texture region1 = texturaSalto;
                 //sprite.set(texturaSalto);
                 //sprite.setTexture(texturaSalto);
-                region.setRegion(texturaSalto);
-                batch.draw(region,sprite.getX(),sprite.getY());
+                batch.draw(regionSalto,sprite.getX(),sprite.getY());
 
                 //if(estadoMovimiento){
 
@@ -232,7 +233,7 @@ public class Personaje {
         }
     }
 
-    /*private void moverHorizontal(TiledMap mapa){
+    /*public void moverHorizontal(TiledMap mapa){
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);
         float nuevaX = sprite.getX();
         if(estadoMovimiento == EstadoMovimiento.DER){
@@ -284,8 +285,8 @@ public class Personaje {
 
     private boolean leerCeldaAbajo(TiledMap mapa){
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);
-        int x = (int)((sprite.getX())/128);
-        int y = (int)(sprite.getX()+velocidadY)/128;
+        int x = (int)((sprite.getX())/64);
+        int y = (int)((sprite.getX()+velocidadY)/64);
         TiledMapTileLayer.Cell celdaAbajo = capa.getCell(x,y);
         if(celdaAbajo != null){
             Object tipo = celdaAbajo.getTile().getProperties().get("tipo");
@@ -326,6 +327,30 @@ public class Personaje {
             sprite.setY(yInicial);
             estadoSalto = EstadoSalto.ABAJO;
         }
+        /*tiempoSalto += 10*Gdx.graphics.getDeltaTime();
+        float y = V0 * tiempoSalto - G_2 * tiempoSalto * tiempoSalto;
+        if(estadoSalto == EstadoSalto.SUBIENDO && tiempoSalto > tiempoVuelo/2){
+            estadoSalto = estadoSalto.BAJANDO;
+        }*/
+        //if(tiempoSalto > tiempoVuelo/2){
+          //  estadoSalto = EstadoSalto.BAJANDO;
+        //}
+        /*if(estadoSalto == EstadoSalto.SUBIENDO){
+            sprite.setY(sprite.getY()-velocidadY);
+        }
+        else if(estadoSalto == EstadoSalto.BAJANDO){
+            boolean hayCeldaAbajo = leerCeldaAbajo(mapa);
+            if(hayCeldaAbajo){
+                estadoSalto = EstadoSalto.ABAJO;
+            }
+            else{
+                sprite.setY(sprite.getY()+velocidadY);
+            }
+        }
+        /*if(y<0){
+            sprite.setY(yInicial);
+            estadoSalto = EstadoSalto.ABAJO;
+        }*/
     }
 
     /*public void actualizarSalto(){
