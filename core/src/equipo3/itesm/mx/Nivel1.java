@@ -96,7 +96,7 @@ public class Nivel1 implements Screen {
 
     private void cargarTexturas() {
         AssetManager manager = juego.getManager();
-        manager.load("Fondo.tmx",TiledMap.class);
+        manager.load("Fondo64.tmx",TiledMap.class);
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("BtnBoom.png",Texture.class);
         manager.load("SpriteBoom.png",Texture.class);
@@ -122,7 +122,7 @@ public class Nivel1 implements Screen {
 
     private void crearObjetos(){
         AssetManager manager = juego.getManager();
-        mapa = manager.get("Fondo.tmx");
+        mapa = manager.get("Fondo64.tmx");
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
         rendererMapa.setView(camara);
         texuturaPersonaje = manager.get("PinguinoChido2.png");
@@ -475,8 +475,8 @@ public class Nivel1 implements Screen {
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);
         float nuevaX = pinguino.getSprite().getX();
         if(pinguino.getEstadoMovimiento() == Personaje.EstadoMovimiento.DER){
-            int x = (int)((pinguino.getSprite().getX()+128)/128);
-            int y = (int)(pinguino.getSprite().getY()/128);
+            int x = (int)((pinguino.getSprite().getX()+64)/64);
+            int y = (int)(pinguino.getSprite().getY()/64);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(x,y);
             if(celdaDerecha != null){
                 pinguino.timerAnimacion=0;
@@ -592,7 +592,7 @@ public class Nivel1 implements Screen {
     @Override
     public void dispose() {
         AssetManager manager1 = juego.getManager();
-        manager1.unload("Fondo.tmx");
+        manager1.unload("Fondo64.tmx");
         manager1.unload("PinguinoChido2.png");
         manager1.unload("BtnBoom.png");
         manager1.unload("SpriteBoom.png");

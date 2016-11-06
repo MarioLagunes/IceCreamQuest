@@ -66,7 +66,6 @@ public class Personaje {
         //salto = new Texture(texturaSalto.getTexture().getTextureData());
         //pinguQuieto = new TextureRegion(texturaQuies[0][0]);
         timerAnimacion = 0;
-
         sprite = new Sprite(texturaPersonaje[0][0]);
         estadoMovimiento = EstadoMovimiento.INICIANDO;
         estadoSalto = EstadoSalto.ABAJO;
@@ -215,8 +214,8 @@ public class Personaje {
 
     public void recolectarHelados(TiledMap mapa){
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(1);
-        int x = (int)(sprite.getX()/128);
-        int y = (int)(sprite.getY()/128);
+        int x = (int)(sprite.getX()/64);
+        int y = (int)(sprite.getY()/64);
         TiledMapTileLayer.Cell celda = capa.getCell(x,y);
         if(celda != null){
             Object tipo = celda.getTile().getProperties().get("tipo");
