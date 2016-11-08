@@ -6,10 +6,7 @@
  <tileset firstgid="2" name="plataforma3" tilewidth="64" tileheight="64" tilecount="3" columns="3">
   <image source="plataforma3.png" width="192" height="64"/>
  </tileset>
- <tileset firstgid="5" name="cuadro" tilewidth="64" tileheight="64" tilecount="1" columns="1">
-  <image source="cuadro.png" width="64" height="64"/>
- </tileset>
- <tileset firstgid="6" name="piso" tilewidth="64" tileheight="64" tilecount="14" columns="14">
+ <tileset firstgid="5" name="piso" tilewidth="64" tileheight="64" tilecount="14" columns="14">
   <image source="piso.png" width="896" height="64"/>
  </tileset>
  <layer name="Capa de Patrones 1" width="14" height="200" offsetx="37.0909" offsety="-31024">
@@ -213,7 +210,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,1,0,2,3,4,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-6,7,8,9,10,11,12,13,14,15,16,17,18,19
+5,6,7,8,9,10,11,12,13,14,15,16,17,18
 </data>
  </layer>
 </map>
