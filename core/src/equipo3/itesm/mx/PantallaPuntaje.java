@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Andres Calva on 25/09/2016.
  */
-public class PantallaPuntaje implements Screen {
+public class PantallaPuntaje extends PantallaDatos implements Screen {
     private final Juego juego;
     private Stage escena;
     private OrthographicCamera camara;
@@ -45,14 +45,10 @@ public class PantallaPuntaje implements Screen {
             cargarImagenes();
             cargarFondo();
             cargarBotones();
-            cargarMusica();
+
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
     }
-    public void cargarMusica() {
-        musica = Gdx.audio.newMusic(Gdx.files.internal("Score.mp3"));
-        musica.setVolume(0.75f);
-        musica.play();
-    }
+
 
     private void cargarBotones() {
         TextureRegionDrawable regresar = new TextureRegionDrawable(new TextureRegion(texturaBack));
@@ -64,7 +60,7 @@ public class PantallaPuntaje implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 //Gdx.app.log("Presionaste:", "atrás");
                 juego.setScreen(new MenuPrincipal(juego));
-                musica.stop();
+
             }
         });
     }
@@ -110,8 +106,6 @@ public class PantallaPuntaje implements Screen {
     @Override
     public void hide() {
         texturaBack.dispose();
-        texturaInstrucciones.dispose();
-        musica.dispose();
     }
 
     @Override

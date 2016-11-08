@@ -27,16 +27,15 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 	private Texture texturaFondoMenu,texturaBtonAjustes,texturaBtonJugar,texturaBtonPuntaje,texturaAcercaDe,texturaAjustes,texturaInstrucciones,texturaBtonAcercaDe;
 	private OrthographicCamera camara;
 	private Viewport vista;
-	public Music musica;
 	private ImageButton[] botones1;
 	private final AssetManager manager = new AssetManager();
 	private ImageButton btonPuntaje,btonJugar,btonAcercaDe,btonAjustes;
-
+	public Music musica;
 
 	public MenuPrincipal(Juego juego) {
-		super();
 		this.juego = juego;
 	}
+
 
 	@Override
 	public void show() {
@@ -54,15 +53,10 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 		// *** FIN DE CARGAR FONDO Y BOTONES Y FUNCIONALIDAD DE LOS MISMOS ***\\
 
 		// *** CARGAR MÚSICA ***\\
-			cargarMusica();
 		// *** FIN DE CARGAR MUSICA ***\\
 	}
 
-	public void cargarMusica() {
-		musica = Gdx.audio.newMusic(Gdx.files.internal("Menu-VidJu.mp3"));
-		musica.setVolume(0.75f);
-		musica.play();
-	}
+
 
 	private void cargarFuncionesBontones(ImageButton[] botones1) {
 		btonJugar = botones1[0];
@@ -74,6 +68,8 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaInstrucciones(juego));
+
+
 			}
 		});
 
@@ -81,7 +77,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaAcercaDe(juego));
-				musica.stop();
+
 
 			}
 		});
@@ -90,6 +86,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaAjustes(juego));
+				musica.stop();
 
 
 
@@ -187,8 +184,6 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 		texturaBtonAjustes.dispose();
 		texturaBtonJugar.dispose();
 		texturaBtonPuntaje.dispose();
-		//texturaInstrucciones.dispose();
-		musica.dispose();
 	}
 
 	@Override

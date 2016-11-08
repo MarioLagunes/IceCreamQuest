@@ -16,10 +16,13 @@ public class PantallaDatos {
     protected Viewport vista;
     protected final int ancho = 1280;
     protected final int alto = 800;
-    protected Music musica,musica1;
+
 
     public PantallaDatos() {
+
     }
+
+
 
     public PantallaDatos(OrthographicCamera camara1) {
         this.camara = camara;
@@ -45,20 +48,4 @@ public class PantallaDatos {
         return vista = new StretchViewport(ancho,alto,camara);
     }
 
-   /* public void cargarMusica(){
-        musica = Gdx.audio.newMusic(Gdx.files.internal("Score.mp3"));
-        musica.setVolume(0.75f);
-        musica.play();
-    }
-
-    public void cargarMusicaMenu(){
-        musica1 = Gdx.audio.newMusic(Gdx.files.internal("Menu-VidJu.mp3"));
-        musica1.setVolume(0.75f);
-        musica1.play();
-
-    }
-
-    public void stopMusica(){
-        musica.stop();
-    }*/
 }

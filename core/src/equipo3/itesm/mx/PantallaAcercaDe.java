@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Mario Lagunes on 26/09/2016.
  */
-public class PantallaAcercaDe implements Screen, InputProcessor {
+public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputProcessor {
     private final Juego juego;
     private Texture texturaBack, texturaAcercaDe,mario,infoMario,andres,infoAndres,santi,infoSanti,dany,infoDany,moka,infoMoka;
     private Stage escena;
@@ -30,6 +30,9 @@ public class PantallaAcercaDe implements Screen, InputProcessor {
     private Viewport vista;
     private final AssetManager manager = new AssetManager();
     public Music musica;
+
+
+
 
     public PantallaAcercaDe(Juego juego) {
         this.juego = juego;
@@ -48,16 +51,12 @@ public class PantallaAcercaDe implements Screen, InputProcessor {
             cargarImagenes();
             cargarFondo();
             cargarBotones();
-            cargarMusica();
+
+
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
     }
 
-    public void cargarMusica(){
-        musica = Gdx.audio.newMusic(Gdx.files.internal("Score.mp3"));
-        musica.setVolume(0.75f);
-        musica.play();
 
-    }
 
     private void cargarBotones() {
         TextureRegionDrawable back = new TextureRegionDrawable(new TextureRegion(texturaBack));
@@ -131,7 +130,7 @@ public class PantallaAcercaDe implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new MenuPrincipal(juego));
-                musica.stop();
+
             }
         });
 

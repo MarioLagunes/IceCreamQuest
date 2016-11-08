@@ -19,18 +19,19 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Mario Lagunes on 25/09/2016.
  */
-public class PantallaAjustes  implements Screen {
+public class PantallaAjustes  extends PantallaDatos implements Screen {
     private final Juego juego;
     private Texture texturaBack, texturaAjustes, texturaSonido, texturaMusica,texturaSonidoO,texturaMusicaO;
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
     private final AssetManager manager = new AssetManager();
-    private Music musicaa;
+
 
     public PantallaAjustes(Juego juego) {
         this.juego = juego;
     }
+
 
 
     @Override
@@ -46,16 +47,10 @@ public class PantallaAjustes  implements Screen {
             cargarImagenes();
             cargarFondo();
             cargarBotones();
-            cargarMusica();
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
 
     }
 
-    public void cargarMusica() {
-        musicaa = Gdx.audio.newMusic(Gdx.files.internal("Score.mp3"));
-        musicaa.setVolume(0.75f);
-        musicaa.play();
-    }
 
 
 
@@ -72,7 +67,7 @@ public class PantallaAjustes  implements Screen {
         final ImageButton btnMusica = new ImageButton(musica);
         btnMusica.setPosition(400,300);
 
-        TextureRegionDrawable musica1 = new TextureRegionDrawable(new TextureRegion(texturaMusicaO));
+        final TextureRegionDrawable musica1 = new TextureRegionDrawable(new TextureRegion(texturaMusicaO));
         final ImageButton btnMusica1 = new ImageButton(musica1);
         btnMusica1.setPosition(400,300);
         btnMusica1.setVisible(false);
@@ -99,13 +94,6 @@ public class PantallaAjustes  implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new MenuPrincipal(juego));
-                musicaa.stop();
-
-
-
-   
-
-
 
             }
         });
@@ -201,7 +189,6 @@ public class PantallaAjustes  implements Screen {
     public void hide() {
         texturaBack.dispose();
         texturaAjustes.dispose();
-        musicaa.dispose();
     }
 
     @Override
