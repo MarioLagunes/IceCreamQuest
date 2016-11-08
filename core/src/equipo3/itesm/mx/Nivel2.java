@@ -83,7 +83,7 @@ public class Nivel2 implements Screen{
         texuturaPersonaje = manager.get("PinguinoChido2.png");
         texturaSal = manager.get("Saltarenmedio.png");
         texturaQui= manager.get("Parado.png");
-        pinguino = new Personaje(texuturaPersonaje,texturaSal,texturaQui);
+        pinguino = new Personaje(texuturaPersonaje,texturaSal,0);
         pinguino.getSprite().setPosition(1280/2,0);
         fondo.setPosicion(0,0);
         fondo2.setPosicion(300,400);
@@ -159,7 +159,7 @@ public class Nivel2 implements Screen{
         fondo.getSprite().setX(xFondo);
         fondo.getSprite().setY(yFondo);
         contador++;
-        System.out.println(contador);
+        //System.out.println(contador);
 
         float xFondo2 =  fondo2.getX();
         float yFondo2 = fondo2.getY();
