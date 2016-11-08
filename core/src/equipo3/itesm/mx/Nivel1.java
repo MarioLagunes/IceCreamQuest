@@ -116,7 +116,7 @@ public class Nivel1 implements Screen {
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
         manager.load("Perdiste_1.png",Texture.class);
-        manager.load("Nivel1.mp3", Music.class);
+        manager.load("Nivel_1.mp3", Music.class);
         manager.finishLoading();
     }
 
@@ -194,7 +194,7 @@ public class Nivel1 implements Screen {
         dardo1.setPosicion(enemigo1.getXEnemiga(),enemigo1.getYEnemiga());
         dardo2.setPosicion(enemigo2.getXEnemiga(),enemigo2.getYEnemiga());
         dardo3.setPosicion(enemigo3.getXEnemiga(),enemigo3.getYEnemiga());
-        musica = manager.get("Nivel1.mp3");
+        musica = manager.get("Nivel_1.mp3");
 
     }
 
