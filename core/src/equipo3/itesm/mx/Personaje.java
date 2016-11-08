@@ -53,17 +53,17 @@ public class Personaje {
         BORRADO
     }
 
-    public  Personaje(Texture textura,Texture texturaSaltos,Texture texturaQuieto){
+    public  Personaje(Texture textura,Texture texturaSaltos,float numero){
         TextureRegion texturaCompleta = new TextureRegion(textura);
         TextureRegion texturaSalto = new TextureRegion(texturaSaltos);
-        TextureRegion texturaQuietos = new TextureRegion(texturaQuieto);
         TextureRegion[][] texturaPersonaje = texturaCompleta.split(64,64);
         TextureRegion[][] texturaSaltar = texturaSalto.split(64,64);
         //TextureRegion[][] texturaQuies = texturaQuietos.split(128,128);
         animacion = new Animation(0.10f,texturaPersonaje[0][1], texturaPersonaje[0][2], texturaPersonaje[0][3],
                 texturaPersonaje[0][4],texturaPersonaje[0][5]);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
-        animarSalto = new Animation(0.10f,texturaSaltar[0][0]);
+        animarSalto = new Animation(0.10f,texturaSaltar[0][0],texturaSaltar[0][1],texturaSaltar[0][2]);
+        animarSalto.setPlayMode(Animation.PlayMode.LOOP);
         //salto = new Texture(texturaSalto.getTexture().getTextureData());
         //pinguQuieto = new TextureRegion(texturaQuies[0][0]);
         timerSalto = 0;

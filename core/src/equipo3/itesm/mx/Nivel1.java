@@ -112,11 +112,11 @@ public class Nivel1 implements Screen {
         manager.load("CuadroScore.png",Texture.class);
         manager.load("dardo.png",Texture.class);
         manager.load("Parado.png",Texture.class);
-        manager.load("Saltarenmedio.png",Texture.class);
+        manager.load("Saltar.png",Texture.class);
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
         manager.load("Perdiste_1.png",Texture.class);
-        manager.load("Nivel1.mp3", Music.class);
+        manager.load("Nivel_1.mp3", Music.class);
         manager.finishLoading();
     }
 
@@ -126,9 +126,8 @@ public class Nivel1 implements Screen {
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
         rendererMapa.setView(camara);
         texuturaPersonaje = manager.get("PinguinoChido2.png");
-        texturaSal = manager.get("Saltarenmedio.png");
-        texturaQui= manager.get("Parado.png");
-        pinguino = new Personaje(texuturaPersonaje,texturaSal,texturaQui);
+        texturaSal = manager.get("Saltar.png");
+        pinguino = new Personaje(texuturaPersonaje,texturaSal,1.1f);
         pinguino.getSprite().setPosition(0,128);
         texturaSalto = manager.get("BtnArriba.png");
         btnSalto = new Boton(texturaSalto);
@@ -156,7 +155,7 @@ public class Nivel1 implements Screen {
         btnPerdiste = new Boton(texturaPerdiste);
         btnPerdiste.setPosicion(Juego.ancho/4,Juego.alto/16);
         enemigo = new Personaje(texturaEnemigo,texturaEnemigoReg);
-        enemigo.setPosicionEnemiga(2688,640);
+        enemigo.setPosicionEnemiga(1984,64);
         //enemigo.PersonajeEnemigo(texturaEnemigo,10);
         enemigo1 = new Personaje(texturaEnemigo,texturaEnemigoReg);
         enemigo2 = new Personaje(texturaEnemigo,texturaEnemigoReg);
@@ -194,7 +193,7 @@ public class Nivel1 implements Screen {
         dardo1.setPosicion(enemigo1.getXEnemiga(),enemigo1.getYEnemiga());
         dardo2.setPosicion(enemigo2.getXEnemiga(),enemigo2.getYEnemiga());
         dardo3.setPosicion(enemigo3.getXEnemiga(),enemigo3.getYEnemiga());
-        musica = manager.get("Nivel1.mp3");
+        musica = manager.get("Nivel_1.mp3");
 
     }
 
