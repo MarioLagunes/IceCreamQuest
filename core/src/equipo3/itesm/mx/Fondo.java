@@ -21,4 +21,17 @@ public class Fondo {
     public void setPosicion(float x, float y){
         sprite.setPosition(x,y);
     }
+
+    public float getX(){
+        return sprite.getX();
+    }
+
+    public float getY() {
+        return sprite.getY();
+    }
+
+    public Sprite getSprite(){
+        return sprite;
+    }
+
 }

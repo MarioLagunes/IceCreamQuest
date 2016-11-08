@@ -425,9 +425,8 @@ public class Nivel1 implements Screen {
             else if(esCuadroPiso(celdaAbajo) || esCuadroPiso(celdaDerecha)){
                 pinguino.setPosicion(pinguino.getSprite().getX(),(celdaY+1)* celda);
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-                pinguino.caer();
             }
-            else if(celdaAbajo == null && celdaDerecha != null){
+            else if((celdaAbajo == null && celdaDerecha != null)|| esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
                 pinguino.caer();
             }
             else{
@@ -662,7 +661,7 @@ public class Nivel1 implements Screen {
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
-                            juego.setScreen(new MenuPrincipal(juego));
+                            juego.setScreen(new Nivel2(juego));
                     }
                     },1);
                 }
