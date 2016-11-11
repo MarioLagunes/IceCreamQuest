@@ -260,6 +260,10 @@ public class Nivel1 implements Screen {
                         (boomerang.getY() >= enemigo3.getY() && boomerang.getY()<= (enemigo3.getY()+enemigo3.getSprite().getHeight()))){
                     enemigo3.setPosicion(10,3000);
                 }
+                if(pinguino.getX() <= 0){
+                    boomerang.setPosicion(-100,0);
+                    boomerang.setBoom(Boomerang.boom.GUARDADO);
+                }
             }
 
             enemigo.render(batch);
@@ -459,8 +463,6 @@ public class Nivel1 implements Screen {
             else if(pinguino.getY() <= 0){
                 vidas --;
                 pinguino.getSprite().setPosition(Juego.ancho/10,Juego.alto * 0.1f);
-                boomerang.setPosicion(-100,0);
-                boomerang.setBoom(Boomerang.boom.GUARDADO);
                 camara.position.set(Juego.ancho/pinguino.getX(),camara.position.y,0);
                 camaraHUD.position.set(Juego.ancho/2,camaraHUD.position.y,0);
                 camara.update();
