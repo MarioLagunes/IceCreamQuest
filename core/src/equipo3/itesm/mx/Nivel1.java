@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -52,9 +53,11 @@ public class Nivel1 implements Screen {
     private int vidas = 5;
     private static final int celda = 64;
     private Boomerang boomerang;
-    private Personaje enemigo,enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
+    private Enemigos enemigo,enemigo1,enemigo2,enemigo3;
+    //private Personaje enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
     private Fondo fondo,fondo2,fondo3,fondoPausa;
     private Dardos dardo,dardo1,dardo2,dardo3;
+    private Sound muere,helado,heladoEspecial;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -79,19 +82,13 @@ public class Nivel1 implements Screen {
         estadoJuego = EstadosJuego.JUGANDO;
         texto = new Texto();
         pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
-        enemigo.moverEnemigosDer();
-        enemigo1.moverEnemigosDer();
-        enemigo2.moverEnemigosDer();
-        enemigo3.moverEnemigosDer();
+        enemigo.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
+        enemigo1.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
+        enemigo2.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
+        enemigo3.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
         musica.setLooping(true);
         musica.setVolume(1.5f);
         musica.play();
-        /*if(enemigo.getSpriteEnemigo().getX() >= 3072 ){
-            enemigo.moverEnemigosIzq();
-        }else if(enemigo.getSpriteEnemigo().getX() <= 2700){
-            enemigo.moverEnemigosDer();
-        }*/
-
     }
 
     private void cargarTexturas() {
@@ -117,6 +114,9 @@ public class Nivel1 implements Screen {
         manager.load("BTN_Salir.png",Texture.class);
         manager.load("Perdiste_1.png",Texture.class);
         manager.load("Nivel_1.mp3", Music.class);
+        manager.load("Helado especial.mp3",Sound.class);
+        manager.load("Helado normal.mp3",Sound.class);
+        manager.load("Meeehhpp!!.wav",Sound.class);
         manager.finishLoading();
     }
 
@@ -133,7 +133,7 @@ public class Nivel1 implements Screen {
         btnSalto = new Boton(texturaSalto);
         btnSalto.setPosicion(10,Juego.alto * 0.01f);
         texturaBoomeran = manager.get("SpriteBoom.png");
-        boomerang = new Boomerang(texturaBoomeran);
+        //boomerang = new Boomerang(texturaBoomeran);
         texturaDisparo = manager.get("BtnBoom.png");
         texturaGano = manager.get("Ganaste_1.png");
         btnGanar = new Boton(texturaGano);
@@ -153,22 +153,22 @@ public class Nivel1 implements Screen {
         texturaEnemigoReg = manager.get("SpriteZookIzquierda.png");
         texturaPerdiste = manager.get("Perdiste_1.png");
         btnPerdiste = new Boton(texturaPerdiste);
+        //boomerang.setPosicion(-100,0);
         btnPerdiste.setPosicion(Juego.ancho/4,Juego.alto/16);
-        enemigo = new Personaje(texturaEnemigo,texturaEnemigoReg);
-        enemigo.setPosicionEnemiga(1984,64);
-        //enemigo.PersonajeEnemigo(texturaEnemigo,10);
-        enemigo1 = new Personaje(texturaEnemigo,texturaEnemigoReg);
-        enemigo2 = new Personaje(texturaEnemigo,texturaEnemigoReg);
-        enemigo3 = new Personaje(texturaEnemigo,texturaEnemigoReg);
+        enemigo = new Enemigos(texturaEnemigo,texturaEnemigoReg);
+        enemigo1 = new Enemigos(texturaEnemigo,texturaEnemigoReg);
+        enemigo2 = new Enemigos(texturaEnemigo,texturaEnemigoReg);
+        enemigo3 = new Enemigos(texturaEnemigo,texturaEnemigoReg);
         //enemigo3 = new Personaje(texturaEnemigo,texturaEnemigoReg);
         //enemigo4 = new Personaje(texturaEnemigo,texturaEnemigoReg);
         //enemigo2 = new Personaje(texturaEnemigo);
         //enemigo3 = new Personaje(texturaEnemigo);
         //enemigo4 = new Personaje(texturaEnemigo);
-        //enemigo5 = new Personaje(texturaEnemigo);
-        enemigo1.setPosicionEnemiga(5888,640);
-        enemigo2.setPosicionEnemiga(8192,512);
-        enemigo3.setPosicionEnemiga(8832,128);
+        // enemigo5 = new Personaje(texturaEnemigo);
+        enemigo.setPosicion(1850,128);
+        enemigo1.setPosicion(6080,704);
+        enemigo2.setPosicion(4608,576);
+        enemigo3.setPosicion(10560,128);
         //enemigo.getSprite().setPosition(300,Juego.alto*0.06f);
         //enemigo1.getSprite().setPosition(400,Juego.alto*0.06f);
         //enemigo2.getSprite().setPosition(600,Juego.alto*0.06f);
@@ -189,11 +189,14 @@ public class Nivel1 implements Screen {
         dardo1 = new Dardos(texturaDardo);
         dardo2 = new Dardos(texturaDardo);
         dardo3 = new Dardos(texturaDardo);
-        dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
-        dardo1.setPosicion(enemigo1.getXEnemiga(),enemigo1.getYEnemiga());
-        dardo2.setPosicion(enemigo2.getXEnemiga(),enemigo2.getYEnemiga());
-        dardo3.setPosicion(enemigo3.getXEnemiga(),enemigo3.getYEnemiga());
+        dardo.setPosicion(enemigo.getX(),enemigo3.getY());
+        dardo1.setPosicion(enemigo1.getX(),enemigo1.getY());
+        dardo2.setPosicion(enemigo2.getX(),enemigo2.getY());
+        dardo3.setPosicion(enemigo3.getX(),enemigo3.getY());
         musica = manager.get("Nivel_1.mp3");
+        helado = manager.get("Helado normal.mp3");
+        heladoEspecial = manager.get("Helado especial.mp3");
+        muere = manager.get("Meeehhpp!!.wav");
 
     }
 
@@ -224,25 +227,79 @@ public class Nivel1 implements Screen {
 
         batch.begin();
             pinguino.render(batch);
-            boomerang.render(batch);
-            enemigo.renderEnemigo(batch);
-            enemigo1.renderEnemigo(batch);
-            enemigo2.renderEnemigo(batch);
-            enemigo3.renderEnemigo(batch);
-            /*if(enemigo.getXEnemiga() >= 3000){
-                enemigo.moverEnemigosIzq();
+
+            if(boomerang != null){
+                boomerang.render(batch);
+                boomerang.tiempo ++;
+                if(boomerang.tiempo >= 50){
+                    boomerang.setBoom(Boomerang.boom.REGRESANDO);
+                    //if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && )
+                }
+                if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && (boomerang.getX() >= pinguino.getX() && boomerang.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
+                        (boomerang.getY() >= pinguino.getY() && boomerang.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
+                    boomerang.setBoom(Boomerang.boom.GUARDADO);
+                    boomerang.setPosicion(-1000,0);
+                }
+
+                if((boomerang.getX() >= enemigo.getX() && boomerang.getX()<= (enemigo.getX()+enemigo.getSprite().getWidth()))&&
+                        (boomerang.getY() >= enemigo.getY() && boomerang.getY()<= (enemigo.getY()+enemigo.getSprite().getHeight()))){
+                    enemigo.setPosicion(10,3000);
+                }
+
+                if((boomerang.getX() >= enemigo1.getX() && boomerang.getX()<= (enemigo1.getX()+enemigo1.getSprite().getWidth()))&&
+                        (boomerang.getY() >= enemigo1.getY() && boomerang.getY()<= (enemigo1.getY()+enemigo1.getSprite().getHeight()))){
+                    enemigo1.setPosicion(10,3000);
+                }
+
+                if((boomerang.getX() >= enemigo2.getX() && boomerang.getX()<= (enemigo2.getX()+enemigo2.getSprite().getWidth()))&&
+                        (boomerang.getY() >= enemigo2.getY() && boomerang.getY()<= (enemigo2.getY()+enemigo2.getSprite().getHeight()))){
+                    enemigo2.setPosicion(10,3000);
+                }
+
+                if((boomerang.getX() >= enemigo3.getX() && boomerang.getX()<= (enemigo3.getX()+enemigo3.getSprite().getWidth()))&&
+                        (boomerang.getY() >= enemigo3.getY() && boomerang.getY()<= (enemigo3.getY()+enemigo3.getSprite().getHeight()))){
+                    enemigo3.setPosicion(10,3000);
+                }
             }
-            if(enemigo.getXEnemiga() <=2600){
-                enemigo.moverEnemigosDer();
-            }*/
-            //enemigo.renderEnemigo(batch);
-            dardo.render(batch);//,pinguino,vidas);
+
+            enemigo.render(batch);
+            enemigo1.render(batch);
+            enemigo2.render(batch);
+            enemigo3.render(batch);
+
+            if(enemigo.getSprite().getX()>= 2240){
+                enemigo.setEstadoEnemigo(Enemigos.EstadoEnemigo.IZQUIERDA);
+            }
+            else if(enemigo.getSprite().getX() <= 1850){
+                enemigo.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
+            }
+            if(enemigo1.getSprite().getX()>= 6592){
+                enemigo1.setEstadoEnemigo(Enemigos.EstadoEnemigo.IZQUIERDA);
+            }
+            else if(enemigo1.getSprite().getX() <= 6080){
+                enemigo1.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
+            }
+            if(enemigo2.getSprite().getX()>= 4928){
+                enemigo2.setEstadoEnemigo(Enemigos.EstadoEnemigo.IZQUIERDA);
+            }
+            else if(enemigo2.getSprite().getX() <= 4608){
+                enemigo2.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
+            }
+            if(enemigo3.getSprite().getX()>= 10816){
+                enemigo3.setEstadoEnemigo(Enemigos.EstadoEnemigo.IZQUIERDA);
+            }
+            else if(enemigo3.getSprite().getX() == 10560){
+                enemigo3.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
+            }
+
+            dardo.render(batch);
             dardo1.render(batch);
             dardo2.render(batch);
             if((dardo.getX() >= pinguino.getX() && dardo.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo.getY() >= pinguino.getY() && dardo.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo.velocidadX = 0;
+                muere.play();
                 dardo.setPosicion(0,3000);
             }
 
@@ -251,88 +308,40 @@ public class Nivel1 implements Screen {
                     (dardo2.getY() >= pinguino.getY() && dardo2.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo2.velocidadX = 0;
+                muere.play();
                 dardo2.setPosicion(0,3000);
             }
             if((dardo1.getX() >= pinguino.getX() && dardo1.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo1.getY() >= pinguino.getY() && dardo1.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo1.velocidadX = 0;
+                muere.play();
                 dardo1.setPosicion(0,3000);
             }
             if((dardo3.getX() >= pinguino.getX() && dardo3.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo3.getY() >= pinguino.getY() && dardo3.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo3.velocidadX = 0;
+                muere.play();
                 dardo3.setPosicion(0,3000);
             }
 
-            if((boomerang.getX() >= enemigo.getXEnemiga() && boomerang.getX()<= (3000))&&
-                (boomerang.getY() >= enemigo.getYEnemiga() && boomerang.getY()<= (enemigo.getYEnemiga()+enemigo.getSpriteEnemigo().getHeight()))){
-            enemigo.setPosicionEnemiga(10,3000);
-
-        }
-
-            if((boomerang.getX() >= 5700 && boomerang.getX()<= (6000))&&
-                    (boomerang.getY() >= enemigo1.getYEnemiga() && boomerang.getY()<= (enemigo1.getYEnemiga()+enemigo1.getSpriteEnemigo().getHeight()))){
-                enemigo1.setPosicionEnemiga(10,3000);
-
-            }
-            if((boomerang.getX() >= 8100 && boomerang.getX()<= (8300))&&
-                    (boomerang.getY() >= enemigo2.getYEnemiga() && boomerang.getY()<= (enemigo2.getYEnemiga()+enemigo2.getSpriteEnemigo().getHeight()))){
-                enemigo2.setPosicionEnemiga(10,3000);
-
-            }
-            if((boomerang.getX() >= 8800 && boomerang.getX()<= (9000))&&
-                    (boomerang.getY() >= enemigo3.getYEnemiga() && boomerang.getY()<= (enemigo3.getYEnemiga()+enemigo3.getSpriteEnemigo().getHeight()))){
-                enemigo3.setPosicionEnemiga(10,3000);
-
-            }
-            /*if(boomerang.getSprite().getX() == enemigo.getSprite().getX()){
-                enemigo.setPosicionEnemiga(10,3000);
-                System.out.println("me mataste");
-            }*/
-            /*dardo = new Dardos(texturaDardo,pinguino,enemigo);
-            dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
-            dardo.render(batch);
-            dardo = new Dardos(texturaDardo,pinguino,enemigo);
-            dardo.setPosicion(enemigo.getXEnemiga(),enemigo.getYEnemiga());
-            dardo.render(batch);*/
-            if((pinguino.getX() >= enemigo.getXEnemiga() && pinguino.getX()<= (2900))&&
-                    (pinguino.getY() >= enemigo.getYEnemiga() && pinguino.getY()<= (enemigo.getYEnemiga()+enemigo.getSpriteEnemigo().getHeight()))){
+            if((pinguino.getX() >= enemigo.getX() && pinguino.getX()<= (enemigo.getX()+enemigo.getSprite().getWidth()))&&
+                    (pinguino.getY() >= enemigo.getY() && pinguino.getY()<= (enemigo.getY()+enemigo.getSprite().getHeight()))){
                 pinguino.puntos -=50;
-
             }
-
-            if((pinguino.getX() >= 5700 && pinguino.getX()<= (6000))&&
-                    (pinguino.getY() >= enemigo1.getYEnemiga() && pinguino.getY()<= (enemigo1.getYEnemiga()+enemigo1.getSpriteEnemigo().getHeight()))){
+            if((pinguino.getX() >= enemigo1.getX() && pinguino.getX()<= (enemigo1.getX()+enemigo1.getSprite().getWidth()))&&
+                    (pinguino.getY() >= enemigo1.getY() && pinguino.getY()<= (enemigo1.getY()+enemigo1.getSprite().getHeight()))){
                 pinguino.puntos -=50;
-
             }
-            if((pinguino.getX() >= 8100 && pinguino.getX()<= (8300))&&
-                    (pinguino.getY() >= enemigo2.getYEnemiga() && pinguino.getY()<= (enemigo2.getYEnemiga()+enemigo2.getSpriteEnemigo().getHeight()))){
+            if((pinguino.getX() >= enemigo2.getX() && pinguino.getX()<= (enemigo2.getX()+enemigo2.getSprite().getWidth()))&&
+                    (pinguino.getY() >= enemigo2.getY() && pinguino.getY()<= (enemigo2.getY()+enemigo2.getSprite().getHeight()))){
                 pinguino.puntos -=50;
-
             }
-            if((pinguino.getX() >= 8800 && pinguino.getX()<= (9000))&&
-                    (pinguino.getY() >= enemigo3.getYEnemiga() && pinguino.getY()<= (enemigo3.getYEnemiga()+enemigo3.getSpriteEnemigo().getHeight()))){
+            if((pinguino.getX() >= enemigo3.getX() && pinguino.getX()<= (enemigo3.getX()+enemigo3.getSprite().getWidth()))&&
+                    (pinguino.getY() >= enemigo3.getY() && pinguino.getY()<= (enemigo3.getY()+enemigo3.getSprite().getHeight()))){
                 pinguino.puntos -=50;
-
             }
-
-
-            //dardo.disparar(2,pinguino,enemigo);
-            //enemigo.moverEnemigosDer();
-            /*enemigo1.render(batch);
-            enemigo2.render(batch);
-            enemigo3.render(batch);
-            enemigo4.render(batch);
-            enemigo5.render(batch);*/
-
-            /*if(pinguino.getX() > 800){
-                batch.begin();
-                fondo.setPosicion(1280,800);
-                fondo.draw(batch);
-            }*/
         batch.end();
 
         batch.setProjectionMatrix(camaraHUD.combined);
@@ -345,6 +354,14 @@ public class Nivel1 implements Screen {
                 fondoPausa.setPosicion(Juego.ancho/4,Juego.alto/16);
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
                 fondoPausa.draw(batch);
+                dardo.velocidadX = 0;
+                dardo1.velocidadX = 0;
+                dardo2.velocidadX = 0;
+                dardo3.velocidadX = 0;
+                enemigo.velocidad = 0;
+                enemigo1.velocidad = 0;
+                enemigo2.velocidad = 0;
+                enemigo3.velocidad = 0;
                 btnResumen.setPosicion(Juego.ancho/3,Juego.alto*0.45f);
                 btnSalir.setPosicion(Juego.ancho/3,Juego.alto*0.15f);
                 btnResumen.render(batch);
@@ -442,6 +459,8 @@ public class Nivel1 implements Screen {
             else if(pinguino.getY() <= 0){
                 vidas --;
                 pinguino.getSprite().setPosition(Juego.ancho/10,Juego.alto * 0.1f);
+                boomerang.setPosicion(-100,0);
+                boomerang.setBoom(Boomerang.boom.GUARDADO);
                 camara.position.set(Juego.ancho/pinguino.getX(),camara.position.y,0);
                 camaraHUD.position.set(Juego.ancho/2,camaraHUD.position.y,0);
                 camara.update();
@@ -460,7 +479,7 @@ public class Nivel1 implements Screen {
                 break;
         }
 
-        pinguino.recolectarHelados(mapa);
+        pinguino.recolectarHelados(mapa,helado,heladoEspecial);
     }
 
     private void moverHorizontal(){
@@ -599,12 +618,11 @@ public class Nivel1 implements Screen {
         manager1.unload("Salida.png");
         manager1.unload("CuadroScore.png");
         manager1.unload("dardo.png");
-        manager1.unload("Parado.png");
-        manager1.unload("Saltarenmedio.png");
+        manager1.unload("Saltar.png");
         manager1.unload("BTN_Resumen.png");
         manager1.unload("BTN_Salir.png");
         manager1.unload("Perdiste_1.png");
-        manager1.unload("Nivel1.mp3");
+        manager1.unload("Nivel_1.mp3");
     }
 
     public class ProcesadorEntrada extends InputAdapter{
@@ -632,8 +650,14 @@ public class Nivel1 implements Screen {
                 estadoJuego = estadoJuego.JUGANDO;
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
                 fondoPausa.setPosicion(-13444,-12435);
-                //moverPersonaje();
-                //moverPersonaje();
+                dardo.velocidadX = -2;
+                dardo1.velocidadX = -2;
+                dardo2.velocidadX = -2;
+                dardo3.velocidadX = -2;
+                enemigo.velocidad = 2;
+                enemigo1.velocidad = 2;
+                enemigo2.velocidad = 2;
+                enemigo3.velocidad = 2;
             }
             else if(btnSalir.contiene(x,y)){
                 Timer.schedule(new Timer.Task() {

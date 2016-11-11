@@ -1,6 +1,7 @@
 package equipo3.itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -58,26 +59,21 @@ public class Personaje {
         TextureRegion texturaSalto = new TextureRegion(texturaSaltos);
         TextureRegion[][] texturaPersonaje = texturaCompleta.split(64,64);
         TextureRegion[][] texturaSaltar = texturaSalto.split(64,64);
-        //TextureRegion[][] texturaQuies = texturaQuietos.split(128,128);
         animacion = new Animation(0.10f,texturaPersonaje[0][1], texturaPersonaje[0][2], texturaPersonaje[0][3],
                 texturaPersonaje[0][4],texturaPersonaje[0][5]);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
-        animarSalto = new Animation(0.10f,texturaSaltar[0][0],texturaSaltar[0][1],texturaSaltar[0][2]);
+        animarSalto = new Animation(0.10f,texturaSaltar[0][1]);
         animarSalto.setPlayMode(Animation.PlayMode.LOOP);
-        //salto = new Texture(texturaSalto.getTexture().getTextureData());
-        //pinguQuieto = new TextureRegion(texturaQuies[0][0]);
         timerSalto = 0;
         timerAnimacion = 0;
         sprite = new Sprite(texturaPersonaje[0][0]);
-        //estadoMovimiento = EstadoMovimiento.INICIANDO;
-        //estadoSalto = EstadoSalto.ABAJO;
     }
 
     public Personaje(Texture textura,Texture textura2){
         TextureRegion texturaEnemigoFull = new TextureRegion(textura);
         TextureRegion texturaEnemiegoReg = new TextureRegion(textura2);
-        TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(63,63);
-        TextureRegion[][] texturaEnemigoRegreso = texturaEnemiegoReg.split(63,63);
+        TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(64,64);
+        TextureRegion[][] texturaEnemigoRegreso = texturaEnemiegoReg.split(64,64);
         animar = new Animation(0.10f,texturaEnemigo[0][0],texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],texturaEnemigo[0][4],texturaEnemigo[0][5]);
         animarReg = new Animation(0.10f,texturaEnemigoRegreso[0][6],texturaEnemigoRegreso[0][5],texturaEnemigoRegreso[0][4],texturaEnemigoRegreso[0][3],texturaEnemigoRegreso[0][2],texturaEnemigoRegreso[0][1]);
         animar.setPlayMode(Animation.PlayMode.LOOP);
@@ -88,61 +84,18 @@ public class Personaje {
     }
 
     public void render(SpriteBatch batch){
-        switch (estadoMovimiento){
-            case DER:
-                //velocidadX = 4;
-                timerAnimacion += Gdx.graphics.getDeltaTime();
-                TextureRegion region = animacion.getKeyFrame(timerAnimacion);
-                //sprite.setRegion(region);
-                //if(region.isFlipX()){
-                  //  region.flip(true,false);
-                //}
-               // sprite.draw(batch);
-                batch.draw(region,sprite.getX(),sprite.getY());
-                /*if(timerAnimacion == 0){
-                    sprite.setRegion(pinguQuieto);
-                }*/
-                /*if(estadoMovimiento.equals(EstadoSalto.SUBIENDO)){
-                    timerAnimacion=0;
-                    sprite.setRegion(textfinalSalto);
-                }*/
-                break;
-            /*case IZQ:
-                velocidadX = 2;
-                timerAnimacion += Gdx.graphics.getDeltaTime();
-                TextureRegion region2 = animacion.getKeyFrame(timerAnimacion);
-                if(region2.isFlipX()){
-                    region2.flip(true,false);
-                }
-                batch.draw(region2,sprite.getX(),sprite.getY());
-                break;*/
-            case INICIANDO:case QUIETO:
-                //timerAnimacion = 0;
-                //estadoMovimiento = EstadoMovimiento.QUIETO;
-                //region = pinguQuieto;
-                //region.setRegion(pinguQuieto);
-                //batch.draw(s);
-                sprite.draw(batch);
-                break;
+
+        if(estadoMovimiento == EstadoMovimiento.DER && estadoSalto == EstadoSalto.ABAJO){
+            timerAnimacion += Gdx.graphics.getDeltaTime();
+            TextureRegion region = animacion.getKeyFrame(timerAnimacion);
+            sprite.setRegion(region);
         }
-        switch (estadoSalto){
-            case SUBIENDO: case BAJANDO: case CAIDALIBRE:
-                timerSalto += Gdx.graphics.getDeltaTime();
-                //timerAnimacion += Gdx.graphics.getDeltaTime();
-                TextureRegion regionSalto = animarSalto.getKeyFrame(timerSalto);
-                //Texture region1 = texturaSalto;
-                //sprite.set(texturaSalto);
-                //sprite.setTexture(texturaSalto);
-                batch.draw(regionSalto,sprite.getX(),sprite.getY());
-
-                //if(estadoMovimiento){
-
-                //}
-                //sprite.draw(batch);
-
-
-                break;
+        if(estadoSalto == EstadoSalto.SUBIENDO || estadoSalto == EstadoSalto.BAJANDO || estadoSalto == EstadoSalto.CAIDALIBRE){
+            timerSalto += Gdx.graphics.getDeltaTime();
+            TextureRegion regionSalto = animarSalto.getKeyFrame(timerSalto);
+            sprite.setRegion(regionSalto);
         }
+        batch.draw(sprite,sprite.getX(),sprite.getY());
     }
 
     public void renderEnemigo(SpriteBatch batch){
@@ -213,7 +166,7 @@ public class Personaje {
         recolectarHelados(mapa);
     }*/
 
-    public void recolectarHelados(TiledMap mapa){
+    public void recolectarHelados(TiledMap mapa, Sound helado, Sound heladoEspecial){
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(1);
         int x = (int)(sprite.getX()/64);
         int y = (int)(sprite.getY()/64);
@@ -222,11 +175,13 @@ public class Personaje {
             Object tipo = celda.getTile().getProperties().get("tipo");
             if("helado".equals(tipo)){
                 puntos += 500;
+                helado.play();
                 capa.setCell(x,y,null);
                 //capa.setCell(x,y,capa.getCell(0,4));
             }
             else if("heladoespecial".equals(tipo)){
                 puntos += 1000;
+                heladoEspecial.play();
                 capa.setCell(x,y,null);
                 //capa.setCell(x,y,capa.getCell(0,4));
             }
