@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -19,11 +21,13 @@ public class Nivel3 implements Screen {
     private OrthographicCamera camara;
     private Viewport vista;
     private OrthographicCamera camaraHUD;
+    private OrthogonalTiledMapRenderer rendererMapa;
     private StretchViewport vistaHUD;
     private SpriteBatch batch;
     private Personaje pinguino;
     private Fondo fondo1, fondo2,fondo3, fondo4;
     private Texture fondo,fondoFin, fondoLopp, fondoUltimo;
+    private TiledMap mapa;
 
     public Nivel3(Juego juego){
         this.juego = juego;
@@ -31,10 +35,11 @@ public class Nivel3 implements Screen {
 
     private void crearTexturas(){
         AssetManager manager = juego.getManager();
-        manager.load("Fondo3-png",Texture.class);
+        manager.load("Fondo3.png",Texture.class);
         manager.load("Fondo3fin.png",Texture.class);
         manager.load("Fondo3loop.png",Texture.class);
         manager.load("Fondo3ultima.png",Texture.class);
+        manager.load("Mapanivel3.tmx",TiledMap.class);
         manager.finishLoading();
     }
 
@@ -44,6 +49,10 @@ public class Nivel3 implements Screen {
         fondoFin = manager.get("Fondo3fin.png");
         fondoLopp = manager.get("Fondo3loop.png");
         fondoUltimo = manager.get("Fondo3ultima.png");
+
+        mapa = manager.get("Mapanivel3.tmx");
+        rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
+        rendererMapa.setView(camara);
 
         fondo1 = new Fondo(fondo);
         fondo2 = new Fondo(fondoFin);
@@ -63,6 +72,7 @@ public class Nivel3 implements Screen {
         PantallaDatos camaraHUD1 = new PantallaDatos(camaraHUD);
         PantallaDatos vistaHUD1 = new PantallaDatos(vistaHUD);
         camara = camara1.crearCamara(camara);
+        camara.rotate(90);
         vista = vista1.crearVista(camara,vista);
         camaraHUD = camaraHUD1.crearCamara(camaraHUD);
         vistaHUD = vistaHUD1.crearVistaHUD(camaraHUD,vistaHUD);
@@ -77,13 +87,18 @@ public class Nivel3 implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.42f,0.55f,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.setProjectionMatrix(camara.combined);
+        rendererMapa.setView(camara);
+
          batch.begin();
             fondo1.draw(batch);
             fondo2.draw(batch);
             fondo3.draw(batch);
             fondo4.draw(batch);
-
         batch.end();
+
+        rendererMapa.render();
 
     }
 

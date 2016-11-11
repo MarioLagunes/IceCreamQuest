@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * Created by Mario Lagunes on 24/09/2016.
  */
 public class PantallaDatos {
-    protected OrthographicCamera camara;
+    protected OrthographicCamera camara,camara1;
     protected Viewport vista;
     protected final int ancho = 1280;
     protected final int alto = 800;
@@ -40,12 +40,29 @@ public class PantallaDatos {
         return camara;
     }
 
+    public OrthographicCamera crearCamaraNivel3(OrthographicCamera camara1){
+        camara1 = new OrthographicCamera(alto,ancho);
+        camara1.position.set(alto/2,ancho/2,0);
+        camara1.update();
+        return camara1;
+    }
+
     public Viewport crearVista(OrthographicCamera camara, Viewport vista){
         return vista = new StretchViewport(ancho,alto,camara);
     }
 
+
+    public Viewport crearVistaNivel3(OrthographicCamera camara, Viewport vista){
+        return vista = new StretchViewport(alto,ancho,camara);
+    }
+
+
     public StretchViewport crearVistaHUD(OrthographicCamera camara,StretchViewport vista){
         return vista = new StretchViewport(ancho,alto,camara);
+    }
+
+    public StretchViewport crearVistaHUDNivel3(OrthographicCamera camara,StretchViewport vista){
+        return vista = new StretchViewport(alto,ancho,camara);
     }
 
 }
