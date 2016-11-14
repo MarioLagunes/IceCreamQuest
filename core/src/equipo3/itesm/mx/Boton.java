@@ -4,13 +4,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 
 /**
  * Created by Mario Lagunes on 03/10/2016.
  */
-public class Boton {
+public class Boton implements Disableable {
     private Sprite sprite;
     private Rectangle colision;
+    private Boolean isDisable;
+    private Boton boton;
+    private int tiempo;
 
     public Boton(Texture textura){
         sprite = new Sprite(textura);
@@ -27,5 +31,14 @@ public class Boton {
 
     public boolean contiene(float x, float y){
         return colision.contains(x,y);
+    }
+
+    @Override
+    public void setDisabled(boolean isDisabled) {
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return false;
     }
 }

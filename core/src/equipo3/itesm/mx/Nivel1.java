@@ -231,7 +231,7 @@ public class Nivel1 implements Screen {
             if(boomerang != null){
                 boomerang.render(batch);
                 boomerang.tiempo ++;
-                if(boomerang.tiempo >= 50){
+                if(boomerang.tiempo >= 30){
                     boomerang.setBoom(Boomerang.boom.REGRESANDO);
                     //if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && )
                 }
@@ -239,6 +239,12 @@ public class Nivel1 implements Screen {
                         (boomerang.getY() >= pinguino.getY() && boomerang.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                     boomerang.setBoom(Boomerang.boom.GUARDADO);
                     boomerang.setPosicion(-1000,0);
+                    btnDisparar.setDisabled(false);
+                }
+                else if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && boomerang.getX() == pinguino.getX()){
+                    boomerang.setBoom(Boomerang.boom.GUARDADO);
+                    boomerang.setPosicion(-1000,0);
+                    btnDisparar.setDisabled(false);
                 }
 
                 if((boomerang.getX() >= enemigo.getX() && boomerang.getX()<= (enemigo.getX()+enemigo.getSprite().getWidth()))&&
@@ -625,6 +631,9 @@ public class Nivel1 implements Screen {
         manager1.unload("BTN_Salir.png");
         manager1.unload("Perdiste_1.png");
         manager1.unload("Nivel_1.mp3");
+        manager1.unload("Helado especial.mp3");
+        manager1.unload("Helado normal.mp3");
+        manager1.unload("Meeehhpp!!.wav");
     }
 
     public class ProcesadorEntrada extends InputAdapter{
@@ -638,6 +647,7 @@ public class Nivel1 implements Screen {
                 pinguino.saltar();
             }
             else if(btnDisparar.contiene(x,y)){
+                btnDisparar.setDisabled(true);
                 boomerang = new Boomerang(texturaBoomeran);
                 boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
                 boomerang.salir();
