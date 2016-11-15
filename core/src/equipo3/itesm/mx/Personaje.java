@@ -95,7 +95,9 @@ public class Personaje {
             TextureRegion regionSalto = animarSalto.getKeyFrame(timerSalto);
             sprite.setRegion(regionSalto);
         }
-        batch.draw(sprite,sprite.getX(),sprite.getY());
+        sprite.draw(batch);
+
+        //batch.draw(sprite,sprite.getX(),sprite.getY());
     }
 
     public void renderEnemigo(SpriteBatch batch){
@@ -135,6 +137,8 @@ public class Personaje {
                 break;
         }
     }
+
+
 
     /*public void actualizar(TiledMap mapa){
         float nuevaX = sprite.getX();

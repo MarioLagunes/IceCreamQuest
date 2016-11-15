@@ -21,12 +21,15 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
+
+import javax.swing.JButton;
 
 /**
  * Created by Mario Lagunes on 26/09/2016.
@@ -58,6 +61,7 @@ public class Nivel1 implements Screen {
     private Fondo fondo,fondo2,fondo3,fondoPausa;
     private Dardos dardo,dardo1,dardo2,dardo3;
     private Sound muere,helado,heladoEspecial;
+    private float tiempo = Gdx.graphics.getDeltaTime();
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -129,6 +133,7 @@ public class Nivel1 implements Screen {
         texturaSal = manager.get("Saltar.png");
         pinguino = new Personaje(texuturaPersonaje,texturaSal,1.1f);
         pinguino.getSprite().setPosition(0,128);
+        pinguino.getSprite().setAlpha(1);
         texturaSalto = manager.get("BtnArriba.png");
         btnSalto = new Boton(texturaSalto);
         btnSalto.setPosicion(10,Juego.alto * 0.01f);
@@ -189,7 +194,7 @@ public class Nivel1 implements Screen {
         dardo1 = new Dardos(texturaDardo);
         dardo2 = new Dardos(texturaDardo);
         dardo3 = new Dardos(texturaDardo);
-        dardo.setPosicion(enemigo.getX(),enemigo3.getY());
+        dardo.setPosicion(enemigo.getX(),enemigo.getY());
         dardo1.setPosicion(enemigo1.getX(),enemigo1.getY());
         dardo2.setPosicion(enemigo2.getX(),enemigo2.getY());
         dardo3.setPosicion(enemigo3.getX(),enemigo3.getY());
@@ -239,12 +244,16 @@ public class Nivel1 implements Screen {
                         (boomerang.getY() >= pinguino.getY() && boomerang.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                     boomerang.setBoom(Boomerang.boom.GUARDADO);
                     boomerang.setPosicion(-1000,0);
-                    btnDisparar.setDisabled(false);
+                    btnDisparar.setPosicion(1100,Juego.alto * 0.01f);
+                    //btnDisparar.setDisabled(false);
+                    //btnDisparar.setDisabled(false);
                 }
                 else if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && boomerang.getX() == pinguino.getX()){
                     boomerang.setBoom(Boomerang.boom.GUARDADO);
                     boomerang.setPosicion(-1000,0);
-                    btnDisparar.setDisabled(false);
+                    btnDisparar.setPosicion(1100,Juego.alto * 0.01f);
+                    //btnDisparar.setDisabled(false);
+                    //btnDisparar.setDisabled(false);
                 }
 
                 if((boomerang.getX() >= enemigo.getX() && boomerang.getX()<= (enemigo.getX()+enemigo.getSprite().getWidth()))&&
@@ -305,12 +314,15 @@ public class Nivel1 implements Screen {
             dardo.render(batch);
             dardo1.render(batch);
             dardo2.render(batch);
+            dardo3.render(batch);
             if((dardo.getX() >= pinguino.getX() && dardo.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo.getY() >= pinguino.getY() && dardo.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo.velocidadX = 0;
                 muere.play();
-                dardo.setPosicion(0,3000);
+                dardo.setPosicion(-100,0);
+                pinguino.getSprite().setAlpha(0.5f);
+
             }
 
         //Gdx.app.log("boomerang",""+boomerang.getX()+"enemigo "+enemigo.getXEnemiga());
@@ -319,21 +331,24 @@ public class Nivel1 implements Screen {
                 vidas--;
                 dardo2.velocidadX = 0;
                 muere.play();
-                dardo2.setPosicion(0,3000);
+                dardo2.setPosicion(-100,0);
+                pinguino.getSprite().setAlpha(0.5f);
             }
             if((dardo1.getX() >= pinguino.getX() && dardo1.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo1.getY() >= pinguino.getY() && dardo1.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo1.velocidadX = 0;
                 muere.play();
-                dardo1.setPosicion(0,3000);
+                dardo1.setPosicion(-100,0);
+                pinguino.getSprite().setAlpha(0.5f);
             }
             if((dardo3.getX() >= pinguino.getX() && dardo3.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo3.getY() >= pinguino.getY() && dardo3.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo3.velocidadX = 0;
                 muere.play();
-                dardo3.setPosicion(0,3000);
+                dardo3.setPosicion(-100,0);
+                pinguino.getSprite().setAlpha(0.5f);
             }
 
             if((pinguino.getX() >= enemigo.getX() && pinguino.getX()<= (enemigo.getX()+enemigo.getSprite().getWidth()))&&
@@ -636,7 +651,7 @@ public class Nivel1 implements Screen {
         manager1.unload("Meeehhpp!!.wav");
     }
 
-    public class ProcesadorEntrada extends InputAdapter{
+    public class ProcesadorEntrada extends InputAdapter {
         private Vector3 coordenadas = new Vector3();
         private float x,y;
 
@@ -647,10 +662,10 @@ public class Nivel1 implements Screen {
                 pinguino.saltar();
             }
             else if(btnDisparar.contiene(x,y)){
-                btnDisparar.setDisabled(true);
                 boomerang = new Boomerang(texturaBoomeran);
                 boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
                 boomerang.salir();
+                btnDisparar.setPosicion(0,-100);
 
             }
 
@@ -713,7 +728,6 @@ public class Nivel1 implements Screen {
             x = coordenadas.x;
             y = coordenadas.y;
         }
-
     }
 
     private void borrarPantalla(){
