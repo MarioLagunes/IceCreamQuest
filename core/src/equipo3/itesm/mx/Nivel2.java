@@ -25,9 +25,9 @@ public class Nivel2 implements Screen{
     private OrthographicCamera camaraHUD;
     private StretchViewport vistaHUD;
     private SpriteBatch batch;
-    private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI;
+    private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2;
     private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro;
-    private int velocidadX = 1, velocidadY = -1,contador;
+    private int velocidadX = 10, velocidadY = -10,contador;
     private Personaje pinguino;
 
     public Nivel2(Juego juego){
@@ -58,8 +58,7 @@ public class Nivel2 implements Screen{
         AssetManager manager = juego.getManager();
         manager.load("Fondo2.png", Texture.class);
         manager.load("PinguinoChido2.png",Texture.class);
-        manager.load("Parado.png",Texture.class);
-        manager.load("Saltarenmedio.png",Texture.class);
+        manager.load("Saltar.png",Texture.class);
         manager.load("edificiosIZQ.png",Texture.class);
         manager.load("edificiosDER.png",Texture.class);
         manager.finishLoading();
@@ -76,22 +75,26 @@ public class Nivel2 implements Screen{
         fondo = new Fondo(edificiosIzq);
         fondo2 = new Fondo(edificiosIzq);
         fondoEx = new Fondo(edificiosIzq);
+        fondoEx1 = new Fondo(edificiosIzq);
+        fondoEx2 = new Fondo(edificiosIzq);
+
         fondo3 = new Fondo(edificiosDer);
         fondo4 = new Fondo(edificiosDer);
         fondoExI = new Fondo(edificiosDer);
         fondo5 = new Fondo(fondoNoche);
         texuturaPersonaje = manager.get("PinguinoChido2.png");
-        texturaSal = manager.get("Saltarenmedio.png");
-        texturaQui= manager.get("Parado.png");
+        texturaSal = manager.get("Saltar.png");
         pinguino = new Personaje(texuturaPersonaje,texturaSal,0);
         pinguino.getSprite().setPosition(1280/2,0);
         fondo.setPosicion(0,0);
-        fondo2.setPosicion(300,400);
+        fondo2.setPosicion(0,0);
+        fondoEx1.setPosicion(0,400);
+        fondoEx2.setPosicion(0,400);
         //fondo2.setPosicion(200,400);
-        fondoEx.setPosicion(300,600);
+        fondoEx.setPosicion(0,0);
         fondo3.setPosicion(0,0);
-        fondo4.setPosicion(0,400);
-        fondoExI.setPosicion(0,800);
+        fondo4.setPosicion(0,0);
+        fondoExI.setPosicion(0,0);
 
     }
 
@@ -119,7 +122,7 @@ public class Nivel2 implements Screen{
         //fondoNoche.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         //textFondo2.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         //edificiosDer.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        edificiosIzq.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        //edificiosIzq.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         batch.setProjectionMatrix(camara.combined);
 
         batch.begin();
@@ -133,33 +136,36 @@ public class Nivel2 implements Screen{
             fondo3.draw(batch);
             fondo4.draw(batch);
             fondoExI.draw(batch);
-            if(fondo.getSprite().getX() == -500){
+            /*if(fondo.getSprite().getX() == -500){
                 fondo.setPosicion(0,0);
+            }*/
+
+
+            if(fondo2.getSprite().getX() < -166){
+                fondo2.setPosicion(0,0);
             }
-            if(fondo2.getSprite().getX() == -500){
-                fondo2.setPosicion(300,400);
+            if(fondoEx.getSprite().getX() < -166){
+                fondoEx.setPosicion(0,0);
             }
-            if(fondoEx.getSprite().getX() == -500){
-                fondoEx.setPosicion(300,400);
+
+            if(fondo4.getSprite().getX() > 166){
+                fondo4.setPosicion(0,0);
             }
-            if(fondo3.getSprite().getX() == 100){
-                fondo3.setPosicion(0,0);
-            }
-            if(fondo4.getSprite().getX() == 100){
-                fondo4.setPosicion(0,200);
+            if(fondoExI.getSprite().getX() > 166){
+                fondoExI.setPosicion(0,0);
             }
             pinguino.render(batch);
         //float nuevaX = pinguino.getSprite().getX();
         //nuevaX += pinguino.velocidadX;
         //pinguino.getSprite().setX(nuevaX);*/
-        float xFondo =  fondo.getX();
+        /*float xFondo =  fondo.getX();
         float yFondo = fondo.getY();
         xFondo -= velocidadX;
         yFondo += velocidadY;
         fondo.getSprite().setX(xFondo);
         fondo.getSprite().setY(yFondo);
         contador++;
-        //System.out.println(contador);
+        //System.out.println(contador);*/
 
         float xFondo2 =  fondo2.getX();
         float yFondo2 = fondo2.getY();
@@ -169,18 +175,34 @@ public class Nivel2 implements Screen{
         fondo2.getSprite().setY(yFondo2);
 
         float xFondoEx =  fondoEx.getX();
-        float yFondoEx = fondoEx.getY();
+        //float yFondoEx = fondoEx.getY();
         xFondoEx -= velocidadX;
-        yFondoEx += velocidadY;
+        //yFondoEx += velocidadY;
         fondoEx.getSprite().setX(xFondoEx);
-        fondoEx.getSprite().setY(yFondoEx);
+        //fondoEx.getSprite().setY(yFondoEx);
 
-        float xFondo3 =  fondo3.getX();
+        /*if(fondo2.getSprite().getX() == 166) {
+            float xFondoEx1 = fondoEx1.getX();
+            float yFondoEx1 = fondoEx1.getY();
+            xFondoEx1 -= velocidadX;
+            yFondoEx1 += velocidadY;
+            fondoEx1.getSprite().setX(xFondoEx1);
+            fondoEx1.getSprite().setY(yFondoEx1);
+
+            float xFondoEx2 = fondoEx2.getX();
+            //float yFondoEx = fondoEx.getY();
+            xFondoEx2 -= velocidadX;
+            //yFondoEx += velocidadY;
+            fondoEx2.getSprite().setX(xFondoEx2);
+            //fondoEx.getSprite().setY(yFondoEx);
+        }*/
+
+        /*float xFondo3 =  fondo3.getX();
         float yFondo3 = fondo3.getY();
         xFondo3 += velocidadX;
         yFondo3 += velocidadY;
         fondo3.getSprite().setX(xFondo3);
-        fondo3.getSprite().setY(yFondo3);
+        fondo3.getSprite().setY(yFondo3);*/
 
         float xFondo4 =  fondo4.getX();
         float yFondo4 = fondo4.getY();
@@ -188,6 +210,12 @@ public class Nivel2 implements Screen{
         yFondo4 += velocidadY;
         fondo4.getSprite().setX(xFondo4);
         fondo4.getSprite().setY(yFondo4);
+
+        float xFondoExI =  fondoExI.getX();
+        //float yFondoEx = fondoEx.getY();
+        xFondoExI += velocidadX;
+        //yFondoEx += velocidadY;
+        fondoExI.getSprite().setX(xFondoExI);
         /*float xFondo2 =  fondo2.getX();
         xFondo2 += velocidad;
         fondo2.getSprite().setX(xFondo2);*/

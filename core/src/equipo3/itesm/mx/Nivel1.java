@@ -321,7 +321,7 @@ public class Nivel1 implements Screen {
                 dardo.velocidadX = 0;
                 muere.play();
                 dardo.setPosicion(-100,0);
-                pinguino.getSprite().setAlpha(0.5f);
+                //pinguino.getSprite().setAlpha(0.5f);
 
             }
 
@@ -332,7 +332,7 @@ public class Nivel1 implements Screen {
                 dardo2.velocidadX = 0;
                 muere.play();
                 dardo2.setPosicion(-100,0);
-                pinguino.getSprite().setAlpha(0.5f);
+                //pinguino.getSprite().setAlpha(0.5f);
             }
             if((dardo1.getX() >= pinguino.getX() && dardo1.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo1.getY() >= pinguino.getY() && dardo1.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
@@ -340,7 +340,7 @@ public class Nivel1 implements Screen {
                 dardo1.velocidadX = 0;
                 muere.play();
                 dardo1.setPosicion(-100,0);
-                pinguino.getSprite().setAlpha(0.5f);
+                //pinguino.getSprite().setAlpha(0.5f);
             }
             if((dardo3.getX() >= pinguino.getX() && dardo3.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo3.getY() >= pinguino.getY() && dardo3.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
@@ -348,7 +348,7 @@ public class Nivel1 implements Screen {
                 dardo3.velocidadX = 0;
                 muere.play();
                 dardo3.setPosicion(-100,0);
-                pinguino.getSprite().setAlpha(0.5f);
+                //pinguino.getSprite().setAlpha(0.5f);
             }
 
             if((pinguino.getX() >= enemigo.getX() && pinguino.getX()<= (enemigo.getX()+enemigo.getSprite().getWidth()))&&
