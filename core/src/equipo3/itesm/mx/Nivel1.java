@@ -502,7 +502,8 @@ public class Nivel1 implements Screen {
                 camaraHUD.position.set(Juego.ancho/2,camaraHUD.position.y,0);
                 camara.update();
                 camaraHUD.update();
-                boomerang.setPosicion(-1000,0);
+                if(boomerang != null){
+                boomerang.setPosicion(-1000,0);}
                 btnDisparar.setPosicion(1100,Juego.alto * 0.01f);
                 actualizarCamara();
             }

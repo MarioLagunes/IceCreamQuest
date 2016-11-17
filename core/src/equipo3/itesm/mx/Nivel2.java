@@ -33,10 +33,10 @@ public class Nivel2 implements Screen{
     private SpriteBatch batch;
     private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2,fondoPiso1,fondoPiso2,fondoPiso3,fondoCarre1,fondoCarre2,fondoCarre3,fondoCarre4,fondoCarre5,fondoCarre6;
     private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro,fondoPiso,textCarreDer,textCarreIzq,textCono,textBtnSaltar,textBtnPausa,
-                    textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore;
+                    textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore,textPosteDer,textPosteIzq,textMoco;
     private int velocidadX = 10, velocidadY = -10,velocidadItemY = -5;
     private Personaje pinguino;
-    private Sprite cono,marcador,pausa;
+    private Sprite cono,marcador,pausa,posteDer,posteIzq,moco;
     private EstadosJuego estadosJuego;
     private Boton btnSaltar,btnPausa,btnReanudar,btnSalir,ganar,perder;
     private Texto texto;
@@ -87,6 +87,9 @@ public class Nivel2 implements Screen{
         manager.load("Ganaste_1.png",Texture.class);
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
+        manager.load("poste.png",Texture.class);
+        manager.load("poste_der.png",Texture.class);
+        manager.load("moco.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -103,6 +106,9 @@ public class Nivel2 implements Screen{
         texturaPerdiste = manager.get("Perdiste_1.png");
         texturaPausa = manager.get("Pausa.png");
         texturaScore = manager.get("CuadroScore.png");
+        textMoco = manager.get("moco.png");
+        textPosteIzq = manager.get("poste.png");
+        textPosteDer = manager.get("poste_der.png");
 
 
         btnSaltar = new Boton(textBtnSaltar);
@@ -177,6 +183,14 @@ public class Nivel2 implements Screen{
         fondoCarre5.setPosicion(0,0);
         fondoCarre6.setPosicion(0,0);
 
+        moco = new Sprite(textMoco);
+        posteDer = new Sprite(textPosteDer);
+        posteIzq = new Sprite(textPosteIzq);
+        posteDer.setScale(0.3f,0.3f);
+        posteIzq.setScale(0.3f,0.3f);
+        posteDer.setPosition(100,400);
+        posteIzq.setPosition(1000,400);
+
     }
 
     private void actualizarCamara(){
@@ -227,6 +241,8 @@ public class Nivel2 implements Screen{
             fondoPiso2.draw(batch);
             fondoPiso1.draw(batch);
             cono.draw(batch);
+            posteDer.draw(batch);
+            posteIzq.draw(batch);
 
 
             /*if(fondo.getSprite().getX() == -500){
