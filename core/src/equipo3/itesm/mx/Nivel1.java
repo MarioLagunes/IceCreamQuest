@@ -61,7 +61,7 @@ public class Nivel1 implements Screen {
     private Fondo fondo,fondo2,fondo3,fondoPausa;
     private Dardos dardo,dardo1,dardo2,dardo3;
     private Sound muere,helado,heladoEspecial;
-    private float tiempo = Gdx.graphics.getDeltaTime();
+    private float tiempo = 0,tiempo2 = 0;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -315,14 +315,24 @@ public class Nivel1 implements Screen {
             dardo1.render(batch);
             dardo2.render(batch);
             dardo3.render(batch);
+            tiempo += Gdx.graphics.getDeltaTime();
             if((dardo.getX() >= pinguino.getX() && dardo.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo.getY() >= pinguino.getY() && dardo.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo.velocidadX = 0;
                 muere.play();
                 dardo.setPosicion(-100,0);
-                //pinguino.getSprite().setAlpha(0.5f);
+                tiempo2 += Gdx.graphics.getDeltaTime();
 
+                if( tiempo2 > 0) {
+                    System.out.println("spy el tiempo2" + tiempo2);
+                    pinguino.getSprite().setAlpha(0.5f);
+                }
+                //pinguino.getSprite().setAlpha(0.5f);
+            }
+            if(tiempo > 10 && tiempo2 > 0){
+                System.out.println("soy el tiempo" + tiempo);
+                pinguino.getSprite().setAlpha(1);
             }
 
         //Gdx.app.log("boomerang",""+boomerang.getX()+"enemigo "+enemigo.getXEnemiga());
@@ -332,6 +342,7 @@ public class Nivel1 implements Screen {
                 dardo2.velocidadX = 0;
                 muere.play();
                 dardo2.setPosicion(-100,0);
+
                 //pinguino.getSprite().setAlpha(0.5f);
             }
             if((dardo1.getX() >= pinguino.getX() && dardo1.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
@@ -446,29 +457,35 @@ public class Nivel1 implements Screen {
             int celdaY = (int) ((pinguino.getY()+pinguino.velocidadY) / celda);
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
-            /*if(celdaAbajo != null){
+            if(celdaAbajo != null){
                 Object tipo = celdaAbajo.getTile().getProperties().get("tipo");
                 if(!"esCuadroPiso".equals(tipo)){
                     celdaAbajo = null;
                 }
-            }*/
+            }
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
-            /*if(celdaDerecha != null){
+            if(celdaDerecha != null){
                 Object tipo = celdaDerecha.getTile().getProperties().get("tipo");
                 if(!"esCuadroPiso".equals(tipo)){
                     celdaDerecha = null;
                 }
-            }*/
+            }
             if((celdaAbajo == null && celdaDerecha == null) || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
+                //pinguino.probarCaida(mapa);
             }
             else if(esCuadroPiso(celdaAbajo) || esCuadroPiso(celdaDerecha)){
                 pinguino.setPosicion(pinguino.getSprite().getX(),(celdaY+1)* celda);
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
             }
             else if((celdaAbajo == null && celdaDerecha != null)|| esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
-                pinguino.caer();
+                    pinguino.caer();
+
+            }
+            else if((celdaAbajo != null && celdaDerecha != null)){
+                pinguino.setPosicion(pinguino.getX(),(celdaY + 1)*celda);
+                pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
             }
             else{
                 pinguino.setPosicion(pinguino.getX(),(celdaY +1)*celda);

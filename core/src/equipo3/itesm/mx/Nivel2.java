@@ -8,9 +8,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 
 
 /**
@@ -25,10 +29,12 @@ public class Nivel2 implements Screen{
     private OrthographicCamera camaraHUD;
     private StretchViewport vistaHUD;
     private SpriteBatch batch;
-    private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2;
-    private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro;
-    private int velocidadX = 10, velocidadY = -10,contador;
+    private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2,fondoPiso1,fondoPiso2,fondoPiso3,fondoCarre1,fondoCarre2,fondoCarre3,fondoCarre4,fondoCarre5,fondoCarre6;
+    private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro,fondoPiso,textCarreDer,textCarreIzq,textCono;
+    private int velocidadX = 10, velocidadY = -10,velocidadItemY = -5;
     private Personaje pinguino;
+    private Sprite cono;
+
 
     public Nivel2(Juego juego){
         this.juego = juego;
@@ -56,18 +62,29 @@ public class Nivel2 implements Screen{
 
     private void cargarTexturas(){
         AssetManager manager = juego.getManager();
-        manager.load("Fondo2.png", Texture.class);
+        manager.load("ciudadnivel2.png", Texture.class);
+        manager.load("Carretera.png",Texture.class);
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("Saltar.png",Texture.class);
         manager.load("edificiosIZQ.png",Texture.class);
         manager.load("edificiosDER.png",Texture.class);
+        manager.load("banquetaIZQ.png",Texture.class);
+        manager.load("banquetaDER.png",Texture.class);
+        manager.load("cono.png",Texture.class);
         manager.finishLoading();
     }
 
     private void crearObjetos() {
         AssetManager manager = juego.getManager();
-        fondoNoche = manager.get("Fondo2.png");
-        textFondo2 = manager.get("Fondo2.png");
+        fondoNoche = manager.get("ciudadnivel2.png");
+        fondoPiso = manager.get("Carretera.png");
+        textCarreDer = manager.get("banquetaDER.png");
+        textCarreIzq = manager.get("banquetaIZQ.png");
+
+        textCono = manager.get("cono.png");
+        cono = new Sprite(textCono);
+        cono.setPosition(566,400);
+        cono.setScale(0.3f,0.3f);
 
 
         edificiosDer = manager.get("edificiosDER.png");
@@ -77,6 +94,9 @@ public class Nivel2 implements Screen{
         fondoEx = new Fondo(edificiosIzq);
         fondoEx1 = new Fondo(edificiosIzq);
         fondoEx2 = new Fondo(edificiosIzq);
+        fondoPiso1 = new Fondo(fondoPiso);
+        fondoPiso2 = new Fondo(fondoPiso);
+        fondoPiso3 = new Fondo(fondoPiso);
 
         fondo3 = new Fondo(edificiosDer);
         fondo4 = new Fondo(edificiosDer);
@@ -95,6 +115,23 @@ public class Nivel2 implements Screen{
         fondo3.setPosicion(0,0);
         fondo4.setPosicion(0,0);
         fondoExI.setPosicion(0,0);
+        fondoPiso1.setPosicion(0,0);
+        fondoPiso2.setPosicion(0,0);
+
+
+
+        fondoCarre1 = new Fondo(textCarreIzq);
+        fondoCarre2 = new Fondo(textCarreIzq);
+        fondoCarre3 = new Fondo(textCarreIzq);
+        fondoCarre4 = new Fondo(textCarreDer);
+        fondoCarre5 = new Fondo(textCarreDer);
+        fondoCarre6 = new Fondo(textCarreDer);
+        fondoCarre1.setPosicion(0,0);
+        fondoCarre2.setPosicion(10,0);
+        fondoCarre3.setPosicion(10,0);
+        fondoCarre4.setPosicion(0,0);
+        fondoCarre5.setPosicion(0,0);
+        fondoCarre6.setPosicion(0,0);
 
     }
 
@@ -130,12 +167,24 @@ public class Nivel2 implements Screen{
             //batch.draw(edificiosIzq,0,0);
             //batch.draw(textFondo2,0,0,(-1)*velocidad,(-1)*velocidad,1280,800);
             fondo5.draw(batch);
+            fondoCarre1.draw(batch);
+            fondoCarre2.draw(batch);
+            fondoCarre3.draw(batch);
+            fondoCarre4.draw(batch);
+            fondoCarre5.draw(batch);
+            fondoCarre6.draw(batch);
             fondo.draw(batch);
             fondo2.draw(batch);
             fondoEx.draw(batch);
             fondo3.draw(batch);
             fondo4.draw(batch);
             fondoExI.draw(batch);
+
+            fondoPiso2.draw(batch);
+            fondoPiso1.draw(batch);
+            cono.draw(batch);
+
+
             /*if(fondo.getSprite().getX() == -500){
                 fondo.setPosicion(0,0);
             }*/
@@ -154,6 +203,34 @@ public class Nivel2 implements Screen{
             if(fondoExI.getSprite().getX() > 166){
                 fondoExI.setPosicion(0,0);
             }
+            if(fondoPiso1.getSprite().getY() < -100){
+                fondoPiso1.setPosicion(0,0);
+            }
+            if(fondoCarre2.getSprite().getX() < -166){
+                fondoCarre2.setPosicion(10,0);
+            }
+            if(fondoCarre3.getSprite().getX() < -166){
+                fondoCarre3.setPosicion(10,0);
+            }
+            if(fondoCarre5.getSprite().getX() > 166){
+                fondoCarre5.setPosicion(0,0);
+            }
+            if(fondoCarre6.getSprite().getX() < 166){
+                fondoCarre6.setPosicion(0,0);
+            }
+            for(float i=0.01f; i<1;i++){
+                cono.setScale(cono.getScaleX()+i,cono.getScaleY()+i);
+                if(cono.getY() < 0){
+                    cono.setPosition(566,400);
+                    cono.setScale(0.3f,0.3f);
+                }
+            }
+            /*if(cono.getY() == 200){
+                cono.setScale(0.6f,0.6f);
+            }
+            /*if(fondoPiso2.getSprite().getY() < -100){
+                fondoPiso2.setPosicion(0,0);
+            }*/
             pinguino.render(batch);
         //float nuevaX = pinguino.getSprite().getX();
         //nuevaX += pinguino.velocidadX;
@@ -219,6 +296,47 @@ public class Nivel2 implements Screen{
         /*float xFondo2 =  fondo2.getX();
         xFondo2 += velocidad;
         fondo2.getSprite().setX(xFondo2);*/
+
+        float yFondoPiso1 = fondoPiso1.getY();
+        yFondoPiso1 += velocidadY;
+        fondoPiso1.getSprite().setY(yFondoPiso1);
+
+        /*float yFondoPiso2 = fondoPiso2.getY();
+        yFondoPiso2 += velocidadY;
+        fondoPiso2.getSprite().setY(yFondoPiso2);*/
+
+        float xFondoCarre2 =  fondoCarre2.getX();
+        float yFondoCarre2 = fondoCarre2.getY();
+        xFondoCarre2 -= velocidadX;
+        yFondoCarre2 += velocidadY;
+        fondoCarre2.getSprite().setX(xFondoCarre2);
+        fondoCarre2.getSprite().setY(yFondoCarre2);
+
+        float xFondoCarre3 =  fondoCarre3.getX();
+        //float yFondoEx = fondoEx.getY();
+        xFondoCarre3 -= velocidadX;
+        //yFondoEx += velocidadY;
+        fondoCarre3.getSprite().setX(xFondoCarre3);
+        //fondoEx.getSprite().setY(yFondoEx);*/
+
+        float xFondoCarre5 =  fondoCarre5.getX();
+        float yFondoCarre5 = fondoCarre5.getY();
+        xFondoCarre5 -= velocidadX;
+        yFondoCarre5 += velocidadY;
+        fondoCarre5.getSprite().setX(xFondoCarre5);
+        fondoCarre5.getSprite().setY(yFondoCarre5);
+
+        float xFondoCarre6 =  fondoCarre6.getX();
+        //float yFondoEx = fondoEx.getY();
+        xFondoCarre6 -= velocidadX;
+        //yFondoEx += velocidadY;
+        fondoCarre6.getSprite().setX(xFondoCarre6);
+        //fondoEx.getSprite().setY(yFondoEx);*/
+
+        float yFondoCono = cono.getY();
+        yFondoCono += velocidadItemY;
+        cono.setY(yFondoCono);
+
         batch.end();
     }
 

@@ -269,6 +269,7 @@ public class Personaje {
         float y = V0 * tiempoSalto - G_2 * tiempoSalto * tiempoSalto;
         if(tiempoSalto > tiempoVuelo/2){
             estadoSalto = EstadoSalto.BAJANDO;
+            //probarCaida(mapa);
         }
         if(estadoSalto == EstadoSalto.SUBIENDO){
             sprite.setY(yInicial+y);
@@ -280,6 +281,7 @@ public class Personaje {
             }
             else{
                 sprite.setY(sprite.getY()+velocidadY);
+                //probarCaida(mapa);
             }
         }
         if(y<0){
