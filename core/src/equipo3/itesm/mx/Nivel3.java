@@ -35,6 +35,7 @@ public class Nivel3 implements Screen {
     private static final float ancho = 800;
     private static final float alto = 1280;
     private Boton btnSalto,btnDisparar,btnDer,btnIzq;
+    private EstadosJuego estadosJuego;
 
     public Nivel3(Juego juego){
         this.juego = juego;
@@ -128,6 +129,7 @@ public class Nivel3 implements Screen {
 
         crearTexturas();
         cargarObjetos();
+        estadosJuego = EstadosJuego.JUGANDO;
 
         pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
 
@@ -135,6 +137,9 @@ public class Nivel3 implements Screen {
 
     @Override
     public void render(float delta) {
+        if(estadosJuego != EstadosJuego.PERDIO){
+            MoverPersonaje();
+        }
         Gdx.gl.glClearColor(0.42f,0.55f,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -168,7 +173,11 @@ public class Nivel3 implements Screen {
     }
 
     private void MoverPersonaje(){
-
+        switch (pinguino.getEstadoSalto()){
+            case SUBIENDO: case BAJANDO:
+                pinguino.actualizarSalto(mapa);
+                break;
+        }
     }
 
     @Override

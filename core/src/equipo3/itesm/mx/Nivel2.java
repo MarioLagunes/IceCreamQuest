@@ -41,7 +41,7 @@ public class Nivel2 implements Screen{
     private Boton btnSaltar,btnPausa,btnReanudar,btnSalir,ganar,perder;
     private Texto texto;
     private int vidas = 5;
-    private float j = 0.01f;
+    private float j = 0.01f,j2=0.03f;
 
 
     public Nivel2(Juego juego){
@@ -168,8 +168,6 @@ public class Nivel2 implements Screen{
         fondoPiso1.setPosicion(0,0);
         fondoPiso2.setPosicion(0,0);
 
-
-
         fondoCarre1 = new Fondo(textCarreIzq);
         fondoCarre2 = new Fondo(textCarreIzq);
         fondoCarre3 = new Fondo(textCarreIzq);
@@ -188,8 +186,8 @@ public class Nivel2 implements Screen{
         posteIzq = new Sprite(textPosteIzq);
         posteDer.setScale(0.3f,0.3f);
         posteIzq.setScale(0.3f,0.3f);
-        posteDer.setPosition(100,400);
-        posteIzq.setPosition(1000,400);
+        posteDer.setPosition(670,300);
+        posteIzq.setPosition(450,300);
 
     }
 
@@ -280,9 +278,14 @@ public class Nivel2 implements Screen{
             }
             for(float i= 0.01f; i<1;i++){
                 cono.setScale(cono.getScaleX()+j,cono.getScaleY()+j);
+                posteIzq.setScale(posteIzq.getScaleX()+j,posteIzq.getScaleY()+j);
                 if(cono.getY() < -155){
                     cono.setPosition(566,400);
                     cono.setScale(0.3f,0.3f);
+                }
+                if(posteIzq.getY() < -200){
+                    posteIzq.setScale(0.3f,0.3f);
+                    posteIzq.setPosition(450,300);
                 }
             }
             /*if(cono.getY() == 200){
@@ -396,6 +399,13 @@ public class Nivel2 implements Screen{
         float yFondoCono = cono.getY();
         yFondoCono += velocidadItemY;
         cono.setY(yFondoCono);
+
+        float xPosteIzq = posteIzq.getX();
+        float yPosteIzq = posteIzq.getY();
+        xPosteIzq -= velocidadX;
+        yPosteIzq += velocidadY;
+        posteIzq.setX(xPosteIzq);
+        posteIzq.setY(yPosteIzq);
 
         if(estadosJuego == EstadosJuego.GANO ){
             ganar.render(batch);
