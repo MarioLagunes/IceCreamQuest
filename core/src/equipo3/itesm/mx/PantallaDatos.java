@@ -16,6 +16,9 @@ public class PantallaDatos {
     protected Viewport vista;
     protected final int ancho = 1280;
     protected final int alto = 800;
+    protected final int ancho2 = 800;
+    protected final int alto2 = 1280;
+
 
 
     public PantallaDatos() {
@@ -42,7 +45,7 @@ public class PantallaDatos {
 
     public OrthographicCamera crearCamaraNivel3(OrthographicCamera camara1){
         camara1 = new OrthographicCamera(alto,ancho);
-        camara1.position.set(alto/2,ancho/2,0);
+        camara1.position.set(alto /2,ancho/2,0);
         camara1.update();
         return camara1;
     }

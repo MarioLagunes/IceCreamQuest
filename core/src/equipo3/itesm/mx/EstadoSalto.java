@@ -6,5 +6,7 @@ package equipo3.itesm.mx;
 public enum EstadoSalto {
     EN_PISO,
     SUBIENDO,
-    BAJANDO
+    BAJANDO,
+    SUBIENDOIZQ,
+    BAJANDOIZQ
 }

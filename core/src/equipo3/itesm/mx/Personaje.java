@@ -22,7 +22,7 @@ public class Personaje {
     public float velX;
     public float velocidadX = 4;
     private Animation animacion,animar,animarSalto,animarQuieto,animarReg;
-    public float timerAnimacion,tiempoAnimar,timerSalto;
+    public float timerAnimacion,tiempoAnimar,timerSalto,timerAnimacion3,timerSalto3;
     private EstadoMovimiento estadoMovimiento = EstadoMovimiento.INICIANDO;
     //private Texture texturaSalto;
     private EstadoSalto estadoSalto = EstadoSalto.ABAJO;
@@ -66,6 +66,8 @@ public class Personaje {
         animarSalto.setPlayMode(Animation.PlayMode.LOOP);
         timerSalto = 0;
         timerAnimacion = 0;
+        timerAnimacion3 = 0;
+        timerSalto3 = 0;
         sprite = new Sprite(texturaPersonaje[0][0]);
     }
 
@@ -95,80 +97,37 @@ public class Personaje {
             TextureRegion regionSalto = animarSalto.getKeyFrame(timerSalto);
             sprite.setRegion(regionSalto);
         }
+        sprite.draw(batch);//batch.draw(sprite,sprite.getX(),sprite.getY());
+    }
+
+    public void renderNivel3(SpriteBatch batch){
+        //Movimientos a la derecha
+        if(estadoMovimiento == estadoMovimiento.DER && estadoSalto == EstadoSalto.ABAJO){
+            timerAnimacion += Gdx.graphics.getDeltaTime();
+            TextureRegion region = animacion.getKeyFrame(timerAnimacion);
+            sprite.setRegion(region);
+        }
+        if(estadoSalto == EstadoSalto.SUBIENDO || estadoSalto == EstadoSalto.BAJANDO || estadoSalto == EstadoSalto.CAIDALIBRE){
+            timerSalto += Gdx.graphics.getDeltaTime();
+            TextureRegion regionSalto = animarSalto.getKeyFrame(timerSalto);
+            sprite.setRegion(regionSalto);
+        }
+
+        //Movimientos a la izquierda
+        if(estadoMovimiento == estadoMovimiento.IZQ && estadoSalto == EstadoSalto.ABAJO){
+            timerAnimacion3 += Gdx.graphics.getDeltaTime();
+            TextureRegion region3 = animacion.getKeyFrame(timerAnimacion3);
+            sprite.setRegion(region3);
+        }
+        if(estadoSalto == EstadoSalto.SUBIENDO || estadoSalto == EstadoSalto.BAJANDO || estadoSalto == EstadoSalto.CAIDALIBRE){
+            timerSalto3 += Gdx.graphics.getDeltaTime();
+            TextureRegion regionSalto3 = animarSalto.getKeyFrame(timerSalto3);
+            sprite.setRegion(regionSalto3);
+        }
         sprite.draw(batch);
 
-        //batch.draw(sprite,sprite.getX(),sprite.getY());
+
     }
-
-    public void renderEnemigo(SpriteBatch batch){
-        switch(estadoEnemigo){
-            case DERECHA:
-                velX += 2;
-                tiempoAnimar += Gdx.graphics.getDeltaTime();
-                TextureRegion region4 = animar.getKeyFrame(tiempoAnimar);
-                //x=spriteEnemigo.getX()+velX;
-                //spriteEnemigo.setX(x);
-                batch.draw(region4,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
-                if(velX > 300.0){
-                    //dardos.render(batch);
-                  //System.out.print(velX);
-                   moverEnemigosIzq();
-                }
-                break;
-            case IZQUIERDA:
-                velX -= 2;
-                tiempoAnimar += Gdx.graphics.getDeltaTime();
-                TextureRegion region5 = animarReg.getKeyFrame(tiempoAnimar);
-                //if(region5.isFlipX()){
-                  //  region5.flip(true,false);
-                //}
-                //x=spriteEnemigo.getX()+velX;
-                //spriteEnemigo.setX(x);
-                batch.draw(region5,spriteEnemigo.getX()+velX,spriteEnemigo.getY());
-                if(velX <= 10){
-                    moverEnemigosDer();
-                }
-                break;
-            case INICIO:
-                velX = 0;
-                break;
-            case BORRADO:
-                velX =0;
-                break;
-        }
-    }
-
-
-
-    /*public void actualizar(TiledMap mapa){
-        float nuevaX = sprite.getX();
-        switch(estadoMovimiento){
-            case DER:
-                nuevaX += velocidadX;
-                if(nuevaX <= Nivel1.ancho_mapa - sprite.getWidth() ){
-                    sprite.setX(nuevaX);
-                }
-                break;
-        }
-        recolectarHelados(mapa);
-    }*/
-
-    /*public void actualizar(TiledMap mapa){
-        switch (estadoMovimiento){
-            case DER:
-                moverHorizontal(mapa);
-                break;
-            case INICIANDO:
-                caer(mapa,velocidadY);
-                break;
-        }
-        switch (estadoSalto){
-            case SUBIENDO: case BAJANDO:
-                actualizarSalto(mapa);
-                break;
-        }
-        recolectarHelados(mapa);
-    }*/
 
     public void recolectarHelados(TiledMap mapa, Sound helado, Sound heladoEspecial){
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(1);

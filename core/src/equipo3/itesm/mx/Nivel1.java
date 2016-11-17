@@ -125,11 +125,13 @@ public class Nivel1 implements Screen {
         mapa = manager.get("Fondo64.tmx");
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
         rendererMapa.setView(camara);
+
         texuturaPersonaje = manager.get("PinguinoChido2.png");
         texturaSal = manager.get("Saltar.png");
         pinguino = new Personaje(texuturaPersonaje,texturaSal,1.1f);
         pinguino.getSprite().setPosition(0,128);
         pinguino.getSprite().setAlpha(1);
+
         texturaSalto = manager.get("BtnArriba.png");
         btnSalto = new Boton(texturaSalto);
         btnSalto.setPosicion(10,Juego.alto * 0.01f);
@@ -139,8 +141,10 @@ public class Nivel1 implements Screen {
         texturaGano = manager.get("Ganaste_1.png");
         btnGanar = new Boton(texturaGano);
         btnGanar.setPosicion(Juego.ancho/4,Juego.alto/16);
+
         btnDisparar = new Boton(texturaDisparo);
         btnDisparar.setPosicion(1100,Juego.alto * 0.01f);
+
         texturaPausa = manager.get("BtnPausa.png");
         btnPausa = new Boton((texturaPausa));
         btnPausa.setPosicion(1100,Juego.alto*0.8f);
