@@ -11,10 +11,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
+import com.sun.org.apache.xerces.internal.util.URI;
 
 
 /**
@@ -30,10 +32,16 @@ public class Nivel2 implements Screen{
     private StretchViewport vistaHUD;
     private SpriteBatch batch;
     private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2,fondoPiso1,fondoPiso2,fondoPiso3,fondoCarre1,fondoCarre2,fondoCarre3,fondoCarre4,fondoCarre5,fondoCarre6;
-    private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro,fondoPiso,textCarreDer,textCarreIzq,textCono;
+    private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro,fondoPiso,textCarreDer,textCarreIzq,textCono,textBtnSaltar,textBtnPausa,
+                    textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore;
     private int velocidadX = 10, velocidadY = -10,velocidadItemY = -5;
     private Personaje pinguino;
-    private Sprite cono;
+    private Sprite cono,marcador,pausa;
+    private EstadosJuego estadosJuego;
+    private Boton btnSaltar,btnPausa,btnReanudar,btnSalir,ganar,perder;
+    private Texto texto;
+    private int vidas = 5;
+    private float j = 0.01f;
 
 
     public Nivel2(Juego juego){
@@ -71,15 +79,51 @@ public class Nivel2 implements Screen{
         manager.load("banquetaIZQ.png",Texture.class);
         manager.load("banquetaDER.png",Texture.class);
         manager.load("cono.png",Texture.class);
+        manager.load("BtnPausa.png",Texture.class);
+        manager.load("BtnArriba.png",Texture.class);
+        manager.load("CuadroScore.png",Texture.class);
+        manager.load("Pausa.png",Texture.class);
+        manager.load("Perdiste_1.png",Texture.class);
+        manager.load("Ganaste_1.png",Texture.class);
+        manager.load("BTN_Resumen.png",Texture.class);
+        manager.load("BTN_Salir.png",Texture.class);
         manager.finishLoading();
     }
 
     private void crearObjetos() {
         AssetManager manager = juego.getManager();
+        textBtnSaltar = manager.get("BtnArriba.png");
+        textBtnPausa = manager.get("BtnPausa.png");
+        textBtnReaunudar = manager.get("BTN_Resumen.png");
+        textBtnSalir = manager.get("BTN_Salir.png");
+        texturaPausa = manager.get("Pausa.png");
+        texturaGanaste = manager.get("Ganaste_1.png");
+        texturaPerdiste = manager.get("Perdiste_1.png");
+        texturaGanaste = manager.get("Ganaste_1.png");
+        texturaPerdiste = manager.get("Perdiste_1.png");
+        texturaPausa = manager.get("Pausa.png");
+        texturaScore = manager.get("CuadroScore.png");
+
+
+        btnSaltar = new Boton(textBtnSaltar);
+        btnPausa = new Boton(textBtnPausa);
+        btnReanudar = new Boton(textBtnReaunudar);
+        btnSalir = new Boton(textBtnSalir);
+        marcador = new Sprite(texturaScore);
+        ganar = new Boton(texturaGanaste);
+        perder = new Boton(texturaPerdiste);
+        pausa = new Sprite(texturaPausa);
+        texto = new Texto();
+
+        marcador.setPosition(0,560);
+        btnSaltar.setPosicion(90,-10);
+        btnPausa.setPosicion(1100,640);
+
         fondoNoche = manager.get("ciudadnivel2.png");
         fondoPiso = manager.get("Carretera.png");
         textCarreDer = manager.get("banquetaDER.png");
         textCarreIzq = manager.get("banquetaIZQ.png");
+
 
         textCono = manager.get("cono.png");
         cono = new Sprite(textCono);
@@ -218,9 +262,9 @@ public class Nivel2 implements Screen{
             if(fondoCarre6.getSprite().getX() < 166){
                 fondoCarre6.setPosicion(0,0);
             }
-            for(float i=0.01f; i<1;i++){
-                cono.setScale(cono.getScaleX()+i,cono.getScaleY()+i);
-                if(cono.getY() < 0){
+            for(float i= 0.01f; i<1;i++){
+                cono.setScale(cono.getScaleX()+j,cono.getScaleY()+j);
+                if(cono.getY() < -155){
                     cono.setPosition(566,400);
                     cono.setScale(0.3f,0.3f);
                 }
@@ -337,7 +381,41 @@ public class Nivel2 implements Screen{
         yFondoCono += velocidadItemY;
         cono.setY(yFondoCono);
 
+        if(estadosJuego == EstadosJuego.GANO ){
+            ganar.render(batch);
+        }
+        else if(estadosJuego == EstadosJuego.PAUSADO){
+            pausa.setPosition(Juego.ancho/4,Juego.alto/16);
+            pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+            j=0;
+            cono.setScale(cono.getScaleX(),cono.getScaleY());
+            pausa.draw(batch);
+            velocidadX = 0;
+            velocidadY = 0;
+            velocidadItemY = 0;
+            btnReanudar.setPosicion(Juego.ancho/3,Juego.alto*0.45f);
+            btnSalir.setPosicion(Juego.ancho/3,Juego.alto*0.15f);
+            btnReanudar.render(batch);
+            btnSalir.render(batch);
+        }
+        else if(estadosJuego == EstadosJuego.PERDIO){
+            perder.render(batch);
+        }
+        else{
+            btnSaltar.render(batch);
+            //btnDisparar.render(batch);
+            btnPausa.render(batch);
+            marcador.draw(batch);
+            texto.mostrarMensaje(batch," " + pinguino.puntos,150,Juego.alto * 0.93f);
+            texto.mostrarMensaje(batch," " + vidas,150,Juego.alto * 0.85f);
+        }
+
         batch.end();
+
+        /*batch.setProjectionMatrix(camaraHUD.combined);
+        batch.begin();
+
+        batch.end();*/
     }
 
     @Override
@@ -367,6 +445,76 @@ public class Nivel2 implements Screen{
     }
 
     public class ProcesadorEntrada extends InputAdapter{
+        private Vector3 coordenadas = new Vector3();
+        private float x,y;
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            transformarCoordenadas(screenX,screenY);
+            if(btnSaltar.contiene(x,y)){
+                pinguino.saltar();
+            }
+            /*else if(btnDisparar.contiene(x,y)){
+                boomerang = new Boomerang(texturaBoomeran);
+                boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
+                boomerang.salir();
+                btnDisparar.setPosicion(0,-100);
 
+            }*/
+
+            else if(btnPausa.contiene(x,y)){
+                estadosJuego = estadosJuego.PAUSADO;
+
+            }
+            else if(btnReanudar.contiene(x,y)){
+                estadosJuego = estadosJuego.JUGANDO;
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
+                pausa.setPosition(-13444,-12435);
+                j=0.01f;
+                velocidadX = 10;
+                velocidadY = -10;
+                velocidadItemY = -5;
+            }
+            else if(btnSalir.contiene(x,y)){
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        juego.setScreen(new MenuPrincipal(juego));
+                    }
+                },1);
+                //musica.setVolume(0);
+                //musica.stop();
+            }
+            else if(perder.contiene(x,y)){
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        juego.setScreen(new MenuPrincipal(juego));
+                    }
+                },1);
+                //musica.setVolume(0);
+                //musica.stop();
+            }
+            else if(estadosJuego == EstadosJuego.GANO){
+                if(ganar.contiene(x,y)){
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            juego.setScreen(new Nivel2(juego));
+                        }
+                    },1);
+                }
+                //musica.setVolume(0);
+                //musica.stop();
+            }
+
+            return true;
+        }
+
+        private void transformarCoordenadas(int screenX, int screenY){
+            coordenadas.set(screenX, screenY,0);
+            camaraHUD.unproject(coordenadas);
+            x = coordenadas.x;
+            y = coordenadas.y;
+        }
     }
 }

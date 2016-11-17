@@ -86,10 +86,6 @@ public class Nivel1 implements Screen {
         estadoJuego = EstadosJuego.JUGANDO;
         texto = new Texto();
         pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
-        enemigo.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
-        enemigo1.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
-        enemigo2.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
-        enemigo3.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
         musica.setLooping(true);
         musica.setVolume(1.5f);
         musica.play();
@@ -248,7 +244,7 @@ public class Nivel1 implements Screen {
                     //btnDisparar.setDisabled(false);
                     //btnDisparar.setDisabled(false);
                 }
-                else if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && boomerang.getX() == pinguino.getX()){
+                else if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && boomerang.getX() <= pinguino.getX()){
                     boomerang.setBoom(Boomerang.boom.GUARDADO);
                     boomerang.setPosicion(-1000,0);
                     btnDisparar.setPosicion(1100,Juego.alto * 0.01f);
@@ -398,6 +394,7 @@ public class Nivel1 implements Screen {
                 enemigo1.velocidad = 0;
                 enemigo2.velocidad = 0;
                 enemigo3.velocidad = 0;
+                boomerang.velocidad = 0;
                 btnResumen.setPosicion(Juego.ancho/3,Juego.alto*0.45f);
                 btnSalir.setPosicion(Juego.ancho/3,Juego.alto*0.15f);
                 btnResumen.render(batch);
@@ -505,6 +502,8 @@ public class Nivel1 implements Screen {
                 camaraHUD.position.set(Juego.ancho/2,camaraHUD.position.y,0);
                 camara.update();
                 camaraHUD.update();
+                boomerang.setPosicion(-1000,0);
+                btnDisparar.setPosicion(1100,Juego.alto * 0.01f);
                 actualizarCamara();
             }
             if(vidas <= 0 || pinguino.puntos < 0){
