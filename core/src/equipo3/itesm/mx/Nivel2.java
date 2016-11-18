@@ -197,9 +197,9 @@ public class Nivel2 implements Screen{
         posteDer1.setPosition(1050,-100);
         posteIzq1.setPosition(180,50);
         posteEstaticoIzq.setScale(0.15f,0.15f);
-        posteEstaticoDer.setScale(0.1f,0.1f);
-        posteEstaticoIzq.setPosition(445,250);
-        posteEstaticoDer.setPosition(670,250);
+        posteEstaticoDer.setScale(0.15f,0.15f);
+        posteEstaticoIzq.setPosition(445,270);
+        posteEstaticoDer.setPosition(670,270);
 
     }
 
