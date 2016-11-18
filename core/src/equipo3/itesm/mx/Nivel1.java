@@ -317,12 +317,12 @@ public class Nivel1 implements Screen {
             dardo3.render(batch);
             //tiempo += Gdx.graphics.getDeltaTime();
             if((dardo.getX() >= pinguino.getX() && dardo.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
-                    (dardo.getY() >= pinguino.getY() && dardo.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
+                    (dardo.getY() >= pinguino.getY() && dardo.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))) {
                 vidas--;
                 dardo.velocidadX = 0;
                 muere.play();
-                dardo.setPosicion(-100,0);
-              //  tiempo2 += Gdx.graphics.getDeltaTime();
+                dardo.setPosicion(-100, 0);
+                //  tiempo2 += Gdx.graphics.getDeltaTime();
 
                 /*if( tiempo2 > 0) {
                     System.out.println("spy el tiempo2" + tiempo2);
@@ -334,6 +334,7 @@ public class Nivel1 implements Screen {
                 System.out.println("soy el tiempo" + tiempo);
                 pinguino.getSprite().setAlpha(1);
             }*/
+            }
 
         //Gdx.app.log("boomerang",""+boomerang.getX()+"enemigo "+enemigo.getXEnemiga());
             if((dardo2.getX() >= pinguino.getX() && dardo2.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
