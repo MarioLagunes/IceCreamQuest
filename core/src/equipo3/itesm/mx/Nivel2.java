@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sun.org.apache.xerces.internal.util.URI;
 
 
+
+
 /**
  * Created by Mario Lagunes on 06/11/2016.
  */
@@ -33,12 +35,14 @@ public class Nivel2 implements Screen{
     private SpriteBatch batch;
     private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2,fondoPiso1,fondoPiso2,fondoPiso3,fondoCarre1,fondoCarre2,fondoCarre3,fondoCarre4,fondoCarre5,fondoCarre6;
     private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro,fondoPiso,textCarreDer,textCarreIzq,textCono,textBtnSaltar,textBtnPausa,
-                    textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore,textPosteDer,textPosteIzq,textMoco;
-    private int velocidadX = 5, velocidadY = -5,velocidadItemY = -5,velocidadPosteX = 5,velocidadPosteY = -3;
+                    textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore,textPosteDer,textPosteIzq,textMoco,textBtnDer,textBtnIzq;
+    private int velocidadX = 5, velocidadY = -5,velocidadItemY = -5,velocidadPosteX = 5,velocidadPosteY = -3,velocidadPinguino = 10;
     private Personaje pinguino;
     private Sprite cono,marcador,pausa,posteDer,posteIzq,moco,posteDer1,posteIzq1,posteEstaticoDer,posteEstaticoIzq;
     private EstadosJuego estadosJuego;
-    private Boton btnSaltar,btnPausa,btnReanudar,btnSalir,ganar,perder;
+    private Personaje.EstadoMovimiento estadoMovimiento;
+    private Personaje.EstadoSalto estadoSalto;
+    private Boton btnSaltar,btnPausa,btnReanudar,btnSalir,ganar,perder,btnDer,btnIzq;
     private Texto texto;
     private int vidas = 5;
     private float j = 0.01f,j2=0.015f;
@@ -64,7 +68,7 @@ public class Nivel2 implements Screen{
             cargarTexturas();
             crearObjetos();
             Gdx.input.setInputProcessor(new ProcesadorEntrada());
-            pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
+        //pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
 
     }
 
@@ -90,6 +94,8 @@ public class Nivel2 implements Screen{
         manager.load("poste.png",Texture.class);
         manager.load("poste_der.png",Texture.class);
         manager.load("moco.png",Texture.class);
+        manager.load("Btnder_Naranja.png",Texture.class);
+        manager.load("Btnizq_Naranja.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -109,6 +115,8 @@ public class Nivel2 implements Screen{
         textMoco = manager.get("moco.png");
         textPosteIzq = manager.get("poste.png");
         textPosteDer = manager.get("poste_der.png");
+        textBtnDer = manager.get("Btnder_Naranja.png");
+        textBtnIzq = manager.get("Btnizq_Naranja.png");
 
 
         btnSaltar = new Boton(textBtnSaltar);
@@ -119,10 +127,14 @@ public class Nivel2 implements Screen{
         ganar = new Boton(texturaGanaste);
         perder = new Boton(texturaPerdiste);
         pausa = new Sprite(texturaPausa);
+        btnDer = new Boton(textBtnDer);
+        btnIzq = new Boton(textBtnIzq);
         texto = new Texto();
 
         marcador.setPosition(0,560);
-        btnSaltar.setPosicion(90,-10);
+        btnDer.setPosicion(180,-10);
+        btnIzq.setPosicion(80,-10);
+        btnSaltar.setPosicion(1100,-10);
         btnPausa.setPosicion(1100,640);
 
         fondoNoche = manager.get("ciudadnivel2.png");
@@ -222,6 +234,7 @@ public class Nivel2 implements Screen{
         //velocidadX += 1;
         //velocidadY -= 5;
         actualizarCamara();
+        moverPersonaje();
         Gdx.gl.glClearColor(0.42f,0.55f,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //fondoNoche.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
@@ -499,6 +512,8 @@ public class Nivel2 implements Screen{
             btnSaltar.render(batch);
             //btnDisparar.render(batch);
             btnPausa.render(batch);
+            btnDer.render(batch);
+            btnIzq.render(batch);
             marcador.draw(batch);
             texto.mostrarMensaje(batch," " + pinguino.puntos,150,Juego.alto * 0.93f);
             texto.mostrarMensaje(batch," " + vidas,150,Juego.alto * 0.85f);
@@ -510,6 +525,27 @@ public class Nivel2 implements Screen{
         batch.begin();
 
         batch.end();*/
+    }
+
+    public void moverPersonaje(){
+        switch (pinguino.getEstadoMovimiento()){
+            case DER:
+                float x = 0;
+                x = pinguino.getSprite().getX()+velocidadPinguino;
+                pinguino.getSprite().setX(x);
+                break;
+            case IZQ:
+                float x1 = 0;
+                x1 = pinguino.getSprite().getX()-velocidadPinguino;
+                pinguino.getSprite().setX(x1);
+                break;
+        }
+
+        switch(pinguino.getEstadoSalto()){
+            case SUBIENDO: case BAJANDO:
+                pinguino.actualizarSalto();
+                break;
+        }
     }
 
     @Override
@@ -546,6 +582,12 @@ public class Nivel2 implements Screen{
             transformarCoordenadas(screenX,screenY);
             if(btnSaltar.contiene(x,y)){
                 pinguino.saltar();
+            }
+            if(btnDer.contiene(x,y)){
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
+            }
+            if(btnIzq.contiene(x,y)){
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.IZQ);
             }
             /*else if(btnDisparar.contiene(x,y)){
                 boomerang = new Boomerang(texturaBoomeran);

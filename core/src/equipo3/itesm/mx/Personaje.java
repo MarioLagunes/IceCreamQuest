@@ -198,6 +198,10 @@ public class Personaje {
         }
     }*/
 
+    public void saltarNivel2(){
+
+    }
+
     public void quieto(Batch batch){
         sprite.draw(batch);
     }
@@ -274,7 +278,7 @@ public class Personaje {
         }*/
     }
 
-    /*public void actualizarSalto(){
+    public void actualizarSalto(){
         timerAnimacion = 0;
         float y = V0 * tiempoSalto - G_2 * tiempoSalto * tiempoSalto;
         if(tiempoSalto > tiempoVuelo/2){
@@ -286,7 +290,7 @@ public class Personaje {
             sprite.setY(yInicial);
             estadoSalto = EstadoSalto.ABAJO;
         }
-    }*/
+    }
 
     public Sprite getSprite(){
         return sprite;

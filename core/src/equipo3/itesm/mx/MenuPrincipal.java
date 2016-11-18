@@ -86,7 +86,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaAjustes(juego));
-				musica.stop();
+				//musica.stop();
 
 
 
