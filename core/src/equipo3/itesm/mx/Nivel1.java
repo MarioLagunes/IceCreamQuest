@@ -50,7 +50,7 @@ public class Nivel1 implements Screen {
     private EstadosJuego estadoJuego;
     private Texto texto;
     private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo1,texturaFondo2,texturaFondo3,texturaScore,texturaDardo,
-            texturaSal,texturaQui,texturaSalir,texturaResumen,texturaPerdiste,texturaEnemigoReg;
+            texturaSal,texturaQui,texturaSalir,texturaResumen,texturaPerdiste,texturaEnemigoReg,textPinIzq;
     private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir,btnPerdiste;
     private int heladosRecolectados = 0;
     private int vidas = 5;
@@ -117,6 +117,7 @@ public class Nivel1 implements Screen {
         manager.load("Helado especial.mp3",Sound.class);
         manager.load("Helado normal.mp3",Sound.class);
         manager.load("Meeehhpp!!.wav",Sound.class);
+        manager.load("Walkgud_IZQ.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -128,7 +129,8 @@ public class Nivel1 implements Screen {
 
         texuturaPersonaje = manager.get("PinguinoChido2.png");
         texturaSal = manager.get("Saltar.png");
-        pinguino = new Personaje(texuturaPersonaje,texturaSal,1.1f);
+        textPinIzq = manager.get("Walkgud_IZQ.png");
+        pinguino = new Personaje(texuturaPersonaje,texturaSal,textPinIzq);
         pinguino.getSprite().setPosition(0,128);
         pinguino.getSprite().setAlpha(1);
 
