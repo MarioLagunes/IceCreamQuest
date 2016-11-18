@@ -68,7 +68,7 @@ public class PantallaInstrucciones implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //juego.setScreen(new Nivel1(juego));
-                juego.setScreen(new Nivel3(juego));
+                juego.setScreen(new Nivel2(juego));
             }
         });
 

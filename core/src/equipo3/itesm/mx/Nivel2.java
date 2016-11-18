@@ -34,14 +34,14 @@ public class Nivel2 implements Screen{
     private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2,fondoPiso1,fondoPiso2,fondoPiso3,fondoCarre1,fondoCarre2,fondoCarre3,fondoCarre4,fondoCarre5,fondoCarre6;
     private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro,fondoPiso,textCarreDer,textCarreIzq,textCono,textBtnSaltar,textBtnPausa,
                     textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore,textPosteDer,textPosteIzq,textMoco;
-    private int velocidadX = 10, velocidadY = -10,velocidadItemY = -5;
+    private int velocidadX = 8, velocidadY = -8,velocidadItemY = -5,velocidadPosteX = 5,velocidadPosteY = -3;
     private Personaje pinguino;
-    private Sprite cono,marcador,pausa,posteDer,posteIzq,moco;
+    private Sprite cono,marcador,pausa,posteDer,posteIzq,moco,posteDer1,posteIzq1,posteEstaticoDer,posteEstaticoIzq;
     private EstadosJuego estadosJuego;
     private Boton btnSaltar,btnPausa,btnReanudar,btnSalir,ganar,perder;
     private Texto texto;
     private int vidas = 5;
-    private float j = 0.01f,j2=0.03f;
+    private float j = 0.01f,j2=0.015f;
 
 
     public Nivel2(Juego juego){
@@ -184,10 +184,22 @@ public class Nivel2 implements Screen{
         moco = new Sprite(textMoco);
         posteDer = new Sprite(textPosteDer);
         posteIzq = new Sprite(textPosteIzq);
-        posteDer.setScale(0.3f,0.3f);
+        posteDer1 = new Sprite(textPosteDer);
+        posteIzq1 = new Sprite(textPosteIzq);
+        posteEstaticoDer = new Sprite(textPosteDer);
+        posteEstaticoIzq = new Sprite(textPosteIzq);
+        posteDer.setScale(0.5f,0.5f);
         posteIzq.setScale(0.3f,0.3f);
-        posteDer.setPosition(670,300);
-        posteIzq.setPosition(450,300);
+        posteDer.setPosition(770,200);
+        posteIzq.setPosition(440,300);
+        posteDer1.setScale(1f,1f);
+        posteIzq1.setScale(0.8f,0.8f);
+        posteDer1.setPosition(1050,-100);
+        posteIzq1.setPosition(180,50);
+        posteEstaticoIzq.setScale(0.3f,0.3f);
+        posteEstaticoDer.setScale(0.3f,0.3f);
+        posteEstaticoIzq.setPosition(440,300);
+        posteEstaticoDer.setPosition(670,300);
 
     }
 
@@ -241,6 +253,10 @@ public class Nivel2 implements Screen{
             cono.draw(batch);
             posteDer.draw(batch);
             posteIzq.draw(batch);
+            posteDer1.draw(batch);
+            posteIzq1.draw(batch);
+            posteEstaticoDer.draw(batch);
+            posteEstaticoIzq.draw(batch);
 
 
             /*if(fondo.getSprite().getX() == -500){
@@ -278,7 +294,13 @@ public class Nivel2 implements Screen{
             }
             for(float i= 0.01f; i<1;i++){
                 cono.setScale(cono.getScaleX()+j,cono.getScaleY()+j);
-                posteIzq.setScale(posteIzq.getScaleX()+j,posteIzq.getScaleY()+j);
+                posteIzq.setScale(posteIzq.getScaleX()+j2,posteIzq.getScaleY()+j2);
+                //if(posteIzq.getY()< 100){
+                posteDer.setScale(posteDer.getScaleX()+j2,posteDer.getScaleY()+j2);
+                posteIzq1.setScale(posteIzq1.getScaleX()+j2,posteIzq1.getScaleY()+j2);
+                posteDer1.setScale(posteDer1.getScaleX()+j2,posteDer1.getScaleY()+j2);
+
+                //}
                 if(cono.getY() < -155){
                     cono.setPosition(566,400);
                     cono.setScale(0.3f,0.3f);
@@ -287,6 +309,24 @@ public class Nivel2 implements Screen{
                     posteIzq.setScale(0.3f,0.3f);
                     posteIzq.setPosition(450,300);
                 }
+                if(posteDer.getY() < -200){
+                    posteDer.setScale(0.3f,0.3f);
+                    posteDer.setPosition(670,300);
+                }
+                if(posteIzq1.getY() < -200){
+                    posteIzq1.setScale(0.3f,0.3f);
+                    posteIzq1.setPosition(450,300);
+                }
+                if(posteDer1.getY() < -200){
+                    posteDer1.setScale(0.3f,0.3f);
+                    posteDer1.setPosition(670,300);
+                }
+                /*if(posteDer.getY() < 100){
+                    posteDer1.draw(batch);
+                }
+                if(posteIzq.getY() < 100){
+                    posteIzq1.draw(batch);
+                }*/
             }
             /*if(cono.getY() == 200){
                 cono.setScale(0.6f,0.6f);
@@ -402,10 +442,31 @@ public class Nivel2 implements Screen{
 
         float xPosteIzq = posteIzq.getX();
         float yPosteIzq = posteIzq.getY();
-        xPosteIzq -= velocidadX;
-        yPosteIzq += velocidadY;
+        xPosteIzq -= velocidadPosteX;
+        yPosteIzq += velocidadPosteY;
         posteIzq.setX(xPosteIzq);
         posteIzq.setY(yPosteIzq);
+
+        float xPosteDer = posteDer.getX();
+        float yPosteDer = posteDer.getY();
+        xPosteDer += velocidadPosteX;
+        yPosteDer += velocidadPosteY;
+        posteDer.setX(xPosteDer);
+        posteDer.setY(yPosteDer);
+
+        float xPosteIzq1 = posteIzq1.getX();
+        float yPosteIzq1 = posteIzq1.getY();
+        xPosteIzq1 -= velocidadPosteX;
+        yPosteIzq1 += velocidadPosteY;
+        posteIzq1.setX(xPosteIzq1);
+        posteIzq1.setY(yPosteIzq1);
+
+        float xPosteDer1 = posteDer1.getX();
+        float yPosteDer1 = posteDer1.getY();
+        xPosteDer1 += velocidadPosteX;
+        yPosteDer1 += velocidadPosteY;
+        posteDer1.setX(xPosteDer1);
+        posteDer1.setY(yPosteDer1);
 
         if(estadosJuego == EstadosJuego.GANO ){
             ganar.render(batch);
