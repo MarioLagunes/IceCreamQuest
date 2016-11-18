@@ -174,6 +174,7 @@ public class Personaje {
         }
     }*/
 
+
     public void probarCaida(TiledMap mapa){
         boolean hayCeldaAbajo = leerCeldaAbajo(mapa);
             if(!hayCeldaAbajo){

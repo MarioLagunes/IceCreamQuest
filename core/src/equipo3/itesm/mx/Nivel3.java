@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -22,10 +23,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Nivel3 implements Screen {
     private Juego juego;
     private OrthographicCamera camara;
-    private Viewport vista;
+    private Viewport vista,vistaHUD;
     private OrthographicCamera camaraHUD;
     private OrthogonalTiledMapRenderer rendererMapa;
-    private StretchViewport vistaHUD;
     private SpriteBatch batch;
     private Personaje pinguino;
     private Fondo fondo1, fondo2,fondo3, fondo4;
@@ -36,6 +36,7 @@ public class Nivel3 implements Screen {
     private static final float alto = 1280;
     private Boton btnSalto,btnDisparar,btnDer,btnIzq;
     private EstadosJuego estadosJuego;
+    public static final int TAM_CELDA = 16;
 
     public Nivel3(Juego juego){
         this.juego = juego;
@@ -71,12 +72,12 @@ public class Nivel3 implements Screen {
         rendererMapa.setView(camara);
 
         //Pinguino
-        /*texuturaPersonaje = manager.get("PinguinoChido2.png");
+        texuturaPersonaje = manager.get("PinguinoChido2.png");
         texturaSal = manager.get("Saltar.png");
         pinguino = new Personaje(texuturaPersonaje,texturaSal,1.1f);
         pinguino.getSprite().setPosition(0,128);
         pinguino.getSprite().setAlpha(1);
-        ;*/
+        ;
 
         fondo1 = new Fondo(fondo);
         fondo2 = new Fondo(fondoFin);
@@ -99,6 +100,7 @@ public class Nivel3 implements Screen {
         texturaDisparo = manager.get("BtnBoom.png");
         btnSalto = new Boton(texturaSalto);
         btnSalto.setPosicion(690,-20);
+        //btnSalto.setPosicion(ancho/2,alto/2);
         btnDisparar = new Boton(texturaDisparo);
         btnDisparar.setPosicion(690,70);
         texturaDerecha = manager.get("BtnDerecha.png");
@@ -117,13 +119,15 @@ public class Nivel3 implements Screen {
         PantallaDatos vistaHUD1 = new PantallaDatos(vistaHUD);
 
         camara = camara1.crearCamaraNivel3(camara);
-        //vista = vista1.crearVistaNivel3(camara,vista);
-        camaraHUD = camaraHUD1.crearCamaraNivel3(camaraHUD);
-        vistaHUD = vistaHUD1.crearVistaHUDNivel3(camaraHUD,vistaHUD);
         camara.rotate(90);
+        camaraHUD = camaraHUD1.crearCamaraNivel3(camaraHUD);
+        camaraHUD.rotate(90);
+        vistaHUD = vistaHUD1.crearVistaHUDNivel3(camaraHUD,vistaHUD);
+
 
         batch = new SpriteBatch();
         vista = new FitViewport(alto,ancho,camara);
+        vistaHUD = new FitViewport(alto,ancho,camaraHUD);
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
@@ -132,6 +136,9 @@ public class Nivel3 implements Screen {
         estadosJuego = EstadosJuego.JUGANDO;
 
         pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+
+
+
 
     }
 
@@ -144,7 +151,9 @@ public class Nivel3 implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camara.combined);
+        batch.setProjectionMatrix(camaraHUD.combined);
         rendererMapa.setView(camara);
+        rendererMapa.setView(camaraHUD);
 
          batch.begin();
             fondo1.draw(batch);
@@ -173,12 +182,32 @@ public class Nivel3 implements Screen {
     }
 
     private void MoverPersonaje(){
+        switch (pinguino.getEstadoMovimiento()){
+            case INICIANDO:
+                int celdaX = (int)(pinguino.getX()/TAM_CELDA);
+                int celdaY = (int)(pinguino.getY()+pinguino.velocidadX/TAM_CELDA);
+                TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(1);
+                TiledMapTileLayer.Cell celda = capa.getCell(celdaX,celdaY);
+                if (celda == null){
+                    pinguino.caer();}
+                break;
+            case DER:
+            case IZQ:
+
+
+        }
         switch (pinguino.getEstadoSalto()){
             case SUBIENDO: case BAJANDO:
                 pinguino.actualizarSalto(mapa);
                 break;
         }
+        switch (pinguino.getEstadoMovimiento()){
+            case DER:
+                break;
+
+        }
     }
+
 
     @Override
     public void resize(int width, int height) {
@@ -215,6 +244,10 @@ public class ProcesadorEntrada extends InputAdapter{
         transformarCoordenadas(screenX, screenY);
         if (btnSalto.contiene(x, y)) {
             pinguino.saltar();
+        }
+
+        else if (btnDer.contiene(x,y)){
+
         }
 
         return true;
