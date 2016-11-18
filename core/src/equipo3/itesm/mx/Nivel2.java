@@ -34,7 +34,7 @@ public class Nivel2 implements Screen{
     private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2,fondoPiso1,fondoPiso2,fondoPiso3,fondoCarre1,fondoCarre2,fondoCarre3,fondoCarre4,fondoCarre5,fondoCarre6;
     private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro,fondoPiso,textCarreDer,textCarreIzq,textCono,textBtnSaltar,textBtnPausa,
                     textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore,textPosteDer,textPosteIzq,textMoco;
-    private int velocidadX = 8, velocidadY = -8,velocidadItemY = -5,velocidadPosteX = 5,velocidadPosteY = -3;
+    private int velocidadX = 5, velocidadY = -5,velocidadItemY = -5,velocidadPosteX = 5,velocidadPosteY = -3;
     private Personaje pinguino;
     private Sprite cono,marcador,pausa,posteDer,posteIzq,moco,posteDer1,posteIzq1,posteEstaticoDer,posteEstaticoIzq;
     private EstadosJuego estadosJuego;
@@ -80,7 +80,7 @@ public class Nivel2 implements Screen{
         manager.load("banquetaDER.png",Texture.class);
         manager.load("cono.png",Texture.class);
         manager.load("BtnPausa.png",Texture.class);
-        manager.load("BtnArriba.png",Texture.class);
+        manager.load("Btnsalto_Naranja.png",Texture.class);
         manager.load("CuadroScore.png",Texture.class);
         manager.load("Pausa.png",Texture.class);
         manager.load("Perdiste_1.png",Texture.class);
@@ -95,7 +95,7 @@ public class Nivel2 implements Screen{
 
     private void crearObjetos() {
         AssetManager manager = juego.getManager();
-        textBtnSaltar = manager.get("BtnArriba.png");
+        textBtnSaltar = manager.get("Btnsalto_Naranja.png");
         textBtnPausa = manager.get("BtnPausa.png");
         textBtnReaunudar = manager.get("BTN_Resumen.png");
         textBtnSalir = manager.get("BTN_Salir.png");
@@ -475,11 +475,18 @@ public class Nivel2 implements Screen{
             pausa.setPosition(Juego.ancho/4,Juego.alto/16);
             pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
             j=0;
+            j2=0;
             cono.setScale(cono.getScaleX(),cono.getScaleY());
+            posteDer.setScale(posteDer.getScaleX(),posteDer.getScaleY());
+            posteIzq.setScale(posteIzq.getScaleX(),posteIzq.getScaleY());
+            posteDer1.setScale(posteDer1.getScaleX(),posteDer1.getScaleY());
+            posteIzq1.setScale(posteIzq1.getScaleX(),posteIzq1.getScaleY());
             pausa.draw(batch);
             velocidadX = 0;
             velocidadY = 0;
             velocidadItemY = 0;
+            velocidadPosteX = 0;
+            velocidadPosteY = 0;
             btnReanudar.setPosicion(Juego.ancho/3,Juego.alto*0.45f);
             btnSalir.setPosicion(Juego.ancho/3,Juego.alto*0.15f);
             btnReanudar.render(batch);
@@ -557,9 +564,13 @@ public class Nivel2 implements Screen{
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
                 pausa.setPosition(-13444,-12435);
                 j=0.01f;
+                j = 0.01f;
+                j2=0.015f;
                 velocidadX = 10;
                 velocidadY = -10;
                 velocidadItemY = -5;
+                velocidadPosteX = 5;
+                velocidadPosteY = -3;
             }
             else if(btnSalir.contiene(x,y)){
                 Timer.schedule(new Timer.Task() {
