@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sun.org.apache.xerces.internal.util.URI;
 
-
+import org.omg.CORBA.MARSHAL;
 
 
 /**
@@ -35,7 +35,7 @@ public class Nivel2 implements Screen{
     private SpriteBatch batch;
     private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2,fondoPiso1,fondoPiso2,fondoPiso3,fondoCarre1,fondoCarre2,fondoCarre3,fondoCarre4,fondoCarre5,fondoCarre6;
     private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro,fondoPiso,textCarreDer,textCarreIzq,textCono,textBtnSaltar,textBtnPausa,
-                    textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore,textPosteDer,textPosteIzq,textMoco,textBtnDer,textBtnIzq,textPinIzq;
+                    textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore,textPosteDer,textPosteIzq,textMoco,textBtnDer,textBtnIzq,textPinIzq,textPinSalIzq;
     private int velocidadX = 5, velocidadY = -5,velocidadItemY = -5,velocidadPosteX = 5,velocidadPosteY = -3,velocidadPinguino = 10;
     private Personaje pinguino;
     private Sprite cono,marcador,pausa,posteDer,posteIzq,moco,posteDer1,posteIzq1,posteEstaticoDer,posteEstaticoIzq;
@@ -97,6 +97,7 @@ public class Nivel2 implements Screen{
         manager.load("Btnder_Naranja.png",Texture.class);
         manager.load("Btnizq_Naranja.png",Texture.class);
         manager.load("Walkgud_IZQ.png",Texture.class);
+        manager.load("SaltarIZQ.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -168,7 +169,8 @@ public class Nivel2 implements Screen{
         fondo5 = new Fondo(fondoNoche);
         texuturaPersonaje = manager.get("PinguinoChido2.png");
         texturaSal = manager.get("Saltar.png");
-        pinguino = new Personaje(texuturaPersonaje,texturaSal,textPinIzq);
+        textPinSalIzq = manager.get("SaltarIZQ.png");
+        pinguino = new Personaje(texuturaPersonaje,texturaSal,textPinIzq,textPinSalIzq);
         pinguino.getSprite().setPosition(1280/2,0);
         fondo.setPosicion(0,0);
         fondo2.setPosicion(0,0);

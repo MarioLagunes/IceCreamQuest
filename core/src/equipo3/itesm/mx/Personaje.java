@@ -21,8 +21,8 @@ public class Personaje {
     public static final float velocidadY = -4f;
     public float velX;
     public float velocidadX = 4;
-    private Animation animacion,animar,animarSalto,animarQuieto,animarReg,animarIzq;
-    public float timerAnimacion,tiempoAnimar,timerSalto,timerAnimacion3,timerSalto3,timerIzq;
+    private Animation animacion,animar,animarSalto,animarQuieto,animarReg,animarIzq,animarSaltoIZQ;
+    public float timerAnimacion,tiempoAnimar,timerSalto,timerAnimacion3,timerSalto3,timerIzq,timerSaltoIzq;
     private EstadoMovimiento estadoMovimiento = EstadoMovimiento.INICIANDO;
     //private Texture texturaSalto;
     private EstadoSalto estadoSalto = EstadoSalto.ABAJO;
@@ -54,13 +54,15 @@ public class Personaje {
         BORRADO
     }
 
-    public  Personaje(Texture textura,Texture texturaSaltos,Texture texturaIzq){
+    public  Personaje(Texture textura,Texture texturaSaltos,Texture texturaIzq,Texture texuraSaltoIzq){
         TextureRegion texturaCompleta = new TextureRegion(textura);
         TextureRegion texturaSalto = new TextureRegion(texturaSaltos);
         TextureRegion texturaIzquierda = new TextureRegion(texturaIzq);
+        TextureRegion texturaSaltoIZQ = new TextureRegion(texuraSaltoIzq);
         TextureRegion[][] texturaPersonaje = texturaCompleta.split(64,64);
         TextureRegion[][] texturaSaltar = texturaSalto.split(64,64);
         TextureRegion[][] texturaIzqui = texturaIzquierda.split(64,64);
+        TextureRegion[][] texturaSaltoIzqui = texturaSaltoIZQ.split(64,64);
         animacion = new Animation(0.10f,texturaPersonaje[0][1], texturaPersonaje[0][2], texturaPersonaje[0][3],
                 texturaPersonaje[0][4],texturaPersonaje[0][5]);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
@@ -68,11 +70,14 @@ public class Personaje {
         animarSalto.setPlayMode(Animation.PlayMode.LOOP);
         animarIzq = new Animation(0.10f,texturaIzqui[0][5],texturaIzqui[0][4],texturaIzqui[0][3],texturaIzqui[0][2],texturaIzqui[0][1],texturaIzqui[0][0]);
         animarIzq.setPlayMode(Animation.PlayMode.LOOP);
+        animarSaltoIZQ = new Animation(0.10f,texturaSaltoIzqui[0][1]);
+        animarSaltoIZQ.setPlayMode(Animation.PlayMode.LOOP);
         timerSalto = 0;
         timerAnimacion = 0;
         timerAnimacion3 = 0;
         timerSalto3 = 0;
         timerIzq = 0;
+        timerSaltoIzq = 0;
         sprite = new Sprite(texturaPersonaje[0][0]);
     }
 
@@ -102,9 +107,14 @@ public class Personaje {
             TextureRegion region = animarIzq.getKeyFrame(timerIzq);
             sprite.setRegion(region);
         }
-        if(estadoSalto == EstadoSalto.SUBIENDO || estadoSalto == EstadoSalto.BAJANDO || estadoSalto == EstadoSalto.CAIDALIBRE){
+        if(estadoMovimiento == EstadoMovimiento.DER && (estadoSalto == EstadoSalto.SUBIENDO || estadoSalto == EstadoSalto.BAJANDO || estadoSalto == EstadoSalto.CAIDALIBRE)){
             timerSalto += Gdx.graphics.getDeltaTime();
             TextureRegion regionSalto = animarSalto.getKeyFrame(timerSalto);
+            sprite.setRegion(regionSalto);
+        }
+        if(estadoMovimiento == EstadoMovimiento.IZQ && (estadoSalto == EstadoSalto.SUBIENDO || estadoSalto == EstadoSalto.BAJANDO || estadoSalto == EstadoSalto.CAIDALIBRE)){
+            timerSaltoIzq += Gdx.graphics.getDeltaTime();
+            TextureRegion regionSalto = animarSaltoIZQ.getKeyFrame(timerSaltoIzq);
             sprite.setRegion(regionSalto);
         }
         sprite.draw(batch);//batch.draw(sprite,sprite.getX(),sprite.getY());

@@ -30,7 +30,7 @@ public class Nivel3 implements Screen {
     private Personaje pinguino;
     private Fondo fondo1, fondo2,fondo3, fondo4;
     private Texture fondo,fondoFin, fondoLopp, fondoUltimo, texuturaPersonaje ,texturaSal,texturaSalto,texturaDisparo,texturaIzquierda, texturaDerecha,
-    texturaBoomeran,textIzq;
+    texturaBoomeran,textIzq,textPinSalIzq;
     private TiledMap mapa;
     private static final float ancho = 800;
     private static final float alto = 1280;
@@ -57,6 +57,7 @@ public class Nivel3 implements Screen {
         manager.load("BtnIzquierda.png",Texture.class);
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("Saltar.png",Texture.class);
+        manager.load("SaltarIZQ.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -72,12 +73,12 @@ public class Nivel3 implements Screen {
         rendererMapa.setView(camara);
 
         //Pinguino
-        texuturaPersonaje = manager.get("PinguinoChido2.png");
+        /*texuturaPersonaje = manager.get("PinguinoChido2.png");
         texturaSal = manager.get("Saltar.png");
         pinguino = new Personaje(texuturaPersonaje,texturaSal,textIzq);
         pinguino.getSprite().setPosition(0,128);
         pinguino.getSprite().setAlpha(1);
-        ;
+        ;*/
 
         fondo1 = new Fondo(fondo);
         fondo2 = new Fondo(fondoFin);
@@ -93,7 +94,8 @@ public class Nivel3 implements Screen {
         texuturaPersonaje = manager.get("PinguinoChido2.png");
         texturaSal = manager.get("Saltar.png");
         textIzq = manager.get("Walkgud_IZQ.png");
-        pinguino = new Personaje(texuturaPersonaje,texturaSal,textIzq);
+        textPinSalIzq = manager.get("SaltarIZQ.png");
+        pinguino = new Personaje(texuturaPersonaje,texturaSal,textIzq,textPinSalIzq);
         pinguino.getSprite().setPosition(500,60);
 
         //botones
