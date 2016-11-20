@@ -64,9 +64,9 @@ public class PantallaDatos {
         return vista = new StretchViewport(ancho,alto,camara);
     }
 
-    /*public StretchViewport crearVistaHUDNivel3(OrthographicCamera camara,StretchViewport vista){
+    public StretchViewport crearVistaHUDNivel33(OrthographicCamera camara,StretchViewport vista){
         return vista = new StretchViewport(alto,ancho,camara);
-    }*/
+    }
 
     public Viewport crearVistaHUDNivel3(OrthographicCamera camara, Viewport vista){
         return vista = new StretchViewport(alto,ancho,camara);
