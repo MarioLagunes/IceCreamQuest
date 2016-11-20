@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+
 /**
  * Created by Mario Lagunes on 26/09/2016.
  */
@@ -13,6 +14,7 @@ public class Texto {
 
     public Texto(){
         font = new BitmapFont(Gdx.files.internal("maiandra.fnt"));
+        //fuente = new Font(Gdx.files.internal("Lobster-Regular.ttf"));
     }
 
     public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y){

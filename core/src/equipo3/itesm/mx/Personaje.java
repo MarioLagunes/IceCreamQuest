@@ -10,14 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.sun.org.apache.xpath.internal.operations.String;
 
 
 /**
  * Created by Mario Lagunes(3) on 26/09/2016.
  */
 public class Personaje {
-    private Sprite sprite,spriteEnemigo,spriteSalto,spriteQuieto;
+    private Sprite sprite,spriteEnemigo,spriteSalto,spriteQuieto,spriteNivel2;
     public static final float velocidadY = -4f;
     public float velX;
     public float velocidadX = 4;
@@ -81,18 +80,13 @@ public class Personaje {
         sprite = new Sprite(texturaPersonaje[0][0]);
     }
 
-    public Personaje(Texture textura,Texture textura2){
-        TextureRegion texturaEnemigoFull = new TextureRegion(textura);
-        TextureRegion texturaEnemiegoReg = new TextureRegion(textura2);
-        TextureRegion[][] texturaEnemigo = texturaEnemigoFull.split(64,64);
-        TextureRegion[][] texturaEnemigoRegreso = texturaEnemiegoReg.split(64,64);
-        animar = new Animation(0.10f,texturaEnemigo[0][0],texturaEnemigo[0][1],texturaEnemigo[0][2],texturaEnemigo[0][3],texturaEnemigo[0][4],texturaEnemigo[0][5]);
-        animarReg = new Animation(0.10f,texturaEnemigoRegreso[0][6],texturaEnemigoRegreso[0][5],texturaEnemigoRegreso[0][4],texturaEnemigoRegreso[0][3],texturaEnemigoRegreso[0][2],texturaEnemigoRegreso[0][1]);
+    public Personaje(Texture textura2){
+        TextureRegion textPinguino2 = new TextureRegion(textura2);
+        TextureRegion[][] texturaPingu2 = textPinguino2.split(246,190);
+        animar = new Animation(0.10f,texturaPingu2[0][1],texturaPingu2[0][2],texturaPingu2[0][3],texturaPingu2[0][4],texturaPingu2[0][5]);
         animar.setPlayMode(Animation.PlayMode.LOOP);
-        animarReg.setPlayMode(Animation.PlayMode.LOOP);
         tiempoAnimar = 0;
-        spriteEnemigo = new Sprite(texturaEnemigo[0][6]);
-        estadoEnemigo = EstadosEnemigo.INICIO;
+        spriteNivel2 = new Sprite(texturaPingu2[0][0]);
     }
 
     public void render(SpriteBatch batch){
@@ -147,6 +141,13 @@ public class Personaje {
         sprite.draw(batch);
 
 
+    }
+
+    public void renderNivel2(SpriteBatch batch){
+        tiempoAnimar += Gdx.graphics.getDeltaTime();
+        TextureRegion region = animar.getKeyFrame(tiempoAnimar);
+        spriteNivel2.setRegion(region);
+        spriteNivel2.draw(batch);
     }
 
     public void recolectarHelados(TiledMap mapa, Sound helado, Sound heladoEspecial){
@@ -217,10 +218,6 @@ public class Personaje {
             estadoSalto = EstadoSalto.ABAJO;
         }
     }*/
-
-    public void saltarNivel2(){
-
-    }
 
     public void quieto(Batch batch){
         sprite.draw(batch);
@@ -316,10 +313,6 @@ public class Personaje {
         return sprite;
     }
 
-    public Sprite getSpriteEnemigo(){
-        return spriteEnemigo;
-    }
-
     public float getX(){
         return sprite.getX();
     }
@@ -332,20 +325,20 @@ public class Personaje {
         sprite.setPosition(x,y);
     }
 
-    public void setPosicionEnemiga(float x, float y){
-        spriteEnemigo.setPosition(x,y);
+    public Sprite getSprite2(){
+        return spriteNivel2;
     }
 
-    public float getXEnemiga(){
-        return spriteEnemigo.getX();
+    public float getX2(){
+        return spriteNivel2.getX();
     }
 
-    public float getYEnemiga(){
-        return spriteEnemigo.getY();
+    public float getY2(){
+        return spriteNivel2.getY();
     }
 
-    public void setEstadoEnemigo(EstadosEnemigo estadoEnemigo){
-        this.estadoEnemigo = estadoEnemigo;
+    public void setPosicion2(float x,float y){
+        spriteNivel2.setPosition(x,y);
     }
 
     public EstadoMovimiento getEstadoMovimiento(){
@@ -370,16 +363,31 @@ public class Personaje {
         }
     }
 
+    public void saltar2(){
+        if(estadoSalto == EstadoSalto.ABAJO){
+            tiempoSalto = 0;
+            yInicial = spriteNivel2.getY();
+            estadoSalto = EstadoSalto.SUBIENDO;
+            tiempoVuelo = 2*V0/G;
+        }
+    }
+
+    public void actualizarSalto2(){
+        //timerAnimacion = 0;
+        float y = V0 * tiempoSalto - G_2 * tiempoSalto * tiempoSalto;
+        if(tiempoSalto > tiempoVuelo/2){
+            estadoSalto = EstadoSalto.BAJANDO;
+        }
+        tiempoSalto += 10 * Gdx.graphics.getDeltaTime();
+        spriteNivel2.setY(yInicial + y);
+        if(y < 0){
+            spriteNivel2.setY(yInicial);
+            estadoSalto = EstadoSalto.ABAJO;
+        }
+    }
+
     public EstadoSalto getEstadoSalto(){
         return estadoSalto;
-    }
-
-    public void moverEnemigosDer(){
-        estadoEnemigo = EstadosEnemigo.DERECHA;
-    }
-
-    public void moverEnemigosIzq(){
-        estadoEnemigo = EstadosEnemigo.IZQUIERDA;
     }
 
     public enum EstadoMovimiento {
