@@ -64,6 +64,7 @@ public class Nivel3 implements Screen {
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("Saltar.png",Texture.class);
         manager.load("SaltarIZQ.png",Texture.class);
+        manager.load("Walkgud_IZQ.png",Texture.class);
         manager.finishLoading();
     }
 

@@ -34,7 +34,7 @@ import javax.swing.JButton;
 /**
  * Created by Mario Lagunes on 26/09/2016.
  */
-public class Nivel1 implements Screen {
+public class Nivel1 implements Screen,InputProcessor {
     public static final float ancho_mapa = 12800;
     private Juego juego;
     private Music musica;
@@ -62,6 +62,8 @@ public class Nivel1 implements Screen {
     private Dardos dardo,dardo1,dardo2,dardo3;
     private Sound muere,helado,heladoEspecial;
     private float tiempo = 0,tiempo2 = 0;
+    private Vector3 coordenadas = new Vector3();
+    private float x,y;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -82,7 +84,7 @@ public class Nivel1 implements Screen {
         vistaHUD = vistaHUD1.crearVistaHUD(camaraHUD,vistaHUD);
         cargarTexturas();
         crearObjetos();
-        Gdx.input.setInputProcessor(new ProcesadorEntrada());
+        Gdx.input.setInputProcessor(this);
         estadoJuego = EstadosJuego.JUGANDO;
         texto = new Texto();
         pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
@@ -677,11 +679,24 @@ public class Nivel1 implements Screen {
         manager1.unload("Meeehhpp!!.wav");
     }
 
-    public class ProcesadorEntrada extends InputAdapter {
-        private Vector3 coordenadas = new Vector3();
-        private float x,y;
+    //public class ProcesadorEntrada extends InputAdapter {
 
-        @Override
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             transformarCoordenadas(screenX,screenY);
             if(btnSalto.contiene(x,y)){
@@ -748,13 +763,33 @@ public class Nivel1 implements Screen {
             return true;
         }
 
-        private void transformarCoordenadas(int screenX, int screenY){
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    private void transformarCoordenadas(int screenX, int screenY){
             coordenadas.set(screenX, screenY,0);
             camaraHUD.unproject(coordenadas);
             x = coordenadas.x;
             y = coordenadas.y;
         }
-    }
+
 
     private void borrarPantalla(){
         Gdx.gl.glClearColor(0.42f,0.55f,1,1);
