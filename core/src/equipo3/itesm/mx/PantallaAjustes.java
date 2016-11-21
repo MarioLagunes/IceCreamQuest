@@ -1,6 +1,8 @@
 package equipo3.itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -19,20 +21,16 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Mario Lagunes on 25/09/2016.
  */
-public class PantallaAjustes  extends PantallaDatos implements Screen {
+public class PantallaAjustes  extends PantallaDatos implements Screen,InputProcessor {
     private final Juego juego;
     private Texture texturaBack, texturaAjustes, texturaSonido, texturaMusica,texturaSonidoO,texturaMusicaO;
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
-    private final AssetManager manager = new AssetManager();
-
 
     public PantallaAjustes(Juego juego) {
         this.juego = juego;
     }
-
-
 
     @Override
     public void show() {
@@ -140,17 +138,20 @@ public class PantallaAjustes  extends PantallaDatos implements Screen {
     private void cargarFondo() {
         escena = new Stage();
         Gdx.input.setInputProcessor(escena);
+        Gdx.input.setCatchBackKey(true);
         Image fondo = new Image(texturaAjustes);
         escena.addActor(fondo);
     }
 
     private void cargarImagenes() {
+        AssetManager manager = juego.getManager();
         manager.load("menu-ajustes.png",Texture.class);
         manager.load("botonRegresar.png",Texture.class);
         manager.load("BtnMusica.png",Texture.class);
         manager.load("BtnMusica_Osc.png",Texture.class);
         manager.load("BtnSonido.png",Texture.class);
         manager.load("BtnSonido_Osc.png",Texture.class);
+        manager.load("Score.mp3",Music.class);
         manager.finishLoading();
 
 
@@ -187,12 +188,63 @@ public class PantallaAjustes  extends PantallaDatos implements Screen {
 
     @Override
     public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
+        AssetManager manager = juego.getManager();
+        manager.unload("menu-ajustes.png");
+        manager.unload("botonRegresar.png");
+        manager.unload("BtnMusica.png");
+        manager.unload("BtnMusica_Osc.png");
+        manager.unload("BtnSonido.png");
+        manager.unload("BtnSonido_Osc.png");
+        manager.unload("Score.mp3");
         texturaBack.dispose();
         texturaAjustes.dispose();
     }
 
     @Override
-    public void dispose() {
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.BACK){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
+        return true;
+    }
 
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

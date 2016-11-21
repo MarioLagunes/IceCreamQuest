@@ -1,6 +1,7 @@
 package equipo3.itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -27,9 +28,6 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.ArrayList;
-
-import javax.swing.JButton;
 
 /**
  * Created by Mario Lagunes on 26/09/2016.
@@ -50,8 +48,8 @@ public class Nivel1 implements Screen,InputProcessor {
     private EstadosJuego estadoJuego;
     private Texto texto;
     private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo1,texturaFondo2,texturaFondo3,texturaScore,texturaDardo,
-            texturaSal,texturaQui,texturaSalir,texturaResumen,texturaPerdiste,texturaEnemigoReg,textPinIzq,textPinSalIzq;
-    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir,btnPerdiste;
+            texturaSal,texturaQui,texturaSalir,texturaResumen,texturaPerdiste,texturaEnemigoReg,textPinIzq,textPinSalIzq,textSiguiente;
+    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir,btnPerdiste,btnSiguiente;
     private int heladosRecolectados = 0;
     private int vidas = 5;
     private static final int celda = 64;
@@ -91,6 +89,7 @@ public class Nivel1 implements Screen,InputProcessor {
         musica.setLooping(true);
         musica.setVolume(1.5f);
         musica.play();
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void cargarTexturas() {
@@ -121,6 +120,7 @@ public class Nivel1 implements Screen,InputProcessor {
         manager.load("Meeehhpp!!.wav",Sound.class);
         manager.load("Walkgud_IZQ.png",Texture.class);
         manager.load("SaltarIZQ.png",Texture.class);
+        manager.load("botonSiguiente.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -129,6 +129,9 @@ public class Nivel1 implements Screen,InputProcessor {
         mapa = manager.get("Fondo64.tmx");
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
         rendererMapa.setView(camara);
+
+        textSiguiente = manager.get("botonSiguiente.png");
+        btnSiguiente = new Boton(textSiguiente);
 
         texuturaPersonaje = manager.get("PinguinoChido2.png");
         texturaSal = manager.get("Saltar.png");
@@ -238,7 +241,6 @@ public class Nivel1 implements Screen,InputProcessor {
 
         batch.begin();
             pinguino.render(batch);
-
             if(boomerang != null){
                 boomerang.render(batch);
                 boomerang.tiempo ++;
@@ -405,7 +407,8 @@ public class Nivel1 implements Screen,InputProcessor {
                 enemigo1.velocidad = 0;
                 enemigo2.velocidad = 0;
                 enemigo3.velocidad = 0;
-                boomerang.velocidad = 0;
+                if(boomerang != null){
+                boomerang.velocidad = 0;}
                 btnResumen.setPosicion(Juego.ancho/3,Juego.alto*0.45f);
                 btnSalir.setPosicion(Juego.ancho/3,Juego.alto*0.15f);
                 btnResumen.render(batch);
@@ -487,10 +490,10 @@ public class Nivel1 implements Screen,InputProcessor {
                 pinguino.setPosicion(pinguino.getSprite().getX(),(celdaY+1)* celda);
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
             }
-            else if((celdaAbajo == null && celdaDerecha != null)|| esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
+            /*else if((celdaAbajo == null && celdaDerecha != null)|| esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
                     pinguino.caer();
 
-            }
+            }*/
             else if((celdaAbajo != null && celdaDerecha != null)){
                 pinguino.setPosicion(pinguino.getX(),(celdaY + 1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
@@ -683,7 +686,10 @@ public class Nivel1 implements Screen,InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if(keycode == Input.Keys.BACK){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
+        return true;
     }
 
     @Override
@@ -728,34 +734,34 @@ public class Nivel1 implements Screen,InputProcessor {
                 enemigo3.velocidad = 2;
             }
             else if(btnSalir.contiene(x,y)){
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
+                //Timer.schedule(new Timer.Task() {
+                  //  @Override
+                  //  public void run() {
                         juego.setScreen(new MenuPrincipal(juego));
-                    }
-                },1);
+                //    }
+                //},1);
                 musica.setVolume(0);
                 musica.stop();
             }
-            else if(btnPerdiste.contiene(x,y)){
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        juego.setScreen(new MenuPrincipal(juego));
-                    }
-                },1);
+            else if(estadoJuego == EstadosJuego.PERDIO /*&& btnSiguiente.contiene(x,y)*/){
+                //Timer.schedule(new Timer.Task() {
+                   // @Override
+                   // public void run() {
+                        juego.setScreen(new Nivel1(juego));
+                ///    }
+                //},1);
                 musica.setVolume(0);
                 musica.stop();
             }
-            else if(estadoJuego == EstadosJuego.GANO){
-                if(btnGanar.contiene(x,y)){
-                    Timer.schedule(new Timer.Task() {
-                        @Override
-                        public void run() {
-                            juego.setScreen(new Nivel2(juego));
-                    }
-                    },1);
-                }
+            //else if(estadoJuego == EstadosJuego.GANO){
+            else if(estadoJuego == EstadosJuego.GANO /*&& btnSiguiente.contiene(x,y)*/){
+                    //Timer.schedule(new Timer.Task() {
+                        //@Override
+                        //public void run() {
+                juego.setScreen(new PantallaInstrucciones2(juego));
+
+                    //},1);
+
                 musica.setVolume(0);
                 musica.stop();
             }

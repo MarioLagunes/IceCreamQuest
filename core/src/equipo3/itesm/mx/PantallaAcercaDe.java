@@ -1,6 +1,7 @@
 package equipo3.itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -28,7 +29,6 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
-    private final AssetManager manager = new AssetManager();
     public Music musica;
 
 
@@ -211,11 +211,13 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
     private void cargarFondo() {
         escena = new Stage();
         Gdx.input.setInputProcessor(escena);
+        Gdx.input.setCatchBackKey(true);
         Image fondo = new Image(texturaAcercaDe);
         escena.addActor(fondo);
     }
 
     private void cargarImagenes() {
+        AssetManager manager = juego.getManager();
         manager.load("AcercaDe.png",Texture.class);
         manager.load("botonRegresar.png",Texture.class);
 
@@ -233,6 +235,8 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
 
         manager.load("Boton_moka.png",Texture.class);
         manager.load("AcercaDeMokaSF-01.png",Texture.class);
+
+        manager.load("Score.mp3",Music.class);
 
         manager.finishLoading();
 
@@ -281,18 +285,35 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
 
     @Override
     public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
+        AssetManager manager = juego.getManager();
+        manager.unload("AcercaDe.png");
+        manager.unload("botonRegresar.png");
+        manager.unload("Boton_mario.png");
+        manager.unload("AcercaDeMarioSF-01.png");
+        manager.unload("Boton_andres.png");
+        manager.unload("AcercaDeAndresSF-01.png");
+        manager.unload("Boton_santi.png");
+        manager.unload("AcercaDeSantiSF-01.png");
+        manager.unload("Boton_dany.png");
+        manager.unload("AcercaDeDanySF-01.png");
+        manager.unload("Boton_moka.png");
+        manager.unload("AcercaDeMokaSF-01.png");
+        manager.unload("Score.mp3");
         texturaAcercaDe.dispose();
         texturaBack.dispose();
     }
 
     @Override
-    public void dispose() {
-
-    }
-
-    @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if(keycode == Input.Keys.BACK){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
+        return true;
     }
 
     @Override

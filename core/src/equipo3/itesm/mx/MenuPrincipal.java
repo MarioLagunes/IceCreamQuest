@@ -29,7 +29,6 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 	private OrthographicCamera camara;
 	private Viewport vista;
 	private ImageButton[] botones1;
-	private final AssetManager manager = new AssetManager();
 	private ImageButton btonPuntaje,btonJugar,btonAcercaDe,btonAjustes;
 	public Music musica;
 
@@ -54,6 +53,9 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 		// *** FIN DE CARGAR FONDO Y BOTONES Y FUNCIONALIDAD DE LOS MISMOS ***\\
 
 		// *** CARGAR MÚSICA ***\\
+			musica.setLooping(true);
+			musica.setVolume(1.5f);
+			musica.play();
 		// *** FIN DE CARGAR MUSICA ***\\
 	}
 
@@ -69,8 +71,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaInstrucciones(juego));
-
-
+				musica.stop();
 			}
 		});
 
@@ -78,8 +79,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaAcercaDe(juego));
-
-
+				musica.stop();
 			}
 		});
 
@@ -87,10 +87,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaAjustes(juego));
-				//musica.stop();
-
-
-
+				musica.stop();
 			}
 		});
 
@@ -98,6 +95,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				juego.setScreen(new PantallaPuntaje(juego));
+				musica.stop();
 			}
 		});
 
@@ -140,11 +138,13 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 
 	private void imagenesFondo() {
 		//imagenes fondo
+		AssetManager manager = juego.getManager();
 		manager.load("menuPrincipal.png",Texture.class);
 		manager.load("BtnConfig.png",Texture.class);
 		manager.load("BtnJugar.png",Texture.class);
 		manager.load("BtnCopa.png",Texture.class);
 		manager.load("BtnInf.png",Texture.class);
+		manager.load("Menu-VidJu.mp3",Music.class);
 		manager.finishLoading();
 
 		texturaFondoMenu = manager.get("menuPrincipal.png");
@@ -152,6 +152,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 		texturaBtonJugar = manager.get("BtnJugar.png");
 		texturaBtonPuntaje = manager.get("BtnCopa.png");
 		texturaBtonAcercaDe = manager.get("BtnInf.png");
+		musica = manager.get("Menu-VidJu.mp3");
 	}
 
 	@Override
@@ -179,6 +180,13 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 
 	@Override
 	public void hide() {
+		AssetManager manager = juego.getManager();
+		manager.unload("menuPrincipal.png");
+		manager.unload("BtnConfig.png");
+		manager.unload("BtnJugar.png");
+		manager.unload("BtnCopa.png");
+		manager.unload("BtnInf.png");
+		manager.unload("Menu-VidJu.mp3");
 		texturaFondoMenu.dispose();
 		//texturaAcercaDe.dispose();
 		//texturaAjustes.dispose();

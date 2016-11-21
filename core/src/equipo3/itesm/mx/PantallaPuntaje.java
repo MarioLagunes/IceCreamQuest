@@ -1,6 +1,8 @@
 package equipo3.itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -19,13 +21,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Andres Calva on 25/09/2016.
  */
-public class PantallaPuntaje extends PantallaDatos implements Screen {
+public class PantallaPuntaje extends PantallaDatos implements Screen,InputProcessor {
     private final Juego juego;
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
     private Texture texturaBack,texturaInstrucciones;
-    private final AssetManager manager = new AssetManager();
     private Music musica;
 
     public PantallaPuntaje(Juego juego) {
@@ -66,8 +67,10 @@ public class PantallaPuntaje extends PantallaDatos implements Screen {
     }
 
     private void cargarImagenes() {
+        AssetManager manager = juego.getManager();
         manager.load("ScorePantalla.png",Texture.class);
         manager.load("botonRegresar.png",Texture.class);
+        manager.load("Score.mp3",Music.class);
         manager.finishLoading();
         texturaInstrucciones = manager.get("ScorePantalla.png");
         texturaBack = manager.get("botonRegresar.png");
@@ -105,11 +108,58 @@ public class PantallaPuntaje extends PantallaDatos implements Screen {
 
     @Override
     public void hide() {
-        texturaBack.dispose();
+        dispose();
     }
 
     @Override
     public void dispose() {
+        AssetManager manager = juego.getManager();
+        manager.unload("ScorePantalla.png");
+        manager.unload("botonRegresar.png");
+        manager.unload("Score.mp3");
+        texturaBack.dispose();
+    }
 
+    @Override
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.BACK){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

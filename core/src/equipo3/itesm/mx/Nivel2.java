@@ -85,8 +85,6 @@ public class Nivel2 implements Screen,InputProcessor{
         AssetManager manager = juego.getManager();
         manager.load("ciudadnivel2.png", Texture.class);
         manager.load("Carretera.png",Texture.class);
-        //manager.load("PinguinoChido2.png",Texture.class);
-        //manager.load("Saltar.png",Texture.class);
         manager.load("edificiosIZQ.png",Texture.class);
         manager.load("edificiosDER.png",Texture.class);
         manager.load("banquetaIZQ.png",Texture.class);
@@ -114,8 +112,6 @@ public class Nivel2 implements Screen,InputProcessor{
         manager.load("cono_dorprueba.png",Texture.class);
         manager.load("conoprueba.png",Texture.class);
         manager.load("mocoprueba.png",Texture.class);
-        //manager.load("Walkgud_IZQ.png",Texture.class);
-        //manager.load("SaltarIZQ.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -687,12 +683,41 @@ public class Nivel2 implements Screen,InputProcessor{
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        AssetManager manager = juego.getManager();
+        manager.unload("ciudadnivel2.png");
+        manager.unload("Carretera.png");
+        manager.unload("edificiosIZQ.png");
+        manager.unload("edificiosDER.png");
+        manager.unload("banquetaIZQ.png");
+        manager.unload("banquetaDER.png");
+        manager.unload("cono.png");
+        manager.unload("cono_dor.png");
+        manager.unload("BtnPausa.png");
+        manager.unload("Btnsalto_Naranja.png");
+        manager.unload("CuadroScore.png");
+        manager.unload("Pausa.png");
+        manager.unload("Perdiste_1.png");
+        manager.unload("Ganaste_1.png");
+        manager.unload("BTN_Resumen.png");
+        manager.unload("BTN_Salir.png");
+        manager.unload("poste.png");
+        manager.unload("poste_der.png");
+        manager.unload("moco.png");
+        manager.unload("Btnder_Naranja.png");
+        manager.unload("Btnizq_Naranja.png");
+        manager.unload("Sprite_deslizar.png");
+        manager.unload("bote1.png");
+        manager.unload("bote2.png");
+        manager.unload("SpriteBote.png");
+        manager.unload("SpriteBote2.png");
+        manager.unload("cono_dorprueba.png");
+        manager.unload("conoprueba.png");
+        manager.unload("mocoprueba.png");
     }
 
     //public class ProcesadorEntrada extends InputAdapter{
