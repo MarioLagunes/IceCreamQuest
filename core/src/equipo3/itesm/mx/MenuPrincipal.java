@@ -180,6 +180,11 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 
 	@Override
 	public void hide() {
+		dispose();
+	}
+
+	@Override
+	public void dispose () {
 		AssetManager manager = juego.getManager();
 		manager.unload("menuPrincipal.png");
 		manager.unload("BtnConfig.png");
@@ -187,16 +192,5 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 		manager.unload("BtnCopa.png");
 		manager.unload("BtnInf.png");
 		manager.unload("Menu-VidJu.mp3");
-		texturaFondoMenu.dispose();
-		//texturaAcercaDe.dispose();
-		//texturaAjustes.dispose();
-		texturaBtonAjustes.dispose();
-		texturaBtonJugar.dispose();
-		texturaBtonPuntaje.dispose();
-	}
-
-	@Override
-	public void dispose () {
-
 	}
 }

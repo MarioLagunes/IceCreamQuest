@@ -201,8 +201,6 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         manager.unload("BtnSonido.png");
         manager.unload("BtnSonido_Osc.png");
         manager.unload("Score.mp3");
-        texturaBack.dispose();
-        texturaAjustes.dispose();
     }
 
     @Override

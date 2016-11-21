@@ -48,8 +48,8 @@ public class Nivel1 implements Screen,InputProcessor {
     private EstadosJuego estadoJuego;
     private Texto texto;
     private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo1,texturaFondo2,texturaFondo3,texturaScore,texturaDardo,
-            texturaSal,texturaQui,texturaSalir,texturaResumen,texturaPerdiste,texturaEnemigoReg,textPinIzq,textPinSalIzq,textSiguiente;
-    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir,btnPerdiste,btnSiguiente;
+            texturaSal,texturaQui,texturaSalir,texturaResumen,texturaPerdiste,texturaEnemigoReg,textPinIzq,textPinSalIzq,textSiguiente,textRegresar;
+    private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir,btnPerdiste,btnSiguiente,btnRegresar;
     private int heladosRecolectados = 0;
     private int vidas = 5;
     private static final int celda = 64;
@@ -62,6 +62,7 @@ public class Nivel1 implements Screen,InputProcessor {
     private float tiempo = 0,tiempo2 = 0;
     private Vector3 coordenadas = new Vector3();
     private float x,y;
+    private boolean banderaGano = false, banderaPerdio = false;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -121,6 +122,7 @@ public class Nivel1 implements Screen,InputProcessor {
         manager.load("Walkgud_IZQ.png",Texture.class);
         manager.load("SaltarIZQ.png",Texture.class);
         manager.load("botonSiguiente.png",Texture.class);
+        manager.load("botonRegresar.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -132,6 +134,8 @@ public class Nivel1 implements Screen,InputProcessor {
 
         textSiguiente = manager.get("botonSiguiente.png");
         btnSiguiente = new Boton(textSiguiente);
+        textRegresar = manager.get("botonRegresar.png");
+        btnRegresar = new Boton(textRegresar);
 
         texuturaPersonaje = manager.get("PinguinoChido2.png");
         texturaSal = manager.get("Saltar.png");
@@ -391,9 +395,10 @@ public class Nivel1 implements Screen,InputProcessor {
 
         batch.setProjectionMatrix(camaraHUD.combined);
         batch.begin();
-
             if(estadoJuego == EstadosJuego.GANO ){
                 btnGanar.render(batch);
+                btnSiguiente.render(batch);
+                btnSiguiente.setPosicion(1200,0);
             }
             else if(estadoJuego == EstadosJuego.PAUSADO){
                 fondoPausa.setPosicion(Juego.ancho/4,Juego.alto/16);
@@ -415,7 +420,9 @@ public class Nivel1 implements Screen,InputProcessor {
                 btnSalir.render(batch);
             }
             else if(estadoJuego == EstadosJuego.PERDIO){
-                btnPerdiste.render(batch);
+                    btnRegresar.render(batch);
+                    btnRegresar.setPosicion(0,0);
+                    btnPerdiste.render(batch);
             }
             else{
                 btnSalto.render(batch);
@@ -427,6 +434,7 @@ public class Nivel1 implements Screen,InputProcessor {
             }
 
         batch.end();
+
     }
 
     private void actualizarCamara(){
@@ -526,6 +534,16 @@ public class Nivel1 implements Screen,InputProcessor {
                 estadoJuego = estadoJuego.PERDIO;
                 pinguino.setPosicion(0,10000);
             }
+            /*if(banderaPerdio == true){
+                juego.setScreen(new Nivel1(juego));
+                musica.setVolume(0);
+                musica.stop();
+            }
+            if(banderaGano == true){
+                juego.setScreen(new PantallaInstrucciones2(juego));
+                musica.setVolume(0);
+                musica.stop();
+            }*/
         }
         switch (pinguino.getEstadoSalto()){
             case SUBIENDO: case BAJANDO:
@@ -680,6 +698,10 @@ public class Nivel1 implements Screen,InputProcessor {
         manager1.unload("Helado especial.mp3");
         manager1.unload("Helado normal.mp3");
         manager1.unload("Meeehhpp!!.wav");
+        manager1.unload("Walkgud_IZQ.png");
+        manager1.unload("SaltarIZQ.png");
+        manager1.unload("botonSiguiente.png");
+        manager1.unload("botonRegresar.png");
     }
 
     //public class ProcesadorEntrada extends InputAdapter {
@@ -713,7 +735,6 @@ public class Nivel1 implements Screen,InputProcessor {
                 boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
                 boomerang.salir();
                 btnDisparar.setPosicion(0,-100);
-
             }
 
             else if(btnPausa.contiene(x,y)){
@@ -734,38 +755,19 @@ public class Nivel1 implements Screen,InputProcessor {
                 enemigo3.velocidad = 2;
             }
             else if(btnSalir.contiene(x,y)){
-                //Timer.schedule(new Timer.Task() {
-                  //  @Override
-                  //  public void run() {
-                        juego.setScreen(new MenuPrincipal(juego));
-                //    }
-                //},1);
+                juego.setScreen(new MenuPrincipal(juego));
                 musica.setVolume(0);
                 musica.stop();
             }
-            else if(estadoJuego == EstadosJuego.PERDIO /*&& btnSiguiente.contiene(x,y)*/){
-                //Timer.schedule(new Timer.Task() {
-                   // @Override
-                   // public void run() {
-                        juego.setScreen(new Nivel1(juego));
-                ///    }
-                //},1);
-                musica.setVolume(0);
-                musica.stop();
+            if(estadoJuego == EstadosJuego.PERDIO && btnRegresar.contiene(x,y)){
+                System.out.print("Estoy tocandote");
+                juego.setScreen(new Nivel1(juego));
             }
-            //else if(estadoJuego == EstadosJuego.GANO){
-            else if(estadoJuego == EstadosJuego.GANO /*&& btnSiguiente.contiene(x,y)*/){
-                    //Timer.schedule(new Timer.Task() {
-                        //@Override
-                        //public void run() {
+            if(estadoJuego == EstadosJuego.GANO && btnSiguiente.contiene(x,y)){
                 juego.setScreen(new PantallaInstrucciones2(juego));
-
-                    //},1);
-
                 musica.setVolume(0);
                 musica.stop();
             }
-
             return true;
         }
 

@@ -173,8 +173,5 @@ public class PantallaInstrucciones2 implements Screen, InputProcessor {
         manager.unload("Instruccionesnivel2.png");
         manager.unload("botonRegresar.png");
         manager.unload("botonSiguiente.png");
-        texturaBack.dispose();
-        texturaInstrucciones.dispose();
-        texturaNext.dispose();
     }
 }

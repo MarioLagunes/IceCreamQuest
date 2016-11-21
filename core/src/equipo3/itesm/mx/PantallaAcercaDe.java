@@ -304,8 +304,6 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         manager.unload("Boton_moka.png");
         manager.unload("AcercaDeMokaSF-01.png");
         manager.unload("Score.mp3");
-        texturaAcercaDe.dispose();
-        texturaBack.dispose();
     }
 
     @Override

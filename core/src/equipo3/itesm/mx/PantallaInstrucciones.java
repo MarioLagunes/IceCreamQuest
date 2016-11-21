@@ -128,10 +128,6 @@ public class PantallaInstrucciones implements Screen, InputProcessor {
         manager.unload("Instrucciones-01.png");
         manager.unload("botonRegresar.png");
         manager.unload("botonSiguiente.png");
-        texturaBack.dispose();
-        texturaInstrucciones.dispose();
-        texturaNext.dispose();
-
     }
 
     @Override

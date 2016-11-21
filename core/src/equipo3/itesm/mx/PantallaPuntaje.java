@@ -117,7 +117,6 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
         manager.unload("ScorePantalla.png");
         manager.unload("botonRegresar.png");
         manager.unload("Score.mp3");
-        texturaBack.dispose();
     }
 
     @Override
