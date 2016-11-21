@@ -28,6 +28,8 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
     private Viewport vista;
     private Texture texturaBack,texturaInstrucciones;
     private Music musica;
+    private Musica muscaPuntaje;
+    public static Boolean ajuste = false;
 
     public PantallaPuntaje(Juego juego) {
         this.juego = juego;
@@ -74,6 +76,8 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
         manager.finishLoading();
         texturaInstrucciones = manager.get("ScorePantalla.png");
         texturaBack = manager.get("botonRegresar.png");
+        musica = manager.get("Score.mp3");
+        muscaPuntaje = new Musica(musica,true,ajuste);
     }
 
     private void cargarFondo() {

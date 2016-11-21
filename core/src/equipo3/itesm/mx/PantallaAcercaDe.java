@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 
 /**
@@ -30,6 +32,10 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
     private OrthographicCamera camara;
     private Viewport vista;
     public Music musica;
+    public Musica musicaAcercaDe;
+    public static Boolean ajuste = false;
+    private Sound heladoEspecial;
+    public static Boolean ajusteSonido = false;
 
 
 
@@ -130,6 +136,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new MenuPrincipal(juego));
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
 
             }
         });
@@ -139,6 +148,10 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnMarioInf.setVisible(true);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
+
             }
         });
 
@@ -146,6 +159,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnAndresInf.setVisible(true);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
             }
         });
 
@@ -153,6 +169,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnSantiInf.setVisible(true);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
             }
         });
 
@@ -160,6 +179,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnDanyInf.setVisible(true);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
             }
         });
 
@@ -167,6 +189,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnMokaInf.setVisible(true);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
             }
         });
 
@@ -175,6 +200,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnMarioInf.setVisible(false);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
             }
         });
 
@@ -182,6 +210,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnAndresInf.setVisible(false);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
             }
         });
 
@@ -189,6 +220,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnSantiInf.setVisible(false);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
             }
         });
 
@@ -196,6 +230,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnDanyInf.setVisible(false);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
             }
         });
 
@@ -203,6 +240,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnMokaInf.setVisible(false);
+                if(ajusteSonido == false){
+                    heladoEspecial.play();
+                }
             }
         });
 
@@ -237,6 +277,7 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         manager.load("AcercaDeMokaSF-01.png",Texture.class);
 
         manager.load("Score.mp3",Music.class);
+        manager.load("Helado acerca de.mp3",Sound.class);
 
         manager.finishLoading();
 
@@ -257,6 +298,10 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
 
         moka = manager.get("Boton_moka.png");
         infoMoka = manager.get("AcercaDeMokaSF-01.png");
+
+        musica = manager.get("Score.mp3");
+        musicaAcercaDe = new Musica(musica,true,ajuste);
+        heladoEspecial = manager.get("Helado acerca de.mp3");
 
     }
 

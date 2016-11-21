@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -51,9 +52,10 @@ public class Nivel2 implements Screen,InputProcessor{
     private Animation animacionBote,animacionbote2;
     private float timerAnimar,timerAnimar2;
     private int vidas = 5,numero1,numeroDibujo=0;
-    private float j = 0.004f,j2=0.015f,j3=0.009f;
+    private float j = 0.004f,j2=0.015f,j3=0.009f,tiempo;
     private Vector3 coordenadas = new Vector3();
     private float x,y;
+    private Sound sonidoCono,sonidoConoDorado;
 
 
     public Nivel2(Juego juego){
@@ -112,6 +114,8 @@ public class Nivel2 implements Screen,InputProcessor{
         manager.load("cono_dorprueba.png",Texture.class);
         manager.load("conoprueba.png",Texture.class);
         manager.load("mocoprueba.png",Texture.class);
+        manager.load("Helado especial.mp3",Sound.class);
+        manager.load("Helado normal.mp3",Sound.class);
         manager.finishLoading();
     }
 
@@ -185,11 +189,11 @@ public class Nivel2 implements Screen,InputProcessor{
 
         textCono = manager.get("conoprueba.png");
         cono = new Sprite(textCono);
-        cono.setPosition(650,400);
+        cono.setPosition(610,400);
         cono.setScale(0.2f,0.2f);
         conoDorado = new Sprite(textConoDor);
-        conoDorado.setPosition(500,150);
-        conoDorado.setScale(0.5f,0.5f);
+        conoDorado.setPosition(550,400);
+        conoDorado.setScale(0.2f,0.2f);
         //bote1.setScale(0.2f,0.2f);
         //bote2.setScale(0.2f,0.2f);
         botes2.setScale(0.8f,0.8f);
@@ -268,6 +272,8 @@ public class Nivel2 implements Screen,InputProcessor{
         posteEstaticoDer.setScale(0.15f,0.15f);
         posteEstaticoIzq.setPosition(445,270);
         posteEstaticoDer.setPosition(670,270);
+        sonidoCono = manager.get("Helado normal.mp3");
+        sonidoConoDorado = manager.get("Helado especial.mp3");
 
     }
 
@@ -303,6 +309,7 @@ public class Nivel2 implements Screen,InputProcessor{
             //batch.draw(edificiosIzq,0,0,velocidadX,velocidadY,1280,800);
             //batch.draw(edificiosIzq,0,0);
             //batch.draw(textFondo2,0,0,(-1)*velocidad,(-1)*velocidad,1280,800);
+            tiempo += Gdx.graphics.getDeltaTime();
             fondo5.draw(batch);
             fondoCarre1.draw(batch);
             fondoCarre2.draw(batch);
@@ -316,35 +323,14 @@ public class Nivel2 implements Screen,InputProcessor{
             fondo3.draw(batch);
             fondo4.draw(batch);
             fondoExI.draw(batch);
-
             fondoPiso2.draw(batch);
             fondoPiso1.draw(batch);
-            cono.draw(batch);
-            //cono.rotate(10);
-            conoDorado.draw(batch);
-            moco.draw(batch);
-            moco2.draw(batch);
-            moco3.draw(batch);
-            //conoDorado.rotate(10);
-            //bote1.draw(batch);
-            //bote2.draw(batch);
-
-            timerAnimar +=Gdx.graphics.getDeltaTime();
-            TextureRegion region = animacionBote.getKeyFrame(timerAnimar);
-            botes1.setRegion(region);
-            botes1.draw(batch);
-            timerAnimar2 +=Gdx.graphics.getDeltaTime();
-            TextureRegion region1 = animacionbote2.getKeyFrame(timerAnimar2);
-            botes2.setRegion(region1);
-            botes2.draw(batch);
             posteDer.draw(batch);
             posteIzq.draw(batch);
             posteDer1.draw(batch);
             posteIzq1.draw(batch);
             posteEstaticoDer.draw(batch);
             posteEstaticoIzq.draw(batch);
-            pinguino.renderNivel2(batch);
-
             if(fondo2.getSprite().getX() < -166){
                 fondo2.setPosicion(0,0);
             }
@@ -373,6 +359,29 @@ public class Nivel2 implements Screen,InputProcessor{
             if(fondoCarre6.getSprite().getX() < 166){
                 fondoCarre6.setPosicion(0,0);
             }
+
+            if(tiempo >= 5){
+                cono.draw(batch);
+            }
+            if(tiempo >= 10){
+                //cono.rotate(10);
+                conoDorado.draw(batch);
+                //moco.draw(batch);
+                //moco2.draw(batch);
+                //moco3.draw(batch);
+            }
+
+            timerAnimar +=Gdx.graphics.getDeltaTime();
+            TextureRegion region = animacionBote.getKeyFrame(timerAnimar);
+            botes1.setRegion(region);
+            ///botes1.draw(batch);
+            timerAnimar2 +=Gdx.graphics.getDeltaTime();
+            TextureRegion region1 = animacionbote2.getKeyFrame(timerAnimar2);
+            botes2.setRegion(region1);
+            //botes2.draw(batch);
+
+
+
             for(float i= 0.01f; i<1;i++){
                 cono.setScale(cono.getScaleX()+j3,cono.getScaleY()+j3);
                 conoDorado.setScale(conoDorado.getScaleX()+j3,conoDorado.getScaleY()+j3);
@@ -434,6 +443,7 @@ public class Nivel2 implements Screen,InputProcessor{
                     moco3.setScale(0.2f,0.2f);
                 }
             }
+        pinguino.renderNivel2(batch);
         float boteAnimado1x = botes1.getX();
         float boteAnimado1y = botes1.getY();
         boteAnimado1x -= velocidadBotex;
@@ -559,13 +569,28 @@ public class Nivel2 implements Screen,InputProcessor{
 
         //PROBAR COLISIONES
         //la imagen actual menos la escala
-        System.out.println("La escala en x es:" + conoDorado.getScaleX());
-        System.out.println("La escala en y es:" + conoDorado.getScaleY());
+        System.out.println("pinguino xinicial = " + pinguino.getX2());
+        System.out.println("cono xinicial = " + (cono.getY()-62) + "\n");
+        System.out.println("pinguino xfinal = " + pinguino.getY2());
+        System.out.println("cono xfinal = " + (cono.getY()+cono.getHeight()) + "\n");
+        //System.out.println("La escala en y es:" + cono.getY());
 
-        if((pinguino.getSprite2().getWidth()-159) == (conoDorado.getWidth()-(conoDorado.getScaleX()*82)) && (pinguino.getSprite2().getHeight()-130) == (conoDorado.getHeight()-(conoDorado.getScaleY()*150))
-                && (pinguino.getSprite2().getWidth()-87) == (conoDorado.getWidth()-(conoDorado.getScaleX()*22))
-                && (pinguino.getSprite2().getWidth()-190) == (conoDorado.getHeight()-(conoDorado.getScaleY()*180)) ){
-            pinguino.puntos += 10000;
+        if((pinguino.getX2() >= 660/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 710) && (pinguino.getX2() <= 870 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((cono.getY()-10) >=pinguino.getY2() &&(cono.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            pinguino.puntos += 100;
+            sonidoCono.play();
+            cono.setPosition(610,400);
+            cono.setScale(0.2f,0.2f);
+        }
+
+        if((pinguino.getX2() >= 300/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 396) && (pinguino.getX2() <= 560 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((conoDorado.getY()-10) >=pinguino.getY2() &&(conoDorado.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            pinguino.puntos += 500;
+            sonidoConoDorado.play();
+            conoDorado.setPosition(550,400);
+            conoDorado.setScale(0.2f,0.2f);
         }
 
         if(estadosJuego == EstadosJuego.GANO ){
@@ -718,6 +743,8 @@ public class Nivel2 implements Screen,InputProcessor{
         manager.unload("cono_dorprueba.png");
         manager.unload("conoprueba.png");
         manager.unload("mocoprueba.png");
+        manager.unload("Helado especial.mp3");
+        manager.unload("Helado normal.mp3");
     }
 
     //public class ProcesadorEntrada extends InputAdapter{

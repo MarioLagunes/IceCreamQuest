@@ -36,6 +36,7 @@ public class Nivel1 implements Screen,InputProcessor {
     public static final float ancho_mapa = 12800;
     private Juego juego;
     private Music musica;
+    private Musica musica1;
     private OrthographicCamera camara;
     private TiledMap mapa;
     private OrthogonalTiledMapRenderer rendererMapa;
@@ -48,7 +49,7 @@ public class Nivel1 implements Screen,InputProcessor {
     private EstadosJuego estadoJuego;
     private Texto texto;
     private Texture texturaSalto,texturaBoomeran,texturaGano,texturaDisparo,texturaPausa,texturaPausado,texturaEnemigo,texturaFondo1,texturaFondo2,texturaFondo3,texturaScore,texturaDardo,
-            texturaSal,texturaQui,texturaSalir,texturaResumen,texturaPerdiste,texturaEnemigoReg,textPinIzq,textPinSalIzq,textSiguiente,textRegresar;
+            texturaSal,texturaSalir,texturaResumen,texturaPerdiste,texturaEnemigoReg,textPinIzq,textPinSalIzq,textSiguiente,textRegresar;
     private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir,btnPerdiste,btnSiguiente,btnRegresar;
     private int heladosRecolectados = 0;
     private int vidas = 5;
@@ -62,6 +63,7 @@ public class Nivel1 implements Screen,InputProcessor {
     private float tiempo = 0,tiempo2 = 0;
     private Vector3 coordenadas = new Vector3();
     private float x,y;
+    public static Boolean ajuste = false;
     private boolean banderaGano = false, banderaPerdio = false;
 
     public Nivel1(Juego juego){
@@ -87,14 +89,14 @@ public class Nivel1 implements Screen,InputProcessor {
         estadoJuego = EstadosJuego.JUGANDO;
         texto = new Texto();
         pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
-        musica.setLooping(true);
+        /*musica.setLooping(true);
         musica.setVolume(1.5f);
-        musica.play();
+        musica.play();*/
         Gdx.input.setCatchBackKey(true);
     }
 
     private void cargarTexturas() {
-        AssetManager manager = juego.getManager();
+        /*AssetManager manager = juego.getManager();
         manager.load("Fondo64.tmx",TiledMap.class);
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("BtnBoom.png",Texture.class);
@@ -123,7 +125,7 @@ public class Nivel1 implements Screen,InputProcessor {
         manager.load("SaltarIZQ.png",Texture.class);
         manager.load("botonSiguiente.png",Texture.class);
         manager.load("botonRegresar.png",Texture.class);
-        manager.finishLoading();
+        manager.finishLoading();*/
     }
 
     private void crearObjetos(){
@@ -212,6 +214,7 @@ public class Nivel1 implements Screen,InputProcessor {
         dardo2.setPosicion(enemigo2.getX(),enemigo2.getY());
         dardo3.setPosicion(enemigo3.getX(),enemigo3.getY());
         musica = manager.get("Nivel_1.mp3");
+        musica1 = new Musica(musica,true,ajuste);
         helado = manager.get("Helado normal.mp3");
         heladoEspecial = manager.get("Helado especial.mp3");
         muere = manager.get("Meeehhpp!!.wav");
@@ -470,27 +473,26 @@ public class Nivel1 implements Screen,InputProcessor {
                 moverHorizontal();
                 break;
         }
-        if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO &&
-                (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
+        if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
             int celdaX = (int) ((pinguino.getSprite().getX())/celda);
             int celdaY = (int) ((pinguino.getY()+pinguino.velocidadY) / celda);
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
-            if(celdaAbajo != null){
+            /*if(celdaAbajo != null){
                 Object tipo = celdaAbajo.getTile().getProperties().get("tipo");
                 if(!"esCuadroPiso".equals(tipo)){
                     celdaAbajo = null;
-                    pinguino.probarCaida(mapa);
+                    pinguino.caer();
                 }
-            }
+            }*/
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
-            if(celdaDerecha != null){
+            /*if(celdaDerecha != null){
                 Object tipo = celdaDerecha.getTile().getProperties().get("tipo");
                 if(!"esCuadroPiso".equals(tipo)){
                     celdaDerecha = null;
-                    pinguino.probarCaida(mapa);
+                    pinguino.caer();
                 }
-            }
+            }*/
             if((celdaAbajo == null && celdaDerecha == null) || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
@@ -500,18 +502,20 @@ public class Nivel1 implements Screen,InputProcessor {
                 pinguino.setPosicion(pinguino.getSprite().getX(),(celdaY+1)* celda);
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
             }*/
-            /*else if((celdaAbajo == null && celdaDerecha != null)|| esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
-                    pinguino.caer();
+            /*else if((celdaAbajo == null && celdaDerecha != null) && pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
+                    pinguino.probarCaida(mapa);
 
-            }
+            }*/
             /*else if((celdaAbajo != null && celdaDerecha != null)){
                 pinguino.setPosicion(pinguino.getX(),(celdaY + 1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
             }*/
+            else if((celdaAbajo == null && celdaDerecha != null)){
+                pinguino.caer();
+            }
             else{
                 pinguino.setPosicion(pinguino.getX(),(celdaY +1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
-
             }
             if(pinguino.getX() >= 12650){
                 pinguino.velocidadX = 0;
@@ -536,16 +540,6 @@ public class Nivel1 implements Screen,InputProcessor {
                 estadoJuego = estadoJuego.PERDIO;
                 pinguino.setPosicion(0,10000);
             }
-            /*if(banderaPerdio == true){
-                juego.setScreen(new Nivel1(juego));
-                musica.setVolume(0);
-                musica.stop();
-            }
-            if(banderaGano == true){
-                juego.setScreen(new PantallaInstrucciones2(juego));
-                musica.setVolume(0);
-                musica.stop();
-            }*/
         }
         switch (pinguino.getEstadoSalto()){
             case SUBIENDO: case BAJANDO:
@@ -676,34 +670,58 @@ public class Nivel1 implements Screen,InputProcessor {
 
     @Override
     public void dispose() {
-        AssetManager manager1 = juego.getManager();
-        manager1.unload("Fondo64.tmx");
-        manager1.unload("PinguinoChido2.png");
-        manager1.unload("BtnBoom.png");
-        manager1.unload("SpriteBoom.png");
-        manager1.unload("BtnArriba.png");
-        manager1.unload("Ganaste_1.png");
-        manager1.unload("BtnPausa.png");
-        manager1.unload("Pausa.png");
-        manager1.unload("SpriteZookDerecha.png");
-        manager1.unload("SpriteZookIzquierda.png");
-        manager1.unload("FondonivelLoop.png");
-        manager1.unload("FondonivelLoop2.png");
-        manager1.unload("Salida.png");
-        manager1.unload("CuadroScore.png");
-        manager1.unload("dardo.png");
-        manager1.unload("Saltar.png");
-        manager1.unload("BTN_Resumen.png");
-        manager1.unload("BTN_Salir.png");
-        manager1.unload("Perdiste_1.png");
-        manager1.unload("Nivel_1.mp3");
-        manager1.unload("Helado especial.mp3");
-        manager1.unload("Helado normal.mp3");
-        manager1.unload("Meeehhpp!!.wav");
-        manager1.unload("Walkgud_IZQ.png");
-        manager1.unload("SaltarIZQ.png");
-        manager1.unload("botonSiguiente.png");
-        manager1.unload("botonRegresar.png");
+        PantallaCargando car = new PantallaCargando(juego);
+        car.borrar();
+        //mapa.dispose();
+        /*rendererMapa.dispose();
+        textSiguiente.dispose();
+        textRegresar.dispose();
+        texturaPausado.dispose();
+        texturaPausa.dispose();
+        texturaGano.dispose();
+        texturaPerdiste.dispose();
+        textPinIzq.dispose();
+        texturaSal.dispose();
+        texturaSalto.dispose();
+        texturaSalir.dispose();
+        texturaScore.dispose();
+        texturaFondo1.dispose();
+        textPinSalIzq.dispose();
+        texturaBoomeran.dispose();
+        texturaDardo.dispose();
+        texturaEnemigo.dispose();
+        texturaEnemigoReg.dispose();
+        texturaDisparo.dispose();
+        texturaFondo2.dispose();
+        texturaFondo3.dispose();
+        texturaResumen.dispose();*/
+        //juego.getManager().unload("Fondo64.tmx");
+        //juego.getManager().unload("PinguinoChido2.png");
+        /*juego.getManager().unload("BtnBoom.png");
+        juego.getManager().unload("SpriteBoom.png");
+        juego.getManager().unload("BtnArriba.png");
+        juego.getManager().unload("Ganaste_1.png");
+        juego.getManager().unload("BtnPausa.png");
+        juego.getManager().unload("Pausa.png");
+        juego.getManager().unload("SpriteZookDerecha.png");
+        juego.getManager().unload("SpriteZookIzquierda.png");
+        juego.getManager().unload("FondonivelLoop.png");
+        juego.getManager().unload("FondonivelLoop2.png");
+        juego.getManager().unload("Salida.png");
+        juego.getManager().unload("CuadroScore.png");
+        juego.getManager().unload("dardo.png");
+        juego.getManager().unload("Saltar.png");
+        juego.getManager().unload("BTN_Resumen.png");
+        juego.getManager().unload("BTN_Salir.png");
+        juego.getManager().unload("Perdiste_1.png");
+        juego.getManager().unload("Nivel_1.mp3");
+        juego.getManager().unload("Helado especial.mp3");
+        juego.getManager().unload("Helado normal.mp3");
+        juego.getManager().unload("Meeehhpp!!.wav");
+        juego.getManager().unload("Walkgud_IZQ.png");
+        juego.getManager().unload("SaltarIZQ.png");*/
+        //juego.getManager().unload("botonSiguiente.png");
+        //juego.getManager().unload("botonRegresar.png");
     }
 
     //public class ProcesadorEntrada extends InputAdapter {

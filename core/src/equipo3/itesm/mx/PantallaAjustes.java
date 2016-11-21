@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+
 /**
  * Created by Mario Lagunes on 25/09/2016.
  */
@@ -27,6 +28,10 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
+    private int contador=0,contador2=0;
+    private Music musica;
+    private Musica musicaAjustes;
+    private static Boolean ajuste = false;
 
     public PantallaAjustes(Juego juego) {
         this.juego = juego;
@@ -48,12 +53,6 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
 
     }
-
-
-
-
-
-
 
     public void cargarBotones() {
         TextureRegionDrawable back = new TextureRegionDrawable(new TextureRegion(texturaBack));
@@ -96,10 +95,35 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
             }
         });
 
+        if(Nivel1.ajuste == true && MenuPrincipal.ajuste == true && PantallaPuntaje.ajuste == true && PantallaAjustes.ajuste == true && PantallaAcercaDe.ajuste == true){
+            btnMusica1.setVisible(true);
+            contador = 1;
+        }
+        else if(Nivel1.ajuste == false && MenuPrincipal.ajuste == false && PantallaPuntaje.ajuste == false && PantallaAjustes.ajuste == false && PantallaAcercaDe.ajuste == false){
+            btnMusica1.setVisible(false);
+            contador = 0;
+        }
+
         btnMusica.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnMusica1.setVisible(true);
+                if(contador == 0){
+                    Nivel1.ajuste = true;
+                    MenuPrincipal.ajuste = true;
+                    PantallaPuntaje.ajuste = true;
+                    PantallaAjustes.ajuste = true;
+                    PantallaAcercaDe.ajuste = true;
+                    contador ++;
+                }
+                else if(contador == 1){
+                    Nivel1.ajuste = false;
+                    MenuPrincipal.ajuste = false;
+                    PantallaPuntaje.ajuste = false;
+                    PantallaAjustes.ajuste = false;
+                    PantallaAcercaDe.ajuste = false;
+                    contador --;
+                }
                 Gdx.app.log("clicked","TAP sobre el boton de no sonido");
 
 
@@ -110,16 +134,45 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnMusica1.setVisible(false);
-
-
-
+                if(contador == 0){
+                    Nivel1.ajuste = true;
+                    MenuPrincipal.ajuste = true;
+                    PantallaPuntaje.ajuste = true;
+                    PantallaAjustes.ajuste = true;
+                    PantallaAcercaDe.ajuste = true;
+                    contador ++;
+                }
+                else if(contador == 1){
+                    Nivel1.ajuste = false;
+                    MenuPrincipal.ajuste = false;
+                    PantallaPuntaje.ajuste = false;
+                    PantallaAjustes.ajuste = false;
+                    PantallaAcercaDe.ajuste = false;
+                    contador --;
+                }
             }
         });
 
+        if(PantallaAcercaDe.ajusteSonido == true){
+            btnSonido1.setVisible(true);
+            contador2 = 1;
+        }
+        else if(PantallaAcercaDe.ajusteSonido == false){
+            btnSonido1.setVisible(false);
+            contador2 = 0;
+        }
         btnSonido.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnSonido1.setVisible(true);
+                if(contador2 == 0){
+                    PantallaAcercaDe.ajusteSonido = true;
+                    contador2 ++;
+                }
+                else if(contador2 == 1){
+                    PantallaAcercaDe.ajusteSonido = false;
+                    contador2 --;
+                }
 
             }
         });
@@ -128,6 +181,14 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 btnSonido1.setVisible(false);
+                if(contador2 == 0){
+                    PantallaAcercaDe.ajusteSonido = true;
+                    contador2 ++;
+                }
+                else if(contador2 == 1){
+                    PantallaAcercaDe.ajusteSonido = false;
+                    contador2 --;
+                }
 
 
             }
@@ -161,6 +222,8 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         texturaMusica = manager.get("BtnMusica.png");
         texturaSonidoO = manager.get("BtnSonido_Osc.png");
         texturaMusicaO = manager.get("BtnMusica_Osc.png");
+        musica = manager.get("Score.mp3");
+        musicaAjustes = new Musica(musica,true,ajuste);
     }
 
     @Override

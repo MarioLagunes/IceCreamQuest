@@ -19,8 +19,6 @@ public class PantallaDatos {
     protected final int ancho2 = 800;
     protected final int alto2 = 1280;
 
-
-
     public PantallaDatos() {
 
     }

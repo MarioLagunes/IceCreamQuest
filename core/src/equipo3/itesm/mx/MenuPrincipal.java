@@ -31,6 +31,8 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 	private ImageButton[] botones1;
 	private ImageButton btonPuntaje,btonJugar,btonAcercaDe,btonAjustes;
 	public Music musica;
+	private Musica musicaMenu;
+	public static Boolean ajuste = false;
 
 	public MenuPrincipal(Juego juego) {
 		this.juego = juego;
@@ -53,9 +55,9 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 		// *** FIN DE CARGAR FONDO Y BOTONES Y FUNCIONALIDAD DE LOS MISMOS ***\\
 
 		// *** CARGAR MÚSICA ***\\
-			musica.setLooping(true);
+			/*musica.setLooping(true);
 			musica.setVolume(1.5f);
-			musica.play();
+			musica.play();*/
 		// *** FIN DE CARGAR MUSICA ***\\
 	}
 
@@ -153,6 +155,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 		texturaBtonPuntaje = manager.get("BtnCopa.png");
 		texturaBtonAcercaDe = manager.get("BtnInf.png");
 		musica = manager.get("Menu-VidJu.mp3");
+		musicaMenu = new Musica(musica,true,ajuste);
 	}
 
 	@Override

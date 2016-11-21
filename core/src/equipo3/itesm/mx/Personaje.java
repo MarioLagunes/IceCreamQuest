@@ -17,16 +17,16 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
  */
 public class Personaje {
     private Sprite sprite,spriteEnemigo,spriteSalto,spriteQuieto,spriteNivel2;
-    public static final float velocidadY = -4f;
+    public static final float velocidadY = -5f;
     public float velX;
-    public float velocidadX = 4;
+    public float velocidadX = 5;
     private Animation animacion,animar,animarSalto,animarQuieto,animarReg,animarIzq,animarSaltoIZQ;
     public float timerAnimacion,tiempoAnimar,timerSalto,timerAnimacion3,timerSalto3,timerIzq,timerSaltoIzq;
     private EstadoMovimiento estadoMovimiento = EstadoMovimiento.INICIANDO;
     //private Texture texturaSalto;
     private EstadoSalto estadoSalto = EstadoSalto.ABAJO;
     private EstadosEnemigo estadoEnemigo;
-    private static final float V0 = 60.0f;
+    private static final float V0 = 65.0f;
     private static final float G = 9.81f;
     private static final float G_2 = G/2f;
     private float yInicial;
@@ -199,7 +199,8 @@ public class Personaje {
     public void probarCaida(TiledMap mapa){
         boolean hayCeldaAbajo = leerCeldaAbajo(mapa);
             if(!hayCeldaAbajo){
-                estadoSalto = EstadoSalto.BAJANDO;
+                caer();
+                //estadoSalto = EstadoSalto.BAJANDO;
             }
     }
 
