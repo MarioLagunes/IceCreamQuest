@@ -13,7 +13,7 @@ public class Texto {
     private BitmapFont font;
 
     public Texto(){
-        font = new BitmapFont(Gdx.files.internal("maiandra.fnt"));
+        font = new BitmapFont(Gdx.files.internal("Lobster.fnt"));
         //fuente = new Font(Gdx.files.internal("Lobster-Regular.ttf"));
     }
 

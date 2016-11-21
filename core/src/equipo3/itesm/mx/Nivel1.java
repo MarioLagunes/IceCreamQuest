@@ -398,7 +398,7 @@ public class Nivel1 implements Screen,InputProcessor {
             if(estadoJuego == EstadosJuego.GANO ){
                 btnGanar.render(batch);
                 btnSiguiente.render(batch);
-                btnSiguiente.setPosicion(1200,0);
+                btnSiguiente.setPosicion(1100,0);
             }
             else if(estadoJuego == EstadosJuego.PAUSADO){
                 fondoPausa.setPosicion(Juego.ancho/4,Juego.alto/16);
@@ -480,6 +480,7 @@ public class Nivel1 implements Screen,InputProcessor {
                 Object tipo = celdaAbajo.getTile().getProperties().get("tipo");
                 if(!"esCuadroPiso".equals(tipo)){
                     celdaAbajo = null;
+                    pinguino.probarCaida(mapa);
                 }
             }
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
@@ -487,6 +488,7 @@ public class Nivel1 implements Screen,InputProcessor {
                 Object tipo = celdaDerecha.getTile().getProperties().get("tipo");
                 if(!"esCuadroPiso".equals(tipo)){
                     celdaDerecha = null;
+                    pinguino.probarCaida(mapa);
                 }
             }
             if((celdaAbajo == null && celdaDerecha == null) || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
@@ -494,18 +496,18 @@ public class Nivel1 implements Screen,InputProcessor {
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
                 //pinguino.probarCaida(mapa);
             }
-            else if(esCuadroPiso(celdaAbajo) || esCuadroPiso(celdaDerecha)){
+            /*else if(esCuadroPiso(celdaAbajo) || esCuadroPiso(celdaDerecha)){
                 pinguino.setPosicion(pinguino.getSprite().getX(),(celdaY+1)* celda);
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-            }
+            }*/
             /*else if((celdaAbajo == null && celdaDerecha != null)|| esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
                     pinguino.caer();
 
-            }*/
-            else if((celdaAbajo != null && celdaDerecha != null)){
+            }
+            /*else if((celdaAbajo != null && celdaDerecha != null)){
                 pinguino.setPosicion(pinguino.getX(),(celdaY + 1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
-            }
+            }*/
             else{
                 pinguino.setPosicion(pinguino.getX(),(celdaY +1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
