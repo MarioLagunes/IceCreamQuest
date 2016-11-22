@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +25,7 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class Nivel3 implements Screen {
     private Juego juego;
+    private Music musica;
     private EstadosJuego estadoJuego;
     private Sprite sprite;
     private Boomerang boomerang;
@@ -142,6 +144,7 @@ public class Nivel3 implements Screen {
         btnResumen = new Boton(texturaResumen);
         texturaSalir = manager.get("BTN_Salir.png");
         btnSalir = new Boton(texturaSalir);
+
 
     }
     @Override
