@@ -114,7 +114,7 @@ public class Personaje {
         sprite.draw(batch);//batch.draw(sprite,sprite.getX(),sprite.getY());
     }
 
-    public void renderNivel3(SpriteBatch batch){
+    /*public void renderNivel3(SpriteBatch batch){
         //Movimientos a la derecha
         if(estadoMovimiento == estadoMovimiento.DER && estadoSalto == EstadoSalto.ABAJO){
             timerAnimacion += Gdx.graphics.getDeltaTime();
@@ -141,7 +141,7 @@ public class Personaje {
         sprite.draw(batch);
 
 
-    }
+    }*/
 
     public void renderNivel2(SpriteBatch batch){
         tiempoAnimar += Gdx.graphics.getDeltaTime();

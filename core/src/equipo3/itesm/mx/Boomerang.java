@@ -25,7 +25,7 @@ public class Boomerang {
     private float VelocidadX;
     private static final float resistencia = 9.8f;
     private static final float mediaResis = resistencia/2;
-    private float x;
+    private float x,y;
     public float velocidad = 20;
     public float tiempo = 0;
     private float xInicial;
@@ -49,6 +49,22 @@ public class Boomerang {
 
     }
 
+    public Boomerang(Texture textura3,int z){
+
+        TextureRegion texturaCompleta = new TextureRegion(textura3);
+        TextureRegion[][] texturaBoomeran = texturaCompleta.split(64,64);
+        animacion = new Animation(0.10f,texturaBoomeran[1][0], texturaBoomeran[2][0], texturaBoomeran[3][0],
+                texturaBoomeran[4][0]);
+        animacionRegreso = new Animation(0.10f,texturaBoomeran[5][0],texturaBoomeran[6][0],texturaBoomeran[7][0]);
+        animacion.setPlayMode(Animation.PlayMode.LOOP);
+        animacionRegreso.setPlayMode(Animation.PlayMode.LOOP);
+        tiempoAnimar = 0;
+        tiempoAnimarReg = 0;
+        sprite = new Sprite(texturaBoomeran[0][0]);
+        estadosBoomerang = boom.GUARDADO;
+
+    }
+
     /*public void draw(Boomerang boomerang){
         sprite.draw(batch);
     }*/
@@ -62,6 +78,27 @@ public class Boomerang {
         }
         batch.draw(region,sprite.getX(),sprite.getY());
     }*/
+
+    public void renderNivel3 (SpriteBatch batch){
+        if(estadosBoomerang == boom.LANZADO){
+            TextureRegion region = animacion.getKeyFrame(tiempoAnimar);
+            y = sprite.getY()+velocidad;
+            sprite.setY(y);
+            sprite.setRegion(region);
+        }
+        if (estadosBoomerang == boom.REGRESANDO){
+            tiempoAnimarReg += Gdx.graphics.getDeltaTime();
+            TextureRegion region = animacionRegreso.getKeyFrame(tiempoAnimarReg);
+            y = sprite.getY()-velocidad;
+            sprite.setY(y);
+            sprite.setRegion(region);
+        }
+        if(estadosBoomerang == boom.GUARDADO){
+            velocidad = 0;
+        }
+        batch.draw(sprite,sprite.getX(),sprite.getY());
+
+    }
 
     public void render(SpriteBatch batch){
 
@@ -185,7 +222,7 @@ public class Boomerang {
         return sprite.getY();
     }
 
-    public void setPosicion(float x, int y){
+    public void setPosicion(float x, float y){
         sprite.setPosition(x,y);
     }
 

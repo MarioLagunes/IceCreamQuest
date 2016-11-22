@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 /**
  * Created by andrescalvavalencia on 08/11/16.
@@ -24,6 +25,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Nivel3 implements Screen {
     private Juego juego;
     private Sprite sprite;
+    private Boomerang boomerang;
     private OrthographicCamera camara;
     private Viewport vista;
     private StretchViewport vistaHUD;
@@ -35,6 +37,7 @@ public class Nivel3 implements Screen {
     private Texture fondo,fondoFin, fondoLopp, fondoUltimo, texuturaPersonaje ,texturaSal,texturaSalto,texturaDisparo,texturaIzquierda, texturaDerecha,
     texturaBoomeran,textIzq,textPinSalIzq;
     private TiledMap mapa;
+    private static final int celda = 64;
     private static final float ancho = 800;
     private static final float alto = 1280;
     private Boton btnSalto,btnDisparar,btnDer,btnIzq;
@@ -65,6 +68,7 @@ public class Nivel3 implements Screen {
         manager.load("Saltar.png",Texture.class);
         manager.load("SaltarIZQ.png",Texture.class);
         manager.load("Walkgud_IZQ.png",Texture.class);
+        manager.load("SpriteBoom_ver.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -105,6 +109,9 @@ public class Nivel3 implements Screen {
         pinguino = new Personaje(texuturaPersonaje,texturaSal,textIzq,textPinSalIzq);
         pinguino.getSprite().setPosition(500,60);
 
+        texturaBoomeran = manager.get("SpriteBoom_ver.png");
+        boomerang = new Boomerang(texturaBoomeran,0);
+
         //botones
         texturaSalto = manager.get("BtnArriba.png");
         texturaDisparo = manager.get("BtnBoom.png");
@@ -112,11 +119,11 @@ public class Nivel3 implements Screen {
         btnSalto.setPosicion(690,-20);
         //btnSalto.setPosicion(ancho/2,alto/2);
         btnDisparar = new Boton(texturaDisparo);
-        btnDisparar.setPosicion(690,70);
+        btnDisparar.setPosicion(690,90);
         texturaDerecha = manager.get("BtnDerecha.png");
         texturaIzquierda = manager.get("BtnIzquierda.png");
         btnDer = new Boton(texturaDerecha);
-        btnDer.setPosicion(90,-20);
+        btnDer.setPosicion(150,-20);
         btnIzq = new Boton(texturaIzquierda);
         btnIzq.setPosicion(-20,-20);
 
@@ -183,7 +190,7 @@ public class Nivel3 implements Screen {
 
 
         batch.begin();
-            pinguino.renderNivel3(batch);
+            pinguino.render(batch);
         batch.end();
 
 
@@ -191,34 +198,90 @@ public class Nivel3 implements Screen {
 
     }
 
-   /* public void actualizar(){
-        float nuevaX = sprite.getX();
-        switch (pinguino.getEstadoMovimiento()){
-            case DER:
-                nuevaX +=
-        }
-    }*/
 
-    public void moverPersonaje(){
-        switch (pinguino.getEstadoMovimiento()){
+
+    public void moverPersonaje() {
+        switch (pinguino.getEstadoMovimiento()) {
             case DER:
                 float x = 0;
-                x = pinguino.getSprite().getX()+velocidadPinguino;
-                pinguino.getSprite().setX(x);
+                if (pinguino.getX() >= 745) {
+                    x = pinguino.getSprite().getX();
+                    pinguino.getSprite().setX(x);
+                } else {
+                    x = pinguino.getSprite().getX() + velocidadPinguino;
+                    pinguino.getSprite().setX(x);
+                }
                 break;
+
             case IZQ:
                 float x1 = 0;
-                x1 = pinguino.getSprite().getX()-velocidadPinguino;
-                pinguino.getSprite().setX(x1);
+                if (pinguino.getX() <= 0) {
+                    x = pinguino.getSprite().getX();
+                    pinguino.getSprite().setX(x);
+                } else {
+                    x1 = pinguino.getSprite().getX() - velocidadPinguino;
+                    pinguino.getSprite().setX(x1);
+                }
                 break;
-        }
 
+        }
+        if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO &&
+                (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
+            int celdaX = (int) ((pinguino.getSprite().getX())/celda);
+            int celdaY = (int) ((pinguino.getY()+pinguino.velocidadY) / celda);
+            TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
+            TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
+            if(celdaAbajo != null){
+                Object tipo = celdaAbajo.getTile().getProperties().get("tipo");
+                if(!"esCuadroPiso".equals(tipo)){
+                    celdaAbajo = null;
+                }
+            }
+            TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
+            if(celdaDerecha != null){
+                Object tipo = celdaDerecha.getTile().getProperties().get("tipo");
+                if(!"esCuadroPiso".equals(tipo)){
+                    celdaDerecha = null;
+                }
+            }
+            if((celdaAbajo == null && celdaDerecha == null) ){
+                pinguino.caer();
+                pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
+            }
+            else if(esCuadroPiso(celdaAbajo) || esCuadroPiso(celdaDerecha)){
+                pinguino.setPosicion(pinguino.getSprite().getX(),(celdaY+1)* celda);
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+            }
+            else if((celdaAbajo == null && celdaDerecha != null)){
+                pinguino.caer();
+
+            }
+            else if((celdaAbajo != null && celdaDerecha != null)){
+                pinguino.setPosicion(pinguino.getX(),(celdaY + 1)*celda);
+                pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
+            }
+            else{
+                pinguino.setPosicion(pinguino.getX(),(celdaY +1)*celda);
+                pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
+
+            }
+
+        }
         switch(pinguino.getEstadoSalto()){
             case SUBIENDO: case BAJANDO:
                 pinguino.actualizarSalto();
                 break;
         }
     }
+
+    private boolean esCuadroPiso(TiledMapTileLayer.Cell cell){
+            if(cell == null){
+                return false;
+            }
+            Object propiedad = cell.getTile().getProperties().get("tipo");
+            return "cuadroPiso".equals(propiedad);
+        }
+
 
 
     @Override
@@ -248,6 +311,7 @@ public class Nivel3 implements Screen {
 
     }
 
+
 // hacer funcionar botones
 public class ProcesadorEntrada extends InputAdapter{
     private Vector3 coordenadas = new Vector3();
@@ -258,16 +322,34 @@ public class ProcesadorEntrada extends InputAdapter{
         if (btnSalto.contiene(x, y)) {
             pinguino.saltar();
         }
+        else if(btnDisparar.contiene(x,y)){
+            boomerang = new Boomerang(texturaBoomeran);
+            boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
+            boomerang.salir();
+            //btnDisparar.setPosicion(0,-100);
 
-        if (btnDer.contiene(x,y)){
+        }
+        else if (btnDer.contiene(x,y)){
             pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
         }
-        if (btnIzq.contiene(x,y)){
+        else if (btnIzq.contiene(x,y)){
             pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.IZQ);
         }
 
         return true;
     }
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        transformarCoordenadas(screenX,screenY);
+        if(btnDer.contiene(x,y)){
+            pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+        }
+        if(btnIzq.contiene(x,y)){
+            pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+        }
+        return true;
+    }
+
     private void transformarCoordenadas(int screenX, int screenY){
         coordenadas.set(screenX, screenY,0);
         camaraHUD.unproject(coordenadas);
