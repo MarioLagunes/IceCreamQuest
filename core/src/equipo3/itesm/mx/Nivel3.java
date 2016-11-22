@@ -24,6 +24,7 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class Nivel3 implements Screen {
     private Juego juego;
+    private EstadosJuego estadoJuego;
     private Sprite sprite;
     private Boomerang boomerang;
     private OrthographicCamera camara;
@@ -33,15 +34,15 @@ public class Nivel3 implements Screen {
     private OrthogonalTiledMapRenderer rendererMapa;
     private SpriteBatch batch;
     private Personaje pinguino;
-    private Fondo fondo1, fondo2,fondo3, fondo4;
+    private Fondo fondo1, fondo2,fondo3, fondo4,fondoPausa;
     private Texture fondo,fondoFin, fondoLopp, fondoUltimo, texuturaPersonaje ,texturaSal,texturaSalto,texturaDisparo,texturaIzquierda, texturaDerecha,
-    texturaBoomeran,textIzq,textPinSalIzq;
+    texturaBoomeran,textIzq,textPinSalIzq,texturaPausa,texturaPausado,texturaResumen,texturaPerdiste,texturaSalir;
     private TiledMap mapa;
     private static final int celda = 64;
     private static final float ancho = 800;
     private static final float alto = 1280;
     public static final float alto_mapa = 3840;
-    private Boton btnSalto,btnDisparar,btnDer,btnIzq;
+    private Boton btnSalto,btnDisparar,btnDer,btnIzq,btnPausa,btnResumen,btnSalir,btnRegresar;
     private EstadosJuego estadosJuego;
     private int velocidadX = 5, velocidadY = -5,velocidadItemY = -5,velocidadPosteX = 5,velocidadPosteY = -3,velocidadPinguino = 10;
     public static final int TAM_CELDA = 16;
@@ -70,6 +71,10 @@ public class Nivel3 implements Screen {
         manager.load("SaltarIZQ.png",Texture.class);
         manager.load("Walkgud_IZQ.png",Texture.class);
         manager.load("SpriteBoom_ver.png",Texture.class);
+        manager.load("BTN_Resumen.png",Texture.class);
+        manager.load("BTN_Salir.png",Texture.class);
+        manager.load("BtnPausa.png",Texture.class);
+        manager.load("Pausa.png",Texture.class);
         manager.finishLoading();
     }
 
@@ -128,6 +133,16 @@ public class Nivel3 implements Screen {
         btnIzq = new Boton(texturaIzquierda);
         btnIzq.setPosicion(-20,-20);
 
+        texturaPausa = manager.get("BtnPausa.png");
+        btnPausa = new Boton((texturaPausa));
+        btnPausa.setPosicion(690,1150);
+        texturaPausado = manager.get("Pausa.png");
+        fondoPausa = new Fondo(texturaPausado);
+        texturaResumen = manager.get("BTN_Resumen.png");
+        btnResumen = new Boton(texturaResumen);
+        texturaSalir = manager.get("BTN_Salir.png");
+        btnSalir = new Boton(texturaSalir);
+
     }
     @Override
     public void show() {
@@ -183,16 +198,32 @@ public class Nivel3 implements Screen {
         rendererMapa.render();
 
         batch.begin();
-            btnDisparar.render(batch);
-            btnSalto.render(batch);
-            btnIzq.render(batch);
-            btnDer.render(batch);
+            pinguino.render(batch);
         batch.end();
 
-
-
         batch.begin();
-            pinguino.render(batch);
+            if(estadoJuego == EstadosJuego.PAUSADO){
+                fondoPausa.setPosicion(Juego.alto/16,Juego.ancho/4);
+                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+                fondoPausa.draw(batch);
+                btnResumen.setPosicion(Juego.ancho/7.6f,Juego.ancho/2);
+                btnSalir.setPosicion(Juego.ancho/7.6f,Juego.alto/2);
+                btnResumen.render(batch);
+                btnSalir.render(batch);
+            }
+            else if(estadoJuego == EstadosJuego.PERDIO){
+                btnRegresar.render(batch);
+                btnRegresar.setPosicion(0,0);
+            }
+            else{
+                btnSalto.render(batch);
+                btnDisparar.render(batch);
+                btnIzq.render(batch);
+                btnDer.render(batch);
+                btnPausa.render(batch);
+            }
+
+
         batch.end();
 
 
@@ -317,6 +348,18 @@ public class ProcesadorEntrada extends InputAdapter{
         else if (btnIzq.contiene(x,y)){
             pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.IZQ);
         }
+        else if(btnPausa.contiene(x,y)){
+            estadoJuego = estadoJuego.PAUSADO;
+
+        }
+        else if(btnResumen.contiene(x,y)){
+            estadoJuego = estadoJuego.JUGANDO;
+            pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+            fondoPausa.setPosicion(-13444,-12435);}
+        else if(btnSalir.contiene(x,y)){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
+
 
         return true;
     }
