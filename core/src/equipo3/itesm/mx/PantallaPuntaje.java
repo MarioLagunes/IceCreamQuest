@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,6 +31,8 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
     private Music musica;
     private Musica muscaPuntaje;
     public static Boolean ajuste = false;
+    private Texto texto;
+    private SpriteBatch batch;
 
     public PantallaPuntaje(Juego juego) {
         this.juego = juego;
@@ -48,6 +51,7 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
             cargarImagenes();
             cargarFondo();
             cargarBotones();
+            batch = new SpriteBatch();
 
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
     }
@@ -78,6 +82,7 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
         texturaBack = manager.get("botonRegresar.png");
         musica = manager.get("Score.mp3");
         muscaPuntaje = new Musica(musica,true,ajuste);
+        texto = new Texto();
     }
 
     private void cargarFondo() {
@@ -93,6 +98,10 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         escena.setViewport(vista);
         escena.draw();
+        batch.begin();
+        texto.mostrarMensaje(batch,"Beast ",120,310);
+        texto.mostrarMensaje(batch,"1000000 ",220,300);
+        batch.end();
     }
 
     @Override
