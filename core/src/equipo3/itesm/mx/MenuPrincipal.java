@@ -25,7 +25,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class MenuPrincipal extends PantallaDatos implements Screen {
 	private final Juego juego;
 	private Stage escena;
-	private Texture texturaFondoMenu,texturaBtonAjustes,texturaBtonJugar,texturaBtonPuntaje,texturaAcercaDe,texturaAjustes,texturaInstrucciones,texturaBtonAcercaDe;
+	private Texture texturaFondoMenu,texturaBtonAjustes,texturaBtonJugar,texturaBtonPuntaje,texturaAcercaDe,texturaAjustes,texturaInstrucciones,
+			texturaBtonAcercaDe,texturaComic;
 	private OrthographicCamera camara;
 	private Viewport vista;
 	private ImageButton[] botones1;
@@ -33,6 +34,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 	public Music musica;
 	private Musica musicaMenu;
 	public static Boolean ajuste = false;
+	public Fondo fondoComic;
 
 	public MenuPrincipal(Juego juego) {
 		this.juego = juego;
@@ -72,7 +74,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 		btonJugar.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				juego.setScreen(new PantallaInstrucciones(juego));
+				juego.setScreen(new Comic(juego));
 				musica.stop();
 			}
 		});
