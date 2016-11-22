@@ -112,7 +112,7 @@ public class PantallaCargando implements Screen {
     }
 
     public void borrar(){
-        manager.unload("Fondo64.tmx");
+        /*manager.unload("Fondo64.tmx");
         manager.unload("PinguinoChido2.png");
         manager.unload("BtnBoom.png");
         manager.unload("SpriteBoom.png");
@@ -138,7 +138,7 @@ public class PantallaCargando implements Screen {
         manager.unload("Walkgud_IZQ.png");
         manager.unload("SaltarIZQ.png");
         manager.unload("botonSiguiente.png");
-        manager.unload("botonRegresar.png");
+        manager.unload("botonRegresar.png");*/
     }
 
     private void actualizar() {

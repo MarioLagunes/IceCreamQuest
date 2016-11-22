@@ -186,7 +186,7 @@ public class Nivel1 implements Screen,InputProcessor {
         //enemigo4 = new Personaje(texturaEnemigo);
         // enemigo5 = new Personaje(texturaEnemigo);
         enemigo.setPosicion(1850,128);
-        enemigo1.setPosicion(6080,704);
+        enemigo1.setPosicion(6080,768);
         enemigo2.setPosicion(4608,576);
         enemigo3.setPosicion(10560,128);
         //enemigo.getSprite().setPosition(300,Juego.alto*0.06f);

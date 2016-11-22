@@ -212,7 +212,7 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         manager.load("BtnMusica_Osc.png",Texture.class);
         manager.load("BtnSonido.png",Texture.class);
         manager.load("BtnSonido_Osc.png",Texture.class);
-        manager.load("Score.mp3",Music.class);
+        manager.load("Ajustes.mp3",Music.class);
         manager.finishLoading();
 
 
@@ -222,7 +222,7 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         texturaMusica = manager.get("BtnMusica.png");
         texturaSonidoO = manager.get("BtnSonido_Osc.png");
         texturaMusicaO = manager.get("BtnMusica_Osc.png");
-        musica = manager.get("Score.mp3");
+        musica = manager.get("Ajustes.mp3");
         musicaAjustes = new Musica(musica,true,ajuste);
     }
 
@@ -263,7 +263,7 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         manager.unload("BtnMusica_Osc.png");
         manager.unload("BtnSonido.png");
         manager.unload("BtnSonido_Osc.png");
-        manager.unload("Score.mp3");
+        manager.unload("Ajustes.mp3");
     }
 
     @Override

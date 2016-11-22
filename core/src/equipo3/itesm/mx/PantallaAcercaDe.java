@@ -276,7 +276,7 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         manager.load("Boton_moka.png",Texture.class);
         manager.load("AcercaDeMokaSF-01.png",Texture.class);
 
-        manager.load("Score.mp3",Music.class);
+        manager.load("AcercaDe.mp3",Music.class);
         manager.load("Helado acerca de.mp3",Sound.class);
 
         manager.finishLoading();
@@ -299,7 +299,7 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         moka = manager.get("Boton_moka.png");
         infoMoka = manager.get("AcercaDeMokaSF-01.png");
 
-        musica = manager.get("Score.mp3");
+        musica = manager.get("AcercaDe.mp3");
         musicaAcercaDe = new Musica(musica,true,ajuste);
         heladoEspecial = manager.get("Helado acerca de.mp3");
 
@@ -348,7 +348,7 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         manager.unload("AcercaDeDanySF-01.png");
         manager.unload("Boton_moka.png");
         manager.unload("AcercaDeMokaSF-01.png");
-        manager.unload("Score.mp3");
+        manager.unload("AcercaDe.mp3");
     }
 
     @Override

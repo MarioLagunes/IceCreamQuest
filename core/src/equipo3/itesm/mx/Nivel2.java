@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -53,12 +54,14 @@ public class Nivel2 implements Screen,InputProcessor{
     private Texto texto;
     private Animation animacionBote,animacionbote2;
     private float timerAnimar,timerAnimar2;
-    private int vidas = 1,numero1,numeroDibujo=0;
+    private int vidas = 5,numero1,numeroDibujo=0;
     private float j = 0.004f,j2=0.015f,j3=0.009f,tiempo;
     private Vector3 coordenadas = new Vector3();
     private float x,y;
-    private Sound sonidoCono,sonidoConoDorado,muere,sonidoBote,sonidoMoco;
-    private ParticleEffect particulas;
+    private Music musica;
+    private Musica musicaNivel2;
+    public static Boolean ajuste = false;
+    private Sound sonidoCono,sonidoConoDorado,muere,sonidoBote,sonidoMoco;;
     private int contador = 0;
 
 
@@ -82,9 +85,6 @@ public class Nivel2 implements Screen,InputProcessor{
             cargarTexturas();
             crearObjetos();
             Gdx.input.setInputProcessor(this);
-            particulas = new ParticleEffect();
-            particulas.load(Gdx.files.internal("niebla.p"),Gdx.files.internal(""));
-            particulas.setPosition(100,300);
             Gdx.input.setCatchBackKey(true);
         //pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
 
@@ -132,7 +132,7 @@ public class Nivel2 implements Screen,InputProcessor{
         manager.load("Basura.wav",Sound.class);
         manager.load("Cono.wav",Sound.class);
         manager.load("Capa-Nubes.png",Texture.class);
-
+        manager.load("Nivel2.mp3",Music.class);
         manager.finishLoading();
     }
 
@@ -167,6 +167,10 @@ public class Nivel2 implements Screen,InputProcessor{
         sonidoCono = manager.get("Cono.wav");
         sonidoBote = manager.get("Basura.wav");
         textCapaNubes = manager.get("Capa-Nubes.png");
+        muere = manager.get("Meeehhpp!!.wav");
+
+        musica = manager.get("Nivel2.mp3");
+        musicaNivel2 = new Musica(musica,true,ajuste);
 
         fondoNubes = new Fondo(textCapaNubes);
         fondoNubes2 = new Fondo(textCapaNubes);
@@ -302,8 +306,8 @@ public class Nivel2 implements Screen,InputProcessor{
         //sonidoCono = manager.get("Helado normal.mp3");
         sonidoConoDorado = manager.get("Helado especial.mp3");
         //muere = manager.get("Meeehhpp!!.wav");
-        perder.setPosition(Juego.ancho/4,Juego.alto/16);
-        ganar.setPosition(Juego.ancho/4,Juego.alto/16);
+        perder.setPosicion(Juego.ancho/4,Juego.alto/16);
+        ganar.setPosicion(Juego.ancho/4,Juego.alto/16);
         fondoNubes.setPosicion(0,0);
         fondoNubes2.setPosicion(1280,0);
 
@@ -327,8 +331,11 @@ public class Nivel2 implements Screen,InputProcessor{
     public void render(float delta) {
         //velocidadX += 1;
         //velocidadY -= 5;
-        actualizarCamara();
-        moverPersonaje();
+        if(estadosJuego != EstadosJuego.PERDIO){
+            actualizarCamara();
+            moverPersonaje();
+        }
+
         Gdx.gl.glClearColor(0.42f,0.55f,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //fondoNoche.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
@@ -364,7 +371,6 @@ public class Nivel2 implements Screen,InputProcessor{
             posteIzq1.draw(batch);
             posteEstaticoDer.draw(batch);
             posteEstaticoIzq.draw(batch);
-            particulas.draw(batch,delta);
             fondoNubes.draw(batch);
             fondoNubes2.draw(batch);
 
@@ -509,23 +515,11 @@ public class Nivel2 implements Screen,InputProcessor{
                 moco3.setX(xmoco3);
                 moco3.setY(ymoco3);
             }
-
-
             for(float i= 0.01f; i<1;i++){
-                //cono.setScale(cono.getScaleX()+j3,cono.getScaleY()+j3);
-                //conoDorado.setScale(conoDorado.getScaleX()+j3,conoDorado.getScaleY()+j3);
                 posteIzq.setScale(posteIzq.getScaleX()+j2,posteIzq.getScaleY()+j2);
-                //if(posteIzq.getY()< 100){
                 posteDer.setScale(posteDer.getScaleX()+j2,posteDer.getScaleY()+j2);
                 posteIzq1.setScale(posteIzq1.getScaleX()+j2,posteIzq1.getScaleY()+j2);
                 posteDer1.setScale(posteDer1.getScaleX()+j2,posteDer1.getScaleY()+j2);
-
-
-                moco.setScale(moco.getScaleX()+j3,moco.getScaleY()+j3);
-
-
-                //}
-
                 if(posteIzq.getY() < -200){
                     posteIzq.setScale(0.3f,0.3f);
                     posteIzq.setPosition(450,300);
@@ -703,16 +697,53 @@ public class Nivel2 implements Screen,InputProcessor{
             moco3.setPosition(670,400);
             moco3.setScale(0.3f,0.3f);
         }
+        if((pinguino.getX2() >= 0/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 0) && (pinguino.getX2() <= 50 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((posteDer.getY()-10) >=pinguino.getY2() &&(posteDer.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            vidas --;
+            muere.play();
+            posteDer.setScale(0.3f,0.3f);
+            posteDer.setPosition(670,300);
+        }
+
+        if((pinguino.getX2() >= 0/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 0) && (pinguino.getX2() <= 50 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((posteDer1.getY()-10) >=pinguino.getY2() &&(posteDer1.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            vidas --;
+            muere.play();
+            posteDer1.setScale(0.3f,0.3f);
+            posteDer1.setPosition(670,300);
+        }
+
+        if((pinguino.getX2() >= 1200/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 1200) && (pinguino.getX2() <= 1280 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((posteIzq.getY()-10) >=pinguino.getY2() &&(posteIzq.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            vidas--;
+            muere.play();
+            posteIzq.setScale(0.3f,0.3f);
+            posteIzq.setPosition(450,300);
+        }
+
+        if((pinguino.getX2() >= 1200/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 1200) && (pinguino.getX2() <= 1280 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((posteIzq1.getY()-10) >=pinguino.getY2() &&(posteIzq1.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            vidas--;
+            muere.play();
+            posteIzq1.setScale(0.3f,0.3f);
+            posteIzq1.setPosition(450,300);
+        }
+
         if(contador == 3){
             vidas--;
             contador = 0;
         }
-        if(vidas == 0 || pinguino.puntos < 0){
-            estadosJuego = EstadosJuego.PERDIO;
-        }
-        if(tiempo >= 75 && pinguino.puntos > 0){
-            estadosJuego = EstadosJuego.GANO;
-        }
+
+
+
+        batch.end();
+
+        batch.setProjectionMatrix(camaraHUD.combined);
+        batch.begin();
         if(estadosJuego == EstadosJuego.GANO ){
             ganar.render(batch);
             btnSiguiente.render(batch);
@@ -759,6 +790,7 @@ public class Nivel2 implements Screen,InputProcessor{
 
         else if(estadosJuego == EstadosJuego.PERDIO){
             perder.render(batch);
+            //perder.draw(batch,delta);
             btnRegreso.render(batch);
             btnRegreso.setPosicion(0,0);
         }
@@ -772,13 +804,7 @@ public class Nivel2 implements Screen,InputProcessor{
             texto.mostrarMensaje(batch," " + pinguino.puntos,150,Juego.alto * 0.93f);
             texto.mostrarMensaje(batch," " + vidas,150,Juego.alto * 0.85f);
         }
-
         batch.end();
-
-        /*batch.setProjectionMatrix(camaraHUD.combined);
-        batch.begin();
-
-        batch.end();*/
     }
 
     public void moverPersonaje(){
@@ -805,6 +831,14 @@ public class Nivel2 implements Screen,InputProcessor{
                     pinguino.getSprite2().setX(x1);
                 }
                 break;
+        }
+        if(vidas == 0 || pinguino.puntos < 0){
+            estadosJuego = EstadosJuego.PERDIO;
+            pinguino.setPosicion2(-1000,0);
+
+        }
+        if(tiempo >= 75 && pinguino.puntos > 0){
+            estadosJuego = EstadosJuego.GANO;
         }
 
         switch(pinguino.getEstadoSalto()){
@@ -870,6 +904,16 @@ public class Nivel2 implements Screen,InputProcessor{
         manager.unload("mocoprueba.png");
         manager.unload("Helado especial.mp3");
         manager.unload("Helado normal.mp3");
+        manager.unload("Meeehhpp!!.wav");
+        manager.unload("botonSiguiente.png");
+        manager.unload("botonRegresar.png");
+        manager.unload("deslizar_der.png");
+        manager.unload("deslizar_izq.png");
+        manager.unload("Mocos.wav");
+        manager.unload("Basura.wav");
+        manager.unload("Cono.wav");
+        manager.unload("Capa-Nubes.png");
+        manager.unload("Nivel2.mp3");
     }
 
     //public class ProcesadorEntrada extends InputAdapter{
@@ -940,11 +984,10 @@ public class Nivel2 implements Screen,InputProcessor{
                 //musica.stop();
             }
             if(estadosJuego == EstadosJuego.PERDIO && btnRegreso.contiene(x,y)){
-                System.out.print("Estoy tocandote");
-                juego.setScreen(new Nivel1(juego));
+                juego.setScreen(new Nivel2(juego));
             }
             if(estadosJuego == EstadosJuego.GANO && btnSiguiente.contiene(x,y)){
-                juego.setScreen(new PantallaInstrucciones2(juego));
+                juego.setScreen(new PantallaInstrucciones3(juego));
                 //musica.setVolume(0);
                 //musica.stop();
             }
