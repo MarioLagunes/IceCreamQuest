@@ -59,7 +59,7 @@ public class PantallaCargando implements Screen {
         animacionCarga.setPlayMode(Animation.PlayMode.LOOP);
         timer = 0;
         spriteCargando = new Sprite(animacioTextura[0][0]);
-        spriteCargando.setPosition(400,100);
+        spriteCargando.setPosition(500,100);
         cargarSiguienteNivel();
         //Gdx.input.setInputProcessor(this);
         //Gdx.input.setCatchBackKey(true);

@@ -88,6 +88,7 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
     private void cargarFondo() {
         escena = new Stage();
         Gdx.input.setInputProcessor(escena);
+        Gdx.input.setCatchBackKey(true);
         Image fondo = new Image(texturaInstrucciones);
         escena.addActor(fondo);
     }

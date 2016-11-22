@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -36,6 +37,7 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
     public static Boolean ajuste = false;
     private Sound heladoEspecial;
     public static Boolean ajusteSonido = false;
+    private SpriteBatch batch;
 
 
 
@@ -58,7 +60,7 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             cargarFondo();
             cargarBotones();
 
-
+            batch = new SpriteBatch();
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
     }
 
@@ -251,9 +253,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
     private void cargarFondo() {
         escena = new Stage();
         Gdx.input.setInputProcessor(escena);
-        Gdx.input.setCatchBackKey(true);
         Image fondo = new Image(texturaAcercaDe);
         escena.addActor(fondo);
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void cargarImagenes() {
@@ -310,7 +312,9 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         escena.setViewport(vista);
+        batch.begin();
         escena.draw();
+        batch.end();
     }
 
     @Override
