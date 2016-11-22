@@ -113,7 +113,7 @@ public class PantallaInstrucciones3 implements Screen,InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //juego.setScreen(new Nivel1(juego));
-                juego.setScreen(new Nivel3(juego));
+                juego.setScreen(new PantallaCargando3(juego));
             }
         });
 

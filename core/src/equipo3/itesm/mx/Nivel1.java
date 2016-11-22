@@ -336,7 +336,9 @@ public class Nivel1 implements Screen,InputProcessor {
                     (dardo.getY() >= pinguino.getY() && dardo.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))) {
                 vidas--;
                 dardo.velocidadX = 0;
-                muere.play();
+                if(Nivel1.ajusteSonido == false){
+                    muere.play();
+                }
                 dardo.setPosicion(-100, 0);
                 //  tiempo2 += Gdx.graphics.getDeltaTime();
 
@@ -357,7 +359,9 @@ public class Nivel1 implements Screen,InputProcessor {
                     (dardo2.getY() >= pinguino.getY() && dardo2.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo2.velocidadX = 0;
-                muere.play();
+                if(Nivel1.ajusteSonido == false){
+                    muere.play();
+                }
                 dardo2.setPosicion(-100,0);
 
                 //pinguino.getSprite().setAlpha(0.5f);
@@ -366,7 +370,9 @@ public class Nivel1 implements Screen,InputProcessor {
                     (dardo1.getY() >= pinguino.getY() && dardo1.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo1.velocidadX = 0;
-                muere.play();
+                if(Nivel1.ajusteSonido == false){
+                    muere.play();
+                }
                 dardo1.setPosicion(-100,0);
                 //pinguino.getSprite().setAlpha(0.5f);
             }
@@ -374,7 +380,9 @@ public class Nivel1 implements Screen,InputProcessor {
                     (dardo3.getY() >= pinguino.getY() && dardo3.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
                 dardo3.velocidadX = 0;
-                muere.play();
+                if(Nivel1.ajusteSonido == false){
+                    muere.play();
+                }
                 dardo3.setPosicion(-100,0);
                 //pinguino.getSprite().setAlpha(0.5f);
             }

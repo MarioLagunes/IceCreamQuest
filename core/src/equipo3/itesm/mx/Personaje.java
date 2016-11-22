@@ -182,13 +182,17 @@ public class Personaje {
             Object tipo = celda.getTile().getProperties().get("tipo");
             if("helado".equals(tipo)){
                 puntos += 500;
-                helado.play();
+                if(Nivel1.ajusteSonido == false){
+                    helado.play();
+                }
                 capa.setCell(x,y,null);
                 //capa.setCell(x,y,capa.getCell(0,4));
             }
             else if("heladoespecial".equals(tipo)){
                 puntos += 1000;
-                heladoEspecial.play();
+                if(Nivel1.ajusteSonido == false){
+                    heladoEspecial.play();
+                }
                 capa.setCell(x,y,null);
                 //capa.setCell(x,y,capa.getCell(0,4));
             }

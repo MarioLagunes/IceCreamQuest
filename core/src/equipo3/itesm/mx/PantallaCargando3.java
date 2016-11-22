@@ -105,7 +105,7 @@ public class PantallaCargando3 implements Screen {
 
     private void actualizar() {
         if(manager.update()){
-            juego.setScreen(new Nivel1(juego));
+            juego.setScreen(new Nivel3(juego));
         }
         else{
             float avance = manager.getProgress();

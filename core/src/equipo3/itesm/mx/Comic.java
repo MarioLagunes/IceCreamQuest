@@ -21,9 +21,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Comic implements Screen, InputProcessor {
     private Juego juego;
-    private Texture texturaComic,texturaSiguiente;
+    private Texture texturaComic,texturaSiguiente,texturaSkip;
     private Fondo fondoComic;
-    private Boton btnSiguiente;
+    private Boton btnSiguiente,btnSkip;
     private SpriteBatch batch;
     private OrthographicCamera camara,camaraHUD;
     private Viewport vista;
@@ -54,11 +54,14 @@ public class Comic implements Screen, InputProcessor {
         manager.load("Comic.png",Texture.class);
         manager.load("botonSiguiente.png",Texture.class);
         manager.load("Comic.mp3",Music.class);
+        manager.load("BtnSkip.png",Texture.class);
         manager.finishLoading();
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
         texturaComic = manager.get("Comic.png");
         texturaSiguiente = manager.get("botonSiguiente.png");
+        texturaSkip = manager.get("BtnSkip.png");
+        btnSkip = new Boton(texturaSkip);
         fondoComic = new Fondo(texturaComic);
         fondoComic.setPosicion(0,-800);
         btnSiguiente = new Boton(texturaSiguiente);
@@ -75,12 +78,14 @@ public class Comic implements Screen, InputProcessor {
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         fondoComic.draw(batch);
+        btnSkip.render(batch);
         float yFon = fondoComic.getY();
         yFon += velY;
         fondoComic.getSprite().setY(yFon);
         if(fondoComic.getY() == 0){
             velY = 0;
             btnSiguiente.render(batch);
+            btnSkip.setPosicion(-1000,0);
         }
         batch.end();
     }
@@ -132,6 +137,10 @@ public class Comic implements Screen, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         transformarCoordenadas(screenX,screenY);
         if(btnSiguiente.contiene(x,y)){
+            juego.setScreen(new PantallaCargando(juego));
+            musica.stop();
+        }
+        if(btnSkip.contiene(x,y)){
             juego.setScreen(new PantallaCargando(juego));
             musica.stop();
         }
