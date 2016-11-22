@@ -132,7 +132,7 @@ public class Comic implements Screen, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         transformarCoordenadas(screenX,screenY);
         if(btnSiguiente.contiene(x,y)){
-            juego.setScreen(new PantallaInstrucciones(juego));
+            juego.setScreen(new PantallaCargando(juego));
             musica.stop();
         }
         return true;

@@ -95,11 +95,13 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
             }
         });
 
-        if(Nivel1.ajuste == true && MenuPrincipal.ajuste == true && PantallaPuntaje.ajuste == true && PantallaAjustes.ajuste == true && PantallaAcercaDe.ajuste == true){
+        if(Nivel1.ajuste == true && MenuPrincipal.ajuste == true && PantallaPuntaje.ajuste == true && PantallaAjustes.ajuste == true && PantallaAcercaDe.ajuste == true && Nivel2.ajuste == true
+                && Comic.ajuste == true){
             btnMusica1.setVisible(true);
             contador = 1;
         }
-        else if(Nivel1.ajuste == false && MenuPrincipal.ajuste == false && PantallaPuntaje.ajuste == false && PantallaAjustes.ajuste == false && PantallaAcercaDe.ajuste == false){
+        else if(Nivel1.ajuste == false && MenuPrincipal.ajuste == false && PantallaPuntaje.ajuste == false && PantallaAjustes.ajuste == false && PantallaAcercaDe.ajuste == false && Nivel2.ajuste == false
+                && Comic.ajuste == false){
             btnMusica1.setVisible(false);
             contador = 0;
         }
@@ -114,6 +116,8 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
                     PantallaPuntaje.ajuste = true;
                     PantallaAjustes.ajuste = true;
                     PantallaAcercaDe.ajuste = true;
+                    Nivel2.ajuste = true;
+                    Comic.ajuste = true;
                     contador ++;
                 }
                 else if(contador == 1){
@@ -122,6 +126,8 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
                     PantallaPuntaje.ajuste = false;
                     PantallaAjustes.ajuste = false;
                     PantallaAcercaDe.ajuste = false;
+                    Nivel2.ajuste = false;
+                    Comic.ajuste = false;
                     contador --;
                 }
                 Gdx.app.log("clicked","TAP sobre el boton de no sonido");
@@ -140,6 +146,8 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
                     PantallaPuntaje.ajuste = true;
                     PantallaAjustes.ajuste = true;
                     PantallaAcercaDe.ajuste = true;
+                    Nivel2.ajuste = true;
+                    Comic.ajuste = true;
                     contador ++;
                 }
                 else if(contador == 1){
@@ -148,16 +156,18 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
                     PantallaPuntaje.ajuste = false;
                     PantallaAjustes.ajuste = false;
                     PantallaAcercaDe.ajuste = false;
+                    Nivel2.ajuste = false;
+                    Comic.ajuste = false;
                     contador --;
                 }
             }
         });
 
-        if(PantallaAcercaDe.ajusteSonido == true){
+        if(PantallaAcercaDe.ajusteSonido == true && Nivel1.ajusteSonido == true && Nivel2.ajusteSonido == true){
             btnSonido1.setVisible(true);
             contador2 = 1;
         }
-        else if(PantallaAcercaDe.ajusteSonido == false){
+        else if(PantallaAcercaDe.ajusteSonido == false && Nivel1.ajusteSonido == false && Nivel2.ajusteSonido == false){
             btnSonido1.setVisible(false);
             contador2 = 0;
         }
@@ -167,10 +177,14 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
                 btnSonido1.setVisible(true);
                 if(contador2 == 0){
                     PantallaAcercaDe.ajusteSonido = true;
+                    Nivel1.ajusteSonido = true;
+                    Nivel2.ajusteSonido = true;
                     contador2 ++;
                 }
                 else if(contador2 == 1){
                     PantallaAcercaDe.ajusteSonido = false;
+                    Nivel1.ajusteSonido = false;
+                    Nivel2.ajusteSonido = false;
                     contador2 --;
                 }
 
@@ -183,10 +197,14 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
                 btnSonido1.setVisible(false);
                 if(contador2 == 0){
                     PantallaAcercaDe.ajusteSonido = true;
+                    Nivel1.ajusteSonido = true;
+                    Nivel2.ajusteSonido = true;
                     contador2 ++;
                 }
                 else if(contador2 == 1){
                     PantallaAcercaDe.ajusteSonido = false;
+                    Nivel1.ajusteSonido = false;
+                    Nivel2.ajusteSonido = false;
                     contador2 --;
                 }
 

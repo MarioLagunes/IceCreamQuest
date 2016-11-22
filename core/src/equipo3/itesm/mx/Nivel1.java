@@ -64,6 +64,7 @@ public class Nivel1 implements Screen,InputProcessor {
     private Vector3 coordenadas = new Vector3();
     private float x,y;
     public static Boolean ajuste = false;
+    public static Boolean ajusteSonido = false;
     private boolean banderaGano = false, banderaPerdio = false;
 
     public Nivel1(Juego juego){
@@ -510,9 +511,9 @@ public class Nivel1 implements Screen,InputProcessor {
                 pinguino.setPosicion(pinguino.getX(),(celdaY + 1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
             }*/
-            else if((celdaAbajo == null && celdaDerecha != null)){
+            /*else if((celdaAbajo == null && celdaDerecha != null)){
                 pinguino.caer();
-            }
+            }*/
             else{
                 pinguino.setPosicion(pinguino.getX(),(celdaY +1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);

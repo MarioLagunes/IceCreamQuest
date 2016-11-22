@@ -68,7 +68,7 @@ public class PantallaInstrucciones implements Screen, InputProcessor {
         btonNext.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                juego.setScreen(new Nivel3(juego));
+                juego.setScreen(new Nivel1(juego));
                 //juego.setScreen(new PantallaCargando(juego));
             }
         });

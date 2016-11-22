@@ -61,6 +61,7 @@ public class Nivel2 implements Screen,InputProcessor{
     private Music musica;
     private Musica musicaNivel2;
     public static Boolean ajuste = false;
+    public static Boolean ajusteSonido = false;
     private Sound sonidoCono,sonidoConoDorado,muere,sonidoBote,sonidoMoco;;
     private int contador = 0;
 
