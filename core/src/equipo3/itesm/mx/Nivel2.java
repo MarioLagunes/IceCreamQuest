@@ -459,7 +459,7 @@ public class Nivel2 implements Screen,InputProcessor{
                 for(float i= 0.01f; i<1;i++){
                     botes1.setScale(botes1.getScaleX()+j3,botes1.getScaleY()+j3);
                     if(botes1.getY() <-200){
-                        botes1.setPosition(550,300);
+                        botes1.setPosition(550,400);
                         botes1.setScale(0.3f,0.3f);
                     }
                 }
@@ -476,7 +476,7 @@ public class Nivel2 implements Screen,InputProcessor{
                     botes2.setScale(botes2.getScaleX()+j3,botes2.getScaleY()+j3);
                     if(botes2.getY() < -200){
                         botes2.setScale(0.3f,0.3f);
-                        botes2.setPosition(610,300);
+                        botes2.setPosition(610,400);
                     }
                 }
                 float boteAnimado2x = botes2.getX();
