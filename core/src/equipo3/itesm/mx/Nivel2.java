@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -39,15 +40,15 @@ public class Nivel2 implements Screen,InputProcessor{
     private Fondo fondo,fondo2,fondo3,fondo4,fondo5,fondoEx,fondoExI,fondoEx1,fondoEx2,fondoPiso1,fondoPiso2,fondoPiso3,fondoCarre1,fondoCarre2,fondoCarre3,fondoCarre4,fondoCarre5,fondoCarre6;
     private Texture fondoNoche,texuturaPersonaje,texturaQui,texturaSal,textFondo2,edificiosIzq,edificiosDer,texturaCentro,fondoPiso,textCarreDer,textCarreIzq,textCono,textBtnSaltar,textBtnPausa,
                     textBtnReaunudar,textBtnSalir,texturaPausa,texturaGanaste,texturaPerdiste,texturaScore,textPosteDer,textPosteIzq,textMoco,textBtnDer,textBtnIzq,textPinIzq,textPinSalIzq,
-                texturaBote1,texturaBote2,texturaBotes1,texturaBotes2,textConoDor;
+                texturaBote1,texturaBote2,texturaBotes1,texturaBotes2,textConoDor,textSiguiente,textRegreso,textPingIzq,textPingDer;
     private int velocidadX = 5, velocidadY = -5,velocidadItemY = -3,velocidadItemX = 1,velocidadPosteX = 5,velocidadPosteY =-3,velocidadPinguino = 10,
-            velocidadBotex = 1,velocidadBotey=-3,velocidadMocox = 3,velocidadMocoy = -5;
+            velocidadBotex = 1,velocidadBotey=-3,velocidadMocox = 3,velocidadMocoy = -3;
     private Personaje pinguino;
     private Sprite cono,conoDorado,marcador,pausa,posteDer,posteIzq,moco,posteDer1,posteIzq1,posteEstaticoDer,posteEstaticoIzq,bote1,bote2,botes1,botes2,moco2,moco3;
     private EstadosJuego estadosJuego;
     private Personaje.EstadoMovimiento estadoMovimiento;
     private Personaje.EstadoSalto estadoSalto;
-    private Boton btnSaltar,btnPausa,btnReanudar,btnSalir,ganar,perder,btnDer,btnIzq;
+    private Boton btnSaltar,btnPausa,btnReanudar,btnSalir,ganar,perder,btnDer,btnIzq,btnRegreso,btnSiguiente;
     private Texto texto;
     private Animation animacionBote,animacionbote2;
     private float timerAnimar,timerAnimar2;
@@ -55,7 +56,8 @@ public class Nivel2 implements Screen,InputProcessor{
     private float j = 0.004f,j2=0.015f,j3=0.009f,tiempo;
     private Vector3 coordenadas = new Vector3();
     private float x,y;
-    private Sound sonidoCono,sonidoConoDorado;
+    private Sound sonidoCono,sonidoConoDorado,muere,sonidoBote,sonidoMoco;
+    private ParticleEffect particulas;
 
 
     public Nivel2(Juego juego){
@@ -78,6 +80,9 @@ public class Nivel2 implements Screen,InputProcessor{
             cargarTexturas();
             crearObjetos();
             Gdx.input.setInputProcessor(this);
+            particulas = new ParticleEffect();
+            particulas.load(Gdx.files.internal("niebla.p"),Gdx.files.internal(""));
+            particulas.setPosition(100,300);
             Gdx.input.setCatchBackKey(true);
         //pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.DER);
 
@@ -116,6 +121,15 @@ public class Nivel2 implements Screen,InputProcessor{
         manager.load("mocoprueba.png",Texture.class);
         manager.load("Helado especial.mp3",Sound.class);
         manager.load("Helado normal.mp3",Sound.class);
+        manager.load("Meeehhpp!!.wav",Sound.class);
+        manager.load("botonSiguiente.png",Texture.class);
+        manager.load("botonRegresar.png",Texture.class);
+        manager.load("deslizar_der.png",Texture.class);
+        manager.load("deslizar_izq.png",Texture.class);
+        manager.load("Mocos.wav",Sound.class);
+        manager.load("Basura.wav",Sound.class);
+        manager.load("Cono.wav",Sound.class);
+
         manager.finishLoading();
     }
 
@@ -142,6 +156,16 @@ public class Nivel2 implements Screen,InputProcessor{
         texturaBotes1 = manager.get("SpriteBote.png");
         texturaBotes2 = manager.get("SpriteBote2.png");
         textConoDor = manager.get("cono_dorprueba.png");
+        textSiguiente = manager.get("botonSiguiente.png");
+        textRegreso = manager.get("botonRegresar.png");
+        textPingDer = manager.get("deslizar_der.png");
+        textPingIzq = manager.get("deslizar_izq.png");
+        sonidoMoco = manager.get("Mocos.wav");
+        sonidoCono = manager.get("Cono.wav");
+        sonidoBote = manager.get("Basura.wav");
+
+        btnSiguiente = new Boton(textSiguiente);
+        btnRegreso = new Boton(textRegreso);
 
         TextureRegion texturaBote1 = new TextureRegion(texturaBotes1);
         TextureRegion[][] textuAniBote1 = texturaBote1.split(124,238);
@@ -194,20 +218,16 @@ public class Nivel2 implements Screen,InputProcessor{
         conoDorado = new Sprite(textConoDor);
         conoDorado.setPosition(550,400);
         conoDorado.setScale(0.2f,0.2f);
-        //bote1.setScale(0.2f,0.2f);
-        //bote2.setScale(0.2f,0.2f);
-        botes2.setScale(0.8f,0.8f);
+        botes2.setScale(0.2f,0.2f);
         botes1.setScale(0.2f,0.4f);
-        //bote1.setPosition(466,400);
-        //bote2.setPosition(555,400);
-        botes1.setPosition(540,450);
-        botes2.setPosition(700,50);
+        botes1.setPosition(550,400);
+        botes2.setPosition(610,400);
         moco.setScale(0.2f,0.2f);
-        moco2.setScale(0.6f,0.6f);
-        moco3.setScale(0.9f,0.9f);
+        moco2.setScale(0.3f,0.3f);
+        moco3.setScale(0.3f,0.3f);
         moco.setPosition(580,400);
-        moco2.setPosition(300,200);
-        moco3.setPosition(770,300);
+        moco2.setPosition(450,400);
+        moco3.setPosition(670,400);
 
         edificiosDer = manager.get("edificiosDER.png");
         edificiosIzq = manager.get("edificiosIZQ.png");
@@ -227,7 +247,7 @@ public class Nivel2 implements Screen,InputProcessor{
         texuturaPersonaje = manager.get("Sprite_deslizar.png");
         //texturaSal = manager.get("Saltar.png");
         //textPinSalIzq = manager.get("SaltarIZQ.png");
-        pinguino = new Personaje(texuturaPersonaje);
+        pinguino = new Personaje(texuturaPersonaje,textPingDer,textPingIzq);
         pinguino.setPosicion2(1280/2,0);
         fondo.setPosicion(0,0);
         fondo2.setPosicion(0,0);
@@ -272,8 +292,9 @@ public class Nivel2 implements Screen,InputProcessor{
         posteEstaticoDer.setScale(0.15f,0.15f);
         posteEstaticoIzq.setPosition(445,270);
         posteEstaticoDer.setPosition(670,270);
-        sonidoCono = manager.get("Helado normal.mp3");
+        //sonidoCono = manager.get("Helado normal.mp3");
         sonidoConoDorado = manager.get("Helado especial.mp3");
+        //muere = manager.get("Meeehhpp!!.wav");
 
     }
 
@@ -331,6 +352,7 @@ public class Nivel2 implements Screen,InputProcessor{
             posteIzq1.draw(batch);
             posteEstaticoDer.draw(batch);
             posteEstaticoIzq.draw(batch);
+            particulas.draw(batch,delta);
             if(fondo2.getSprite().getX() < -166){
                 fondo2.setPosicion(0,0);
             }
@@ -360,12 +382,37 @@ public class Nivel2 implements Screen,InputProcessor{
                 fondoCarre6.setPosicion(0,0);
             }
 
-            if(tiempo >= 5){
+            if(tiempo >= 3){
                 cono.draw(batch);
+                for(float i= 0.01f; i<1;i++) {
+                    cono.setScale(cono.getScaleX() + j3, cono.getScaleY() + j3);
+                    if(cono.getY() < -200){
+                        cono.setPosition(610,400);
+                        cono.setScale(0.2f,0.2f);
+                    }
+                }
+                float xFondoCono = cono.getX();
+                float yFondoCono = cono.getY();
+                xFondoCono += velocidadItemX;
+                yFondoCono += velocidadItemY;
+                cono.setX(xFondoCono);
+                cono.setY(yFondoCono);
             }
-            if(tiempo >= 10){
-                //cono.rotate(10);
+            if(tiempo >= 5){
+                for(float i= 0.01f; i<1;i++){
+                    conoDorado.setScale(conoDorado.getScaleX() + j3, conoDorado.getScaleY() + j3);
+                    if(conoDorado.getY() < -200){
+                        conoDorado.setPosition(550,400);
+                        conoDorado.setScale(0.2f,0.2f);
+                    }
+                }
                 conoDorado.draw(batch);
+                float xFondoConoDor = conoDorado.getX();
+                float yFondoConoDor = conoDorado.getY();
+                xFondoConoDor -= velocidadItemX;
+                yFondoConoDor += velocidadItemY;
+                conoDorado.setX(xFondoConoDor);
+                conoDorado.setY(yFondoConoDor);
                 //moco.draw(batch);
                 //moco2.draw(batch);
                 //moco3.draw(batch);
@@ -379,22 +426,82 @@ public class Nivel2 implements Screen,InputProcessor{
             TextureRegion region1 = animacionbote2.getKeyFrame(timerAnimar2);
             botes2.setRegion(region1);
             //botes2.draw(batch);
+            if(tiempo >= 10){
+                botes1.draw(batch);
+                for(float i= 0.01f; i<1;i++){
+                    botes1.setScale(botes1.getScaleX()+j3,botes1.getScaleY()+j3);
+                    if(botes1.getY() <-200){
+                        botes1.setPosition(550,300);
+                        botes1.setScale(0.3f,0.3f);
+                    }
+                }
+                float boteAnimado1x = botes1.getX();
+                float boteAnimado1y = botes1.getY();
+                boteAnimado1x -= velocidadBotex;
+                boteAnimado1y += velocidadBotey;
+                botes1.setX(boteAnimado1x);
+                botes1.setY(boteAnimado1y);
+            }
+            if(tiempo >= 17){
+                botes2.draw(batch);
+                for(float i= 0.01f; i<1;i++){
+                    botes2.setScale(botes2.getScaleX()+j3,botes2.getScaleY()+j3);
+                    if(botes2.getY() < -200){
+                        botes2.setScale(0.3f,0.3f);
+                        botes2.setPosition(610,300);
+                    }
+                }
+                float boteAnimado2x = botes2.getX();
+                float boteAnimado2y = botes2.getY();
+                boteAnimado2x += velocidadBotex;
+                boteAnimado2y += velocidadBotey;
+                botes2.setX(boteAnimado2x);
+                botes2.setY(boteAnimado2y);
+            }
 
+            if(tiempo >= 21){
+                moco2.draw(batch);
+                moco3.draw(batch);
+                for(float i= 0.01f; i<1;i++) {
+                    moco2.setScale(moco2.getScaleX() + j3, moco2.getScaleY() + j3);
+                    moco3.setScale(moco3.getScaleX() + j3, moco3.getScaleY() + j3);
+                    if(moco2.getY() < -200){
+                        moco2.setPosition(450,400);
+                        moco2.setScale(0.3f,0.3f);
+                    }
+                    if(moco3.getY() < -200){
+                        moco3.setPosition(670,400);
+                        moco3.setScale(0.3f,0.3f);
+                    }
+                }
+                float xmoco2 = moco2.getX();
+                float ymoco2 = moco2.getY();
+                xmoco2 -= velocidadMocox;
+                ymoco2 += velocidadMocoy;
+                moco2.setX(xmoco2);
+                moco2.setY(ymoco2);
+
+                float xmoco3 = moco3.getX();
+                float ymoco3 = moco3.getY();
+                xmoco3 += velocidadMocox;
+                ymoco3 += velocidadMocoy;
+                moco3.setX(xmoco3);
+                moco3.setY(ymoco3);
+            }
 
 
             for(float i= 0.01f; i<1;i++){
-                cono.setScale(cono.getScaleX()+j3,cono.getScaleY()+j3);
-                conoDorado.setScale(conoDorado.getScaleX()+j3,conoDorado.getScaleY()+j3);
+                //cono.setScale(cono.getScaleX()+j3,cono.getScaleY()+j3);
+                //conoDorado.setScale(conoDorado.getScaleX()+j3,conoDorado.getScaleY()+j3);
                 posteIzq.setScale(posteIzq.getScaleX()+j2,posteIzq.getScaleY()+j2);
                 //if(posteIzq.getY()< 100){
                 posteDer.setScale(posteDer.getScaleX()+j2,posteDer.getScaleY()+j2);
                 posteIzq1.setScale(posteIzq1.getScaleX()+j2,posteIzq1.getScaleY()+j2);
                 posteDer1.setScale(posteDer1.getScaleX()+j2,posteDer1.getScaleY()+j2);
-                botes1.setScale(botes1.getScaleX()+j3,botes1.getScaleY()+j3);
-                botes2.setScale(botes2.getScaleX()+j3,botes2.getScaleY()+j3);
+
+
                 moco.setScale(moco.getScaleX()+j3,moco.getScaleY()+j3);
-                moco2.setScale(moco2.getScaleX()+j3,moco2.getScaleY()+j3);
-                moco3.setScale(moco3.getScaleX()+j3,moco3.getScaleY()+j3);
+
 
                 //}
 
@@ -414,82 +521,24 @@ public class Nivel2 implements Screen,InputProcessor{
                     posteDer1.setScale(0.3f,0.3f);
                     posteDer1.setPosition(670,300);
                 }
-                if(conoDorado.getY() < -200){
-                    conoDorado.setPosition(550,400);
-                    conoDorado.setScale(0.2f,0.2f);
-                }
-                if(botes1.getY() <-200){
-                    botes1.setPosition(550,400);
-                    botes1.setScale(0.2f,0.2f);
-                }
-                if(cono.getY() < -200){
-                    cono.setPosition(610,400);
-                    cono.setScale(0.2f,0.2f);
-                }
-                if(botes2.getY() < -200){
-                    botes2.setScale(0.2f,0.2f);
-                    botes2.setPosition(610,400);
-                }
                 if(moco.getY() < -200){
                     moco.setPosition(570,400);
                     moco.setScale(0.2f,0.2f);
                 }
-                if(moco2.getY() < -200){
-                    moco2.setPosition(480,400);
-                    moco2.setScale(0.2f,0.2f);
-                }
-                if(moco3.getY() < -200){
-                    moco3.setPosition(670,400);
-                    moco3.setScale(0.2f,0.2f);
-                }
+
             }
         pinguino.renderNivel2(batch);
-        float boteAnimado1x = botes1.getX();
-        float boteAnimado1y = botes1.getY();
-        boteAnimado1x -= velocidadBotex;
-        boteAnimado1y += velocidadBotey;
-        botes1.setX(boteAnimado1x);
-        botes1.setY(boteAnimado1y);
 
-        float boteAnimado2x = botes2.getX();
-        float boteAnimado2y = botes2.getY();
-        boteAnimado2x += velocidadBotex;
-        boteAnimado2y += velocidadBotey;
-        botes2.setX(boteAnimado2x);
-        botes2.setY(boteAnimado2y);
 
-        float xFondoCono = cono.getX();
-        float yFondoCono = cono.getY();
-        xFondoCono += velocidadItemX;
-        yFondoCono += velocidadItemY;
-        cono.setX(xFondoCono);
-        cono.setY(yFondoCono);
 
-        float xFondoConoDor = conoDorado.getX();
-        float yFondoConoDor = conoDorado.getY();
-        xFondoConoDor -= velocidadItemX;
-        yFondoConoDor += velocidadItemY;
-        conoDorado.setX(xFondoConoDor);
-        conoDorado.setY(yFondoConoDor);
+
+
 
 
         float ymoco = moco.getY();
         ymoco += velocidadMocoy;
         moco.setY(ymoco);
 
-        float xmoco2 = moco2.getX();
-        float ymoco2 = moco2.getY();
-        xmoco2 -= velocidadMocox;
-        ymoco2 += velocidadMocoy;
-        moco2.setX(xmoco2);
-        moco2.setY(ymoco2);
-
-        float xmoco3 = moco3.getX();
-        float ymoco3 = moco3.getY();
-        xmoco3 += velocidadMocox;
-        ymoco3 += velocidadMocoy;
-        moco3.setX(xmoco3);
-        moco3.setY(ymoco3);
 
         float xFondo2 =  fondo2.getX();
         float yFondo2 = fondo2.getY();
@@ -569,16 +618,16 @@ public class Nivel2 implements Screen,InputProcessor{
 
         //PROBAR COLISIONES
         //la imagen actual menos la escala
-        System.out.println("pinguino xinicial = " + pinguino.getX2());
-        System.out.println("cono xinicial = " + (cono.getY()-62) + "\n");
+        /*System.out.println("pinguino xinicial = " + pinguino.getX2());
+        System.out.println("cono xinicial = " + (moco.getX()) +"\n");
         System.out.println("pinguino xfinal = " + pinguino.getY2());
-        System.out.println("cono xfinal = " + (cono.getY()+cono.getHeight()) + "\n");
-        //System.out.println("La escala en y es:" + cono.getY());
+        System.out.println("cono xfinal = " + (cono.getY()+cono.getHeight()) + "\n");*/
+        //System.out.println("La escala en y es:" + cono.getY());*/
 
         if((pinguino.getX2() >= 660/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 710) && (pinguino.getX2() <= 870 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
                 && ((cono.getY()-10) >=pinguino.getY2() &&(cono.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
                 && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
-            pinguino.puntos += 100;
+            pinguino.puntos += 500;
             sonidoCono.play();
             cono.setPosition(610,400);
             cono.setScale(0.2f,0.2f);
@@ -587,14 +636,58 @@ public class Nivel2 implements Screen,InputProcessor{
         if((pinguino.getX2() >= 300/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 396) && (pinguino.getX2() <= 560 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
                 && ((conoDorado.getY()-10) >=pinguino.getY2() &&(conoDorado.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
                 && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
-            pinguino.puntos += 500;
+            pinguino.puntos += 1000;
             sonidoConoDorado.play();
             conoDorado.setPosition(550,400);
             conoDorado.setScale(0.2f,0.2f);
         }
 
+        if((pinguino.getX2() >= 300/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 396) && (pinguino.getX2() <= 560 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((botes1.getY()-10) >=pinguino.getY2() &&(botes1.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            pinguino.puntos -= 500;
+            sonidoBote.play();
+            botes1.setPosition(550,400);
+            botes1.setScale(0.2f,0.2f);
+        }
+
+        if((pinguino.getX2() >= 660/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 710) && (pinguino.getX2() <= 870 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((botes2.getY()-10) >=pinguino.getY2() &&(botes2.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            pinguino.puntos -= 500;
+            sonidoBote.play();
+            botes2.setPosition(610,400);
+            botes2.setScale(0.2f,0.2f);
+        }
+
+        if((pinguino.getX2() >= 0/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 124) && (pinguino.getX2() <= 130 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((moco2.getY()-10) >=pinguino.getY2() &&(moco2.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            pinguino.puntos -= 100;
+            sonidoMoco.play();
+            moco2.setPosition(450,400);
+            moco2.setScale(0.3f,0.3f);
+        }
+
+        if((pinguino.getX2() >= 1156/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 1156) && (pinguino.getX2() <= 1280 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
+                && ((moco3.getY()-10) >=pinguino.getY2() &&(moco3.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
+            pinguino.puntos -= 100;
+            sonidoMoco.play();
+            moco3.setPosition(670,400);
+            moco3.setScale(0.3f,0.3f);
+        }
+
+        if(vidas == 0 || pinguino.puntos < 0){
+            estadosJuego = EstadosJuego.PERDIO;
+        }
+        if(tiempo >= 75 && pinguino.puntos > 0){
+            estadosJuego = EstadosJuego.GANO;
+        }
         if(estadosJuego == EstadosJuego.GANO ){
             ganar.render(batch);
+            btnSiguiente.render(batch);
+            btnSiguiente.setPosicion(1100,0);
         }
         else if(estadosJuego == EstadosJuego.PAUSADO){
             pausa.setPosition(Juego.ancho/4,Juego.alto/16);
@@ -635,6 +728,8 @@ public class Nivel2 implements Screen,InputProcessor{
             btnSalir.render(batch);
         }
         else if(estadosJuego == EstadosJuego.PERDIO){
+            btnRegreso.render(batch);
+            btnRegreso.setPosicion(0,0);
             perder.render(batch);
         }
         else{
@@ -810,37 +905,22 @@ public class Nivel2 implements Screen,InputProcessor{
                 velocidadMocoy = -5;
             }
             else if(btnSalir.contiene(x,y)){
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        juego.setScreen(new MenuPrincipal(juego));
-                    }
-                },1);
+                juego.setScreen(new MenuPrincipal(juego));
                 //musica.setVolume(0);
                 //musica.stop();
             }
-            else if(perder.contiene(x,y)){
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        juego.setScreen(new MenuPrincipal(juego));
-                    }
-                },1);
+            if(estadosJuego == EstadosJuego.PERDIO && btnRegreso.contiene(x,y)){
+                System.out.print("Estoy tocandote");
+                juego.setScreen(new Nivel1(juego));
+            }
+            if(estadosJuego == EstadosJuego.GANO && btnSiguiente.contiene(x,y)){
+                juego.setScreen(new PantallaInstrucciones2(juego));
                 //musica.setVolume(0);
                 //musica.stop();
             }
-            else if(estadosJuego == EstadosJuego.GANO){
-                if(ganar.contiene(x,y)){
-                    Timer.schedule(new Timer.Task() {
-                        @Override
-                        public void run() {
-                            juego.setScreen(new Nivel2(juego));
-                        }
-                    },1);
-                }
                 //musica.setVolume(0);
                 //musica.stop();
-            }
+
 
             return true;
         }

@@ -20,8 +20,8 @@ public class Personaje {
     public static final float velocidadY = -5f;
     public float velX;
     public float velocidadX = 5;
-    private Animation animacion,animar,animarSalto,animarQuieto,animarReg,animarIzq,animarSaltoIZQ;
-    public float timerAnimacion,tiempoAnimar,timerSalto,timerAnimacion3,timerSalto3,timerIzq,timerSaltoIzq;
+    private Animation animacion,animar,animarSalto,animarQuieto,animarReg,animarIzq,animarSaltoIZQ,animarDer2,animarIzq2;
+    public float timerAnimacion,tiempoAnimar,timerSalto,timerAnimacion3,timerSalto3,timerIzq,timerSaltoIzq,tiempoAnimarIzq,tiempoAnimarDer;
     private EstadoMovimiento estadoMovimiento = EstadoMovimiento.INICIANDO;
     //private Texture texturaSalto;
     private EstadoSalto estadoSalto = EstadoSalto.ABAJO;
@@ -80,11 +80,21 @@ public class Personaje {
         sprite = new Sprite(texturaPersonaje[0][0]);
     }
 
-    public Personaje(Texture textura2){
+    public Personaje(Texture textura2,Texture texturaDer,Texture texturaIzq){
         TextureRegion textPinguino2 = new TextureRegion(textura2);
+        TextureRegion textPingDer = new TextureRegion(texturaDer);
+        TextureRegion textPinIzq = new TextureRegion(texturaIzq);
         TextureRegion[][] texturaPingu2 = textPinguino2.split(246,190);
+        TextureRegion[][] animarPinDer = textPingDer.split(246,190);
+        TextureRegion[][] animarPinIzq = textPinIzq.split(246,190);
         animar = new Animation(0.10f,texturaPingu2[0][1],texturaPingu2[0][2],texturaPingu2[0][3],texturaPingu2[0][4],texturaPingu2[0][5]);
         animar.setPlayMode(Animation.PlayMode.LOOP);
+        animarDer2 = new Animation(0.10f,animarPinDer[0][0],animarPinDer[0][1],animarPinDer[0][2],animarPinDer[0][3]);
+        animarDer2.setPlayMode(Animation.PlayMode.LOOP);
+        animarIzq2 = new Animation(0.10f,animarPinIzq[0][3],animarPinIzq[0][2],animarPinIzq[0][1],animarPinIzq[0][0]);
+        animarIzq2.setPlayMode(Animation.PlayMode.LOOP);
+        tiempoAnimarIzq = 0;
+        tiempoAnimarDer = 0;
         tiempoAnimar = 0;
         spriteNivel2 = new Sprite(texturaPingu2[0][0]);
     }
@@ -144,9 +154,22 @@ public class Personaje {
     }*/
 
     public void renderNivel2(SpriteBatch batch){
-        tiempoAnimar += Gdx.graphics.getDeltaTime();
-        TextureRegion region = animar.getKeyFrame(tiempoAnimar);
-        spriteNivel2.setRegion(region);
+
+        if(estadoMovimiento == EstadoMovimiento.DER){
+            tiempoAnimarDer += Gdx.graphics.getDeltaTime();
+            TextureRegion region = animarDer2.getKeyFrame(tiempoAnimarDer);
+            spriteNivel2.setRegion(region);
+        }
+        else if(estadoMovimiento == EstadoMovimiento.IZQ){
+            tiempoAnimarIzq += Gdx.graphics.getDeltaTime();
+            TextureRegion region = animarIzq2.getKeyFrame(tiempoAnimarIzq);
+            spriteNivel2.setRegion(region);
+        }
+        else{
+            tiempoAnimar += Gdx.graphics.getDeltaTime();
+            TextureRegion region = animar.getKeyFrame(tiempoAnimar);
+            spriteNivel2.setRegion(region);
+        }
         spriteNivel2.draw(batch);
     }
 

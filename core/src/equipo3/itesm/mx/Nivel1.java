@@ -670,8 +670,8 @@ public class Nivel1 implements Screen,InputProcessor {
 
     @Override
     public void dispose() {
-        PantallaCargando car = new PantallaCargando(juego);
-        car.borrar();
+        /*PantallaCargando car = new PantallaCargando(juego);
+        car.borrar();*/
         //mapa.dispose();
         /*rendererMapa.dispose();
         textSiguiente.dispose();
