@@ -696,9 +696,9 @@ public class Nivel1 implements Screen,InputProcessor {
         texturaFondo2.dispose();
         texturaFondo3.dispose();
         texturaResumen.dispose();*/
-        //juego.getManager().unload("Fondo64.tmx");
-        //juego.getManager().unload("PinguinoChido2.png");
-        /*juego.getManager().unload("BtnBoom.png");
+        juego.getManager().unload("Fondo64.tmx");
+        juego.getManager().unload("PinguinoChido2.png");
+        juego.getManager().unload("BtnBoom.png");
         juego.getManager().unload("SpriteBoom.png");
         juego.getManager().unload("BtnArriba.png");
         juego.getManager().unload("Ganaste_1.png");
@@ -720,9 +720,9 @@ public class Nivel1 implements Screen,InputProcessor {
         juego.getManager().unload("Helado normal.mp3");
         juego.getManager().unload("Meeehhpp!!.wav");
         juego.getManager().unload("Walkgud_IZQ.png");
-        juego.getManager().unload("SaltarIZQ.png");*/
-        //juego.getManager().unload("botonSiguiente.png");
-        //juego.getManager().unload("botonRegresar.png");
+        juego.getManager().unload("SaltarIZQ.png");
+        juego.getManager().unload("botonSiguiente.png");
+        juego.getManager().unload("botonRegresar.png");
     }
 
     //public class ProcesadorEntrada extends InputAdapter {
@@ -781,8 +781,8 @@ public class Nivel1 implements Screen,InputProcessor {
                 musica.stop();
             }
             if(estadoJuego == EstadosJuego.PERDIO && btnRegresar.contiene(x,y)){
-                System.out.print("Estoy tocandote");
-                juego.setScreen(new Nivel1(juego));
+                juego.setScreen(new PantallaCargando(juego));
+                musica.stop();
             }
             if(estadoJuego == EstadosJuego.GANO && btnSiguiente.contiene(x,y)){
                 juego.setScreen(new PantallaInstrucciones2(juego));

@@ -83,7 +83,7 @@ public class Nivel2 implements Screen,InputProcessor{
             camaraHUD = camaraHUD1.crearCamara(camaraHUD);
             vistaHUD = vistaHUD1.crearVistaHUD(camaraHUD,vistaHUD);
             batch = new SpriteBatch();
-            cargarTexturas();
+            //cargarTexturas();
             crearObjetos();
             Gdx.input.setInputProcessor(this);
             Gdx.input.setCatchBackKey(true);
@@ -91,7 +91,7 @@ public class Nivel2 implements Screen,InputProcessor{
 
     }
 
-    private void cargarTexturas(){
+    /*private void cargarTexturas(){
         AssetManager manager = juego.getManager();
         manager.load("ciudadnivel2.png", Texture.class);
         manager.load("Carretera.png",Texture.class);
@@ -135,7 +135,7 @@ public class Nivel2 implements Screen,InputProcessor{
         manager.load("Capa-Nubes.png",Texture.class);
         manager.load("Nivel2.mp3",Music.class);
         manager.finishLoading();
-    }
+    }*/
 
     private void crearObjetos() {
         AssetManager manager = juego.getManager();

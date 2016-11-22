@@ -16,10 +16,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- * Created by Mario Lagunes on 21/11/2016.
+ * Created by Mario Lagunes on 22/11/2016.
  */
 
-public class PantallaCargando implements Screen {
+public class PantallaCargando2 implements Screen {
     private Juego juego;
     private OrthographicCamera camara;
     private Viewport vista;
@@ -31,7 +31,7 @@ public class PantallaCargando implements Screen {
     private float timer;
     private AssetManager manager;
 
-    public PantallaCargando(Juego juego){
+    public PantallaCargando2(Juego juego){
         this.juego = juego;
         this.manager = juego.getManager();
     }
@@ -66,34 +66,47 @@ public class PantallaCargando implements Screen {
     }
 
     private void cargarSiguienteNivel() {
-        manager.load("Fondo64.tmx",TiledMap.class);
-        manager.load("PinguinoChido2.png",Texture.class);
-        manager.load("BtnBoom.png",Texture.class);
-        manager.load("SpriteBoom.png",Texture.class);
-        manager.load("BtnArriba.png",Texture.class);
-        manager.load("Ganaste_1.png",Texture.class);
+        manager.load("ciudadnivel2.png", Texture.class);
+        manager.load("Carretera.png",Texture.class);
+        manager.load("edificiosIZQ.png",Texture.class);
+        manager.load("edificiosDER.png",Texture.class);
+        manager.load("banquetaIZQ.png",Texture.class);
+        manager.load("banquetaDER.png",Texture.class);
+        manager.load("cono.png",Texture.class);
+        manager.load("cono_dor.png",Texture.class);
         manager.load("BtnPausa.png",Texture.class);
-        manager.load("Pausa.png",Texture.class);
-        manager.load("SpriteZookDerecha.png",Texture.class);
-        manager.load("SpriteZookIzquierda.png",Texture.class);
-        manager.load("FondonivelLoop.png",Texture.class);
-        manager.load("FondonivelLoop2.png",Texture.class);
-        manager.load("Salida.png",Texture.class);
+        manager.load("Btnsalto_Naranja.png",Texture.class);
         manager.load("CuadroScore.png",Texture.class);
-        manager.load("dardo.png",Texture.class);
-        manager.load("Parado.png",Texture.class);
-        manager.load("Saltar.png",Texture.class);
+        manager.load("Pausa.png",Texture.class);
+        manager.load("Perdiste_1.png",Texture.class);
+        manager.load("Ganaste_1.png",Texture.class);
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
-        manager.load("Perdiste_1.png",Texture.class);
-        manager.load("Nivel_1.mp3", Music.class);
+        manager.load("poste.png",Texture.class);
+        manager.load("poste_der.png",Texture.class);
+        manager.load("moco.png",Texture.class);
+        manager.load("Btnder_Naranja.png",Texture.class);
+        manager.load("Btnizq_Naranja.png",Texture.class);
+        manager.load("Sprite_deslizar.png",Texture.class);
+        manager.load("bote1.png",Texture.class);
+        manager.load("bote2.png",Texture.class);
+        manager.load("SpriteBote.png",Texture.class);
+        manager.load("SpriteBote2.png",Texture.class);
+        manager.load("cono_dorprueba.png",Texture.class);
+        manager.load("conoprueba.png",Texture.class);
+        manager.load("mocoprueba.png",Texture.class);
         manager.load("Helado especial.mp3",Sound.class);
         manager.load("Helado normal.mp3",Sound.class);
         manager.load("Meeehhpp!!.wav",Sound.class);
-        manager.load("Walkgud_IZQ.png",Texture.class);
-        manager.load("SaltarIZQ.png",Texture.class);
         manager.load("botonSiguiente.png",Texture.class);
         manager.load("botonRegresar.png",Texture.class);
+        manager.load("deslizar_der.png",Texture.class);
+        manager.load("deslizar_izq.png",Texture.class);
+        manager.load("Mocos.wav",Sound.class);
+        manager.load("Basura.wav",Sound.class);
+        manager.load("Cono.wav",Sound.class);
+        manager.load("Capa-Nubes.png",Texture.class);
+        manager.load("Nivel2.mp3",Music.class);
     }
 
     @Override

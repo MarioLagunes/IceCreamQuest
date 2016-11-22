@@ -55,7 +55,7 @@ public class Nivel3 implements Screen {
         this.juego = juego;
     }
 
-    private void crearTexturas(){
+    /*private void crearTexturas(){
         AssetManager manager = juego.getManager();
         manager.load("Fondo3.png",Texture.class);
         manager.load("Fondo3fin.png",Texture.class);
@@ -78,7 +78,7 @@ public class Nivel3 implements Screen {
         manager.load("BtnPausa.png",Texture.class);
         manager.load("Pausa.png",Texture.class);
         manager.finishLoading();
-    }
+    }*/
 
     private  void cargarObjetos(){
         AssetManager manager = juego.getManager();
@@ -167,7 +167,7 @@ public class Nivel3 implements Screen {
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
-        crearTexturas();
+        //crearTexturas();
         cargarObjetos();
         estadosJuego = EstadosJuego.JUGANDO;
 

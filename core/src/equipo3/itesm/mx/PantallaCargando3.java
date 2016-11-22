@@ -16,10 +16,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- * Created by Mario Lagunes on 21/11/2016.
+ * Created by Mario Lagunes on 22/11/2016.
  */
 
-public class PantallaCargando implements Screen {
+public class PantallaCargando3 implements Screen {
     private Juego juego;
     private OrthographicCamera camara;
     private Viewport vista;
@@ -31,7 +31,7 @@ public class PantallaCargando implements Screen {
     private float timer;
     private AssetManager manager;
 
-    public PantallaCargando(Juego juego){
+    public PantallaCargando3(Juego juego){
         this.juego = juego;
         this.manager = juego.getManager();
     }
@@ -66,34 +66,26 @@ public class PantallaCargando implements Screen {
     }
 
     private void cargarSiguienteNivel() {
-        manager.load("Fondo64.tmx",TiledMap.class);
+        manager.load("Fondo3.png",Texture.class);
+        manager.load("Fondo3fin.png",Texture.class);
+        manager.load("Fondo3loop.png",Texture.class);
+        manager.load("Fondo3ultima.png",Texture.class);
+        manager.load("Mapanivel3.tmx",TiledMap.class);
         manager.load("PinguinoChido2.png",Texture.class);
-        manager.load("BtnBoom.png",Texture.class);
-        manager.load("SpriteBoom.png",Texture.class);
-        manager.load("BtnArriba.png",Texture.class);
-        manager.load("Ganaste_1.png",Texture.class);
-        manager.load("BtnPausa.png",Texture.class);
-        manager.load("Pausa.png",Texture.class);
-        manager.load("SpriteZookDerecha.png",Texture.class);
-        manager.load("SpriteZookIzquierda.png",Texture.class);
-        manager.load("FondonivelLoop.png",Texture.class);
-        manager.load("FondonivelLoop2.png",Texture.class);
-        manager.load("Salida.png",Texture.class);
-        manager.load("CuadroScore.png",Texture.class);
-        manager.load("dardo.png",Texture.class);
-        manager.load("Parado.png",Texture.class);
         manager.load("Saltar.png",Texture.class);
+        manager.load("BtnArriba.png",Texture.class);
+        manager.load("BtnBoom.png",Texture.class);
+        manager.load("BtnDerecha.png",Texture.class);
+        manager.load("BtnIzquierda.png",Texture.class);
+        manager.load("PinguinoChido2.png",Texture.class);
+        manager.load("Saltar.png",Texture.class);
+        manager.load("SaltarIZQ.png",Texture.class);
+        manager.load("Walkgud_IZQ.png",Texture.class);
+        manager.load("SpriteBoom_ver.png",Texture.class);
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
-        manager.load("Perdiste_1.png",Texture.class);
-        manager.load("Nivel_1.mp3", Music.class);
-        manager.load("Helado especial.mp3",Sound.class);
-        manager.load("Helado normal.mp3",Sound.class);
-        manager.load("Meeehhpp!!.wav",Sound.class);
-        manager.load("Walkgud_IZQ.png",Texture.class);
-        manager.load("SaltarIZQ.png",Texture.class);
-        manager.load("botonSiguiente.png",Texture.class);
-        manager.load("botonRegresar.png",Texture.class);
+        manager.load("BtnPausa.png",Texture.class);
+        manager.load("Pausa.png",Texture.class);
     }
 
     @Override
