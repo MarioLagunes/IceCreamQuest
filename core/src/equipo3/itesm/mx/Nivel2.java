@@ -352,6 +352,10 @@ public class Nivel2 implements Screen,InputProcessor{
 
             tiempo += Gdx.graphics.getDeltaTime();
             fondo5.draw(batch);
+            posteEstaticoDer.draw(batch);
+            posteEstaticoIzq.draw(batch);
+            fondoNubes.draw(batch);
+            fondoNubes2.draw(batch);
             fondoCarre1.draw(batch);
             fondoCarre2.draw(batch);
             fondoCarre3.draw(batch);
@@ -370,10 +374,8 @@ public class Nivel2 implements Screen,InputProcessor{
             posteIzq.draw(batch);
             posteDer1.draw(batch);
             posteIzq1.draw(batch);
-            posteEstaticoDer.draw(batch);
-            posteEstaticoIzq.draw(batch);
-            fondoNubes.draw(batch);
-            fondoNubes2.draw(batch);
+
+
 
             if(fondo2.getSprite().getX() < -166){
                 fondo2.setPosicion(0,0);
