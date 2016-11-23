@@ -53,13 +53,13 @@ public class PantallaCargando implements Screen {
         fondo = new Fondo(texturFondo);
         fondo.setPosicion(0,0);
         TextureRegion texturaCompleta = new TextureRegion(texturaCargando);
-        TextureRegion[][] animacioTextura = texturaCompleta.split(333,494);
+        TextureRegion[][] animacioTextura = texturaCompleta.split(255,273);
         animacionCarga = new Animation(0.10f,animacioTextura[0][0],animacioTextura[0][1],animacioTextura[0][2],animacioTextura[0][3],animacioTextura[0][4],animacioTextura[0][5],
                 animacioTextura[0][6],animacioTextura[0][7],animacioTextura[0][8]);
         animacionCarga.setPlayMode(Animation.PlayMode.LOOP);
         timer = 0;
         spriteCargando = new Sprite(animacioTextura[0][0]);
-        spriteCargando.setPosition(500,100);
+        spriteCargando.setPosition(550,250);
         cargarSiguienteNivel();
         //Gdx.input.setInputProcessor(this);
         //Gdx.input.setCatchBackKey(true);

@@ -260,7 +260,7 @@ public class Nivel2 implements Screen,InputProcessor{
         //texturaSal = manager.get("Saltar.png");
         //textPinSalIzq = manager.get("SaltarIZQ.png");
         pinguino = new Personaje(texuturaPersonaje,textPingDer,textPingIzq);
-        pinguino.setPosicion2(1280/2,0);
+        pinguino.setPosicion2(1280/2,30);
         fondo.setPosicion(0,0);
         fondo2.setPosicion(0,0);
         fondoEx1.setPosicion(0,400);
@@ -644,7 +644,7 @@ public class Nivel2 implements Screen,InputProcessor{
         System.out.println("cono xfinal = " + (cono.getY()+cono.getHeight()) + "\n");*/
         //System.out.println("La escala en y es:" + cono.getY());*/
         if((pinguino.getX2() >= 660/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 710) && (pinguino.getX2() <= 870 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
-                && ((cono.getY()-10) >=pinguino.getY2() &&(cono.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && ((cono.getY()-40) >=pinguino.getY2() &&(cono.getY()-40) < pinguino.getY2()+40  && pinguino.getY2() <= 40)
                 && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
             pinguino.puntos += 500;
             if(Nivel2.ajusteSonido == false){
@@ -655,7 +655,7 @@ public class Nivel2 implements Screen,InputProcessor{
         }
 
         if((pinguino.getX2() >= 300/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 396) && (pinguino.getX2() <= 560 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
-                && ((conoDorado.getY()-10) >=pinguino.getY2() &&(conoDorado.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && ((conoDorado.getY()-40) >=pinguino.getY2() &&(conoDorado.getY()-40) < pinguino.getY2()+40  && pinguino.getY2() <= 40)
                 && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
             pinguino.puntos += 1000;
             if(Nivel2.ajusteSonido == false) {
@@ -666,7 +666,7 @@ public class Nivel2 implements Screen,InputProcessor{
         }
 
         if((pinguino.getX2() >= 300/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 396) && (pinguino.getX2() <= 560 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
-                && ((botes1.getY()-10) >=pinguino.getY2() &&(botes1.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && ((botes1.getY()-40) >=pinguino.getY2() &&(botes1.getY()-40) < pinguino.getY2()+40  && pinguino.getY2() <= 40)
                 && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
             pinguino.puntos -= 500;
             if(Nivel2.ajusteSonido == false) {
@@ -677,7 +677,7 @@ public class Nivel2 implements Screen,InputProcessor{
         }
 
         if((pinguino.getX2() >= 660/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 710) && (pinguino.getX2() <= 870 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
-                && ((botes2.getY()-10) >=pinguino.getY2() &&(botes2.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && ((botes2.getY()-40) >=pinguino.getY2() &&(botes2.getY()-40) < pinguino.getY2()+40  && pinguino.getY2() <= 40)
                 && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
             pinguino.puntos -= 500;
             if(Nivel2.ajusteSonido == false) {
@@ -688,7 +688,7 @@ public class Nivel2 implements Screen,InputProcessor{
         }
 
         if((pinguino.getX2() >= 0/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 124) && (pinguino.getX2() <= 130 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
-                && ((moco2.getY()-10) >=pinguino.getY2() &&(moco2.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && ((moco2.getY()-40) >=pinguino.getY2() &&(moco2.getY()-40) < pinguino.getY2()+40  && pinguino.getY2() <= 40)
                 && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
             pinguino.puntos -= 100;
             contador++;
@@ -700,7 +700,7 @@ public class Nivel2 implements Screen,InputProcessor{
         }
 
         if((pinguino.getX2() >= 1156/*cono.getX()*/ || pinguino.getX2()+pinguino.getSprite2().getWidth() > 1156) && (pinguino.getX2() <= 1280 /*(cono.getX()+cono.getWidth()) <= (pinguino.getX2()+pinguino.getSprite2().getWidth())*/)
-                && ((moco3.getY()-10) >=pinguino.getY2() &&(moco3.getY()-10) < pinguino.getY2()+10  && pinguino.getY2() <= 10)
+                && ((moco3.getY()-40) >=pinguino.getY2() &&(moco3.getY()-40) < pinguino.getY2()+40  && pinguino.getY2() <= 40)
                 && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || pinguino.getEstadoSalto() != Personaje.EstadoSalto.BAJANDO ) ){
             pinguino.puntos -= 100;
             contador++;
