@@ -157,7 +157,7 @@ public class Nivel3 implements Screen,InputProcessor {
     }
     @Override
     public void show() {
-       PantallaDatos camara1 = new PantallaDatos(camara);
+        PantallaDatos camara1 = new PantallaDatos(camara);
         PantallaDatos vista1 = new PantallaDatos(vista);
         PantallaDatos camaraHUD1 = new PantallaDatos(camaraHUD);
         PantallaDatos vistaHUD1 = new PantallaDatos(vistaHUD);
@@ -166,7 +166,7 @@ public class Nivel3 implements Screen,InputProcessor {
         camara.rotate(90);
         camaraHUD = camaraHUD1.crearCamaraNivel3(camaraHUD);
         camaraHUD.rotate(90);
-        vistaHUD = vistaHUD1.crearVistaHUDNivel33(camaraHUD,vistaHUD);
+        //vistaHUD = vistaHUD1.crearVistaHUDNivel33(camaraHUD,vistaHUD);
 
 
         batch = new SpriteBatch();
@@ -198,7 +198,7 @@ public class Nivel3 implements Screen,InputProcessor {
         batch.setProjectionMatrix(camara.combined);
         batch.setProjectionMatrix(camaraHUD.combined);
         rendererMapa.setView(camara);
-        rendererMapa.setView(camaraHUD);
+        //rendererMapa.setView(camaraHUD);
 
          batch.begin();
             fondo1.draw(batch);
@@ -243,8 +243,8 @@ public class Nivel3 implements Screen,InputProcessor {
 
     }
     private void actualizarCamara(){
-        camara.position.set(pinguino.velocidadX,pinguino.velocidadY,0);
-        camara.update();
+        //camara.position.set(pinguino.velocidadX,pinguino.velocidadY,0);
+        //camara.update();
     }
 
 
