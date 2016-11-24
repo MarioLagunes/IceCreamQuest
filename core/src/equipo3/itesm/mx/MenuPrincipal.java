@@ -75,7 +75,7 @@ public class MenuPrincipal extends PantallaDatos implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				//juego.setScreen(new Comic(juego));
-				juego.setScreen(new PantallaCargando2(juego));
+				juego.setScreen(new PantallaCargando3(juego));
 				musica.stop();
 			}
 		});

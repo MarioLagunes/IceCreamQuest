@@ -17,7 +17,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
  */
 public class Personaje {
     private Sprite sprite,spriteEnemigo,spriteSalto,spriteQuieto,spriteNivel2;
-    public static final float velocidadY = -5f;
+    public float velocidadY = -5f;
     public float velX;
     public float velocidadX = 5;
     private Animation animacion,animar,animarSalto,animarQuieto,animarReg,animarIzq,animarSaltoIZQ,animarDer2,animarIzq2;

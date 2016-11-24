@@ -1,7 +1,9 @@
 package equipo3.itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -23,11 +25,11 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
  * Created by andrescalvavalencia on 08/11/16.
  */
 
-public class Nivel3 implements Screen {
+public class Nivel3 implements Screen,InputProcessor {
     private Juego juego;
     private Music musica;
     private EstadosJuego estadoJuego;
-    private Sprite sprite;
+    private Sprite sprite,marcador;
     private Boomerang boomerang;
     private OrthographicCamera camara;
     private Viewport vista;
@@ -38,7 +40,7 @@ public class Nivel3 implements Screen {
     private Personaje pinguino;
     private Fondo fondo1, fondo2,fondo3, fondo4,fondoPausa;
     private Texture fondo,fondoFin, fondoLopp, fondoUltimo, texuturaPersonaje ,texturaSal,texturaSalto,texturaDisparo,texturaIzquierda, texturaDerecha,
-    texturaBoomeran,textIzq,textPinSalIzq,texturaPausa,texturaPausado,texturaResumen,texturaPerdiste,texturaSalir;
+    texturaBoomeran,textIzq,textPinSalIzq,texturaPausa,texturaPausado,texturaResumen,texturaPerdiste,texturaSalir,texturaScore;
     private TiledMap mapa;
     private static final int celda = 64;
     private static final float ancho = 800;
@@ -50,6 +52,8 @@ public class Nivel3 implements Screen {
     public static final int TAM_CELDA = 16;
     public static final float VELOCIDAD_Y = -4f;   // Velocidad de caída
     public static final float VELOCIDAD_X = 2;
+    private Vector3 coordenadas = new Vector3();
+    private float x,y;
 
     public Nivel3(Juego juego){
         this.juego = juego;
@@ -145,6 +149,10 @@ public class Nivel3 implements Screen {
         texturaSalir = manager.get("BTN_Salir.png");
         btnSalir = new Boton(texturaSalir);
 
+        texturaScore = manager.get("CuadroScore.png");
+        marcador = new Sprite(texturaScore);
+        marcador.setPosition(0,1050);
+
 
     }
     @Override
@@ -165,7 +173,7 @@ public class Nivel3 implements Screen {
         vista = new FitViewport(alto,ancho,camara);
         vistaHUD = new StretchViewport(alto,ancho,camaraHUD);
 
-        Gdx.input.setInputProcessor(new ProcesadorEntrada());
+        Gdx.input.setInputProcessor(this);
 
         //crearTexturas();
         cargarObjetos();
@@ -224,6 +232,7 @@ public class Nivel3 implements Screen {
                 btnIzq.render(batch);
                 btnDer.render(batch);
                 btnPausa.render(batch);
+                marcador.draw(batch);
             }
 
 
@@ -234,16 +243,7 @@ public class Nivel3 implements Screen {
 
     }
     private void actualizarCamara(){
-        float posY = pinguino.getY();
-        if(posY >= Juego.alto/2 && posY <= alto_mapa - Juego.alto/2){
-            camara.position.set(camara.position.x,(int)posY,0);
-        }
-        else if(posY > alto_mapa - Juego.alto/2){
-            camara.position.set(camara.position.x,alto-Juego.alto/2,0);
-        }
-        else if(posY < Juego.alto/2){
-            camara.position.set(Juego.ancho/2,Juego.alto/2,0);
-        }
+        camara.position.set(pinguino.velocidadX,pinguino.velocidadY,0);
         camara.update();
     }
 
@@ -327,11 +327,24 @@ public class Nivel3 implements Screen {
 
     }
 
+    @Override
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.BACK){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
+        return true;
+    }
 
-// hacer funcionar botones
-public class ProcesadorEntrada extends InputAdapter{
-    private Vector3 coordenadas = new Vector3();
-    private float x,y;
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         transformarCoordenadas(screenX, screenY);
@@ -366,6 +379,7 @@ public class ProcesadorEntrada extends InputAdapter{
 
         return true;
     }
+
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         transformarCoordenadas(screenX,screenY);
@@ -378,6 +392,21 @@ public class ProcesadorEntrada extends InputAdapter{
         return true;
     }
 
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
     private void transformarCoordenadas(int screenX, int screenY){
         coordenadas.set(screenX, screenY,0);
         camaraHUD.unproject(coordenadas);
@@ -385,5 +414,5 @@ public class ProcesadorEntrada extends InputAdapter{
         y = coordenadas.y;
     }
 
-}
+
 }
