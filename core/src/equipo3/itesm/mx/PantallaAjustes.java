@@ -22,9 +22,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Mario Lagunes on 25/09/2016.
  */
-public class PantallaAjustes  extends PantallaDatos implements Screen,InputProcessor {
+public class PantallaAjustes  extends PantallaDatos implements Screen {
     private final Juego juego;
-    private Texture texturaBack, texturaAjustes, texturaSonido, texturaMusica,texturaSonidoO,texturaMusicaO;
+    private Texture texturaBack, texturaAjustes, texturaSonido, texturaMusica,texturaSonidoO,texturaMusicaO,texturaBtnPostit,texturaPostit;
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
@@ -86,12 +86,24 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         btnSonido1.setPosition(700,300);
         btnSonido1.setVisible(false);
 
+        TextureRegionDrawable postitBoton = new TextureRegionDrawable(new TextureRegion(texturaBtnPostit));
+        ImageButton btonPostit = new ImageButton(postitBoton);
+        btonPostit.setPosition(150,50);
+        escena.addActor(btonPostit);
+
+
+        TextureRegionDrawable postitBoton1 = new TextureRegionDrawable(new TextureRegion(texturaPostit));
+        final ImageButton btonPostit1 = new ImageButton(postitBoton1);
+        btonPostit1.setPosition(280,10);
+        btonPostit1.setVisible(false);
+
 
         escena.addActor(btnMusica);
         escena.addActor(btnMusica1);
         escena.addActor(btnSonido);
 
         escena.addActor(btnSonido1);
+        escena.addActor(btonPostit1);
 
 
         btonBack.addListener(new ClickListener(){
@@ -99,6 +111,20 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
             public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new MenuPrincipal(juego));
 
+            }
+        });
+
+        btonPostit.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btonPostit1.setVisible(true);
+            }
+        });
+
+        btonPostit1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btonPostit1.setVisible(false);
             }
         });
 
@@ -120,7 +146,7 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
             public void clicked(InputEvent event, float x, float y) {
                 btnMusica1.setVisible(true);
                 if(contador == 0){
-                    musica2.play();
+                    musica2.stop();
                     Nivel1.ajuste = true;
                     MenuPrincipal.ajuste = true;
                     PantallaPuntaje.ajuste = true;
@@ -132,7 +158,7 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
                     contador ++;
                 }
                 else if(contador == 1){
-                    musica2.stop();
+                    musica2.play();
                     Nivel1.ajuste = false;
                     MenuPrincipal.ajuste = false;
                     PantallaPuntaje.ajuste = false;
@@ -247,7 +273,9 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         manager.load("BtnMusica_Osc.png",Texture.class);
         manager.load("BtnSonido.png",Texture.class);
         manager.load("BtnSonido_Osc.png",Texture.class);
-        manager.load("Ajustes.mp3",Music.class);
+        manager.load("Score.mp3",Music.class);
+        manager.load("Btn_creditos.png",Texture.class);
+        manager.load("postit.png",Texture.class);
         manager.finishLoading();
 
 
@@ -257,7 +285,9 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         texturaMusica = manager.get("BtnMusica.png");
         texturaSonidoO = manager.get("BtnSonido_Osc.png");
         texturaMusicaO = manager.get("BtnMusica_Osc.png");
-        musica = manager.get("Ajustes.mp3");
+        texturaPostit = manager.get("postit.png");
+        texturaBtnPostit = manager.get("Btn_creditos.png");
+        musica = manager.get("Score.mp3");
         musicaAjustes = new Musica(musica,true,ajuste);
     }
 
@@ -267,6 +297,9 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         escena.setViewport(vista);
         escena.draw();
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
     }
 
     @Override
@@ -298,49 +331,8 @@ public class PantallaAjustes  extends PantallaDatos implements Screen,InputProce
         manager.unload("BtnMusica_Osc.png");
         manager.unload("BtnSonido.png");
         manager.unload("BtnSonido_Osc.png");
-        manager.unload("Ajustes.mp3");
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.BACK){
-            juego.setScreen(new MenuPrincipal(juego));
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
+        manager.unload("Score.mp3");
+        manager.unload("postit.png");
+        manager.unload("Btn_creditos.png");
     }
 }
