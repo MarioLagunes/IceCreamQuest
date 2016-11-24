@@ -53,7 +53,7 @@ public class Nivel1 implements Screen,InputProcessor {
     private Boton btnSalto,btnDisparar,btnGanar,btnPausa,btnResumen,btnScore,btnSalir,btnPerdiste,btnSiguiente,btnRegresar;
     private int heladosRecolectados = 0;
     private int vidas = 5;
-    private static final int celda = 64;
+    private static final int tamcelda = 64;
     private Boomerang boomerang;
     private Enemigos enemigo,enemigo1,enemigo2,enemigo3;
     //private Personaje enemigo1,enemigo2,enemigo3,enemigo4,enemigo5;
@@ -464,7 +464,7 @@ public class Nivel1 implements Screen,InputProcessor {
     }
 
    private void moverPersonaje(){
-        switch (pinguino.getEstadoMovimiento()){
+        switch (pinguino.getEstadoMovimiento()) {
             /*case INICIANDO:
                 int celdaX = (int)((pinguino.getSprite().getX())/celda);
                 int celdaY = (int)((pinguino.getSprite().getY() + pinguino.velocidadY)/celda);
@@ -482,9 +482,29 @@ public class Nivel1 implements Screen,InputProcessor {
                 moverHorizontal();
                 break;
         }
+
+       /*int celdaX = (int) ((pinguino.getX() + pinguino.getSprite().getWidth() / 2) / tamcelda);
+       int celdaY = (int) ((pinguino.getY()) / tamcelda);
+       TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
+       TiledMapTileLayer.Cell celda = capa.getCell(celdaX, celdaY);
+       if (esCuadroPiso(celda)) {
+           if(pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO){
+               pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
+           }
+       } else if (esHelado(celda) || esHeladoEspecial(celda)) {
+           if(pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO){
+               pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
+           }
+       } else {
+           if(pinguino.getEstadoSalto()!= Personaje.EstadoSalto.SUBIENDO)
+               pinguino.setEstadoSalto(Personaje.EstadoSalto.BAJANDO);
+       }*/
+
+
+
         if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
-            int celdaX = (int) ((pinguino.getSprite().getX())/celda);
-            int celdaY = (int) ((pinguino.getY()+pinguino.velocidadY) / celda);
+            int celdaX = (int) ((pinguino.getSprite().getX()+pinguino.getSprite().getWidth()/2)/tamcelda);
+            int celdaY = (int) ((pinguino.getY()+pinguino.velocidadY)/ tamcelda);
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
             /*if(celdaAbajo != null){
@@ -495,6 +515,10 @@ public class Nivel1 implements Screen,InputProcessor {
                 }
             }*/
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
+            TiledMapTileLayer.Cell celdaAbajoAbajo = capa.getCell(celdaX,celdaY-1);
+            TiledMapTileLayer.Cell celdaAbajoDerecha = capa.getCell(celdaX+1,celdaY-1);
+            //System.out.println("celda x " + celdaX);
+            //System.out.println("celda y " + (celdaY-1));
             /*if(celdaDerecha != null){
                 Object tipo = celdaDerecha.getTile().getProperties().get("tipo");
                 if(!"esCuadroPiso".equals(tipo)){
@@ -502,7 +526,8 @@ public class Nivel1 implements Screen,InputProcessor {
                     pinguino.caer();
                 }
             }*/
-            if((celdaAbajo == null && celdaDerecha == null) || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
+            if((celdaAbajo == null && (celdaDerecha == null || celdaDerecha != null)) || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
+                //System.out.println("HOLA SOY EL IF QUE TE DEJA CAER");
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
                 //pinguino.probarCaida(mapa);
@@ -511,10 +536,41 @@ public class Nivel1 implements Screen,InputProcessor {
                 pinguino.setPosicion(pinguino.getSprite().getX(),(celdaY+1)* celda);
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
             }*/
-            /*else if((celdaAbajo == null && celdaDerecha != null) && pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
+            /*else if((celdaAbajo == null && celdaDerecha != null )|| esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
+                //System.out.println("HOLA SOY EL IF QUE TE DEJA CAER Y SI MUERES NO TENGO PEDOS");
+                //if (celdaAbajo == null && celdaDerecha != null && celdaAbajoDerecha != null && celdaAbajoAbajo == null) {
                     pinguino.probarCaida(mapa);
-
+                //}
+                //pinguino.probarCaida(mapa);
             }*/
+
+            /*else if(celdaAbajo == null && celdaDerecha != null && celdaAbajoDerecha != null && celdaAbajoAbajo == null && pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
+                System.out.println("HOLA SOY EL IF QUE TE DEJA CON EL CORAZON ROTO Y ME LO CHUPAS");
+                pinguino.probarCaida(mapa);
+            }*/
+            /*else if(celdaAbajo == null && celdaDerecha != null && celdaAbajoDerecha != null && celdaAbajoAbajo == null){
+                System.out.println("HOLA SOY EL IF Al QUE LE GUSTA EL PENE");
+                //pinguino.probarCaida(mapa);
+                pinguino.caer();
+            }
+            else if(celdaAbajo == null && celdaDerecha == null && celdaAbajoAbajo == null && celdaAbajoDerecha != null){
+                pinguino.caer();
+            }
+            else if(celdaAbajo != null && celdaDerecha == null && celdaAbajoAbajo == null && celdaAbajoDerecha == null){
+                pinguino.caer();
+            }
+            else if(celdaAbajo == null && celdaDerecha != null && celdaAbajoAbajo == null && celdaAbajoDerecha == null ){
+                pinguino.caer();
+            }*/
+            /*else if((celdaAbajo == null && celdaDerecha == null)&&(celdaAbajoDerecha != null && celdaAbajoAbajo == null)){
+                pinguino.probarCaida(mapa);
+            }*/
+            /*else if( (celdaAbajoDerecha == null && celdaAbajoAbajo != null)){
+                pinguino.probarCaida(mapa);
+            }
+            else if( (celdaAbajoDerecha == null && celdaAbajoAbajo != null)){
+                pinguino.probarCaida(mapa);
+            }
             /*else if((celdaAbajo != null && celdaDerecha != null)){
                 pinguino.setPosicion(pinguino.getX(),(celdaY + 1)*celda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
@@ -523,7 +579,8 @@ public class Nivel1 implements Screen,InputProcessor {
                 pinguino.caer();
             }*/
             else{
-                pinguino.setPosicion(pinguino.getX(),(celdaY +1)*celda);
+                //System.out.println("HOLA SOY EL IF QUE NO DEJA CAER Y TE SOSTIENE EN LA VIDA");
+                pinguino.setPosicion(pinguino.getX(),(celdaY +1)*tamcelda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
             }
             if(pinguino.getX() >= 12650){
@@ -531,6 +588,11 @@ public class Nivel1 implements Screen,InputProcessor {
                 pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
                 pinguino.setPosicion(0,10000);
                 estadoJuego = estadoJuego.GANO;
+                dardo.velocidadX = 0;
+                dardo1.velocidadX = 0;
+                dardo2.velocidadX = 0;
+                dardo3.velocidadX = 0;
+                enemigo.velocidad = 0;
             }
             else if(pinguino.getY() <= 0){
                 vidas --;
@@ -551,9 +613,13 @@ public class Nivel1 implements Screen,InputProcessor {
             }
         }
         switch (pinguino.getEstadoSalto()){
-            case SUBIENDO: case BAJANDO:
+            case SUBIENDO:
+            case BAJANDO:
                 pinguino.actualizarSalto(mapa);
                 break;
+            //case BAJANDO:
+            case CAIDALIBRE:
+                pinguino.probarCaida(mapa);
         }
 
         pinguino.recolectarHelados(mapa,helado,heladoEspecial);
@@ -581,9 +647,9 @@ public class Nivel1 implements Screen,InputProcessor {
                     pinguino.getSprite().setX(nuevaX);
                     //pinguino.caer();
                     //pinguino.probarCaida(mapa);
-                //}
+                }
             }
-        }
+
     }
 
 

@@ -2,7 +2,6 @@ package equipo3.itesm.mx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -10,9 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -20,13 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 
 /**
  * Created by Mario Lagunes on 26/09/2016.
  */
-public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputProcessor {
+public class PantallaAcercaDe extends  PantallaDatos implements Screen {
     private final Juego juego;
     private Texture texturaBack, texturaAcercaDe,mario,infoMario,andres,infoAndres,santi,infoSanti,dany,infoDany,moka,infoMoka;
     private Stage escena;
@@ -37,10 +33,6 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
     public static Boolean ajuste = false;
     private Sound heladoEspecial;
     public static Boolean ajusteSonido = false;
-    private SpriteBatch batch;
-
-
-
 
     public PantallaAcercaDe(Juego juego) {
         this.juego = juego;
@@ -59,8 +51,6 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
             cargarImagenes();
             cargarFondo();
             cargarBotones();
-
-            batch = new SpriteBatch();
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
     }
 
@@ -79,7 +69,6 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         TextureRegionDrawable andres1 = new TextureRegionDrawable(new TextureRegion(andres));
         ImageButton btnAndres = new ImageButton(andres1);
         btnAndres.setPosition(660,385);
-
 
         TextureRegionDrawable santi1 = new TextureRegionDrawable(new TextureRegion(santi));
         ImageButton btnSanti = new ImageButton(santi1);
@@ -125,8 +114,6 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         escena.addActor(btnSanti);
         escena.addActor(btnDany);
         escena.addActor(btnMoka);
-
-
 
         escena.addActor(btnMarioInf);
         escena.addActor(btnAndresInf);
@@ -278,7 +265,7 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         manager.load("Boton_moka.png",Texture.class);
         manager.load("AcercaDeMokaSF-01.png",Texture.class);
 
-        manager.load("AcercaDe.mp3",Music.class);
+        manager.load("Score.mp3",Music.class);
         manager.load("Helado acerca de.mp3",Sound.class);
 
         manager.finishLoading();
@@ -301,7 +288,7 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         moka = manager.get("Boton_moka.png");
         infoMoka = manager.get("AcercaDeMokaSF-01.png");
 
-        musica = manager.get("AcercaDe.mp3");
+        musica = manager.get("Score.mp3");
         musicaAcercaDe = new Musica(musica,true,ajuste);
         heladoEspecial = manager.get("Helado acerca de.mp3");
 
@@ -312,9 +299,10 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         escena.setViewport(vista);
-        batch.begin();
         escena.draw();
-        batch.end();
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
     }
 
     @Override
@@ -352,55 +340,7 @@ public class PantallaAcercaDe extends  PantallaDatos implements Screen, InputPro
         manager.unload("AcercaDeDanySF-01.png");
         manager.unload("Boton_moka.png");
         manager.unload("AcercaDeMokaSF-01.png");
-        manager.unload("AcercaDe.mp3");
+        manager.unload("Score.mp3");
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.BACK){
-            juego.setScreen(new MenuPrincipal(juego));
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 vec = new Vector3(screenX,screenY,0);
-        float x = vec.x;
-        float y = vec.y;
-        if(x == Juego.ancho/2-50 && y == Juego.alto/2){
-            juego.setScreen(new MenuPrincipal(juego));
-        }
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
 }
