@@ -54,13 +54,13 @@ public class Comic implements Screen, InputProcessor {
         manager.load("Comic.png",Texture.class);
         manager.load("botonSiguiente.png",Texture.class);
         manager.load("Comic.mp3",Music.class);
-        manager.load("BtnSkip.png",Texture.class);
+        manager.load("BtnSkip1.png",Texture.class);
         manager.finishLoading();
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
         texturaComic = manager.get("Comic.png");
         texturaSiguiente = manager.get("botonSiguiente.png");
-        texturaSkip = manager.get("BtnSkip.png");
+        texturaSkip = manager.get("BtnSkip1.png");
         btnSkip = new Boton(texturaSkip);
         fondoComic = new Fondo(texturaComic);
         fondoComic.setPosicion(0,-800);

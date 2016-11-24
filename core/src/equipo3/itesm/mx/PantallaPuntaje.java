@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Andres Calva on 25/09/2016.
  */
-public class PantallaPuntaje extends PantallaDatos implements Screen,InputProcessor {
+public class PantallaPuntaje extends PantallaDatos implements Screen{
     private final Juego juego;
     private Stage escena;
     private OrthographicCamera camara;
@@ -103,6 +103,9 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
         texto.mostrarMensaje(batch,"Beast ",120,310);
         texto.mostrarMensaje(batch,"1000000 ",220,300);
         batch.end();
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
     }
 
     @Override
@@ -133,7 +136,7 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
         manager.unload("Score.mp3");
     }
 
-    @Override
+    /*@Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK){
             juego.setScreen(new MenuPrincipal(juego));
@@ -141,7 +144,7 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean keyUp(int keycode) {
         return false;
     }
@@ -174,5 +177,5 @@ public class PantallaPuntaje extends PantallaDatos implements Screen,InputProces
     @Override
     public boolean scrolled(int amount) {
         return false;
-    }
+    }*/
 }
