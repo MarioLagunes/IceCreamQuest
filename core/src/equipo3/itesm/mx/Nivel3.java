@@ -243,8 +243,18 @@ public class Nivel3 implements Screen,InputProcessor {
 
     }
     private void actualizarCamara(){
-        //camara.position.set(pinguino.velocidadX,pinguino.velocidadY,0);
-        //camara.update();
+        float PosY = pinguino.getY();
+        if(PosY >= Juego.alto/2 && PosY <= alto_mapa - Juego.alto/2 ){
+            camara.position.set(camara.position.x,(int)PosY,0);
+        }
+        else if (PosY > alto_mapa - Juego.alto/2){
+            camara.position.set(camara.position.x,alto_mapa-Juego.alto/2,0);
+        }
+        else if (PosY < Juego.alto/2){
+            camara.position.set(Juego.ancho/2,Juego.alto/2,0);
+
+        }
+        camara.update();
     }
 
 
