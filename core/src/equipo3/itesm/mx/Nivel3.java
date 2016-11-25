@@ -260,7 +260,7 @@ public class Nivel3 implements Screen,InputProcessor {
         switch (pinguino.getEstadoMovimiento()) {
             case DER:
                 float x = 0;
-                if (pinguino.getX() >= 745) {
+                if (pinguino.getX() >= 840) {
                     x = pinguino.getSprite().getX();
                     pinguino.getSprite().setX(x);
                 } else {
@@ -289,12 +289,12 @@ public class Nivel3 implements Screen,InputProcessor {
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
             TiledMapTileLayer.Cell celdaIzq = capa.getCell(celdaX-1,celdaY);
 
-            if(celdaIzq == null && celdaAbajo == null){
+            if(celdaIzq == null && celdaAbajo == null && celdaDerecha == null){
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
 
             }
-            else if ((celdaIzq!= null || celdaDerecha!=null) && celdaAbajo == null ){
+            else if (celdaIzq!= null && celdaAbajo == null ){
                 pinguino.caer();
             }
             else{
