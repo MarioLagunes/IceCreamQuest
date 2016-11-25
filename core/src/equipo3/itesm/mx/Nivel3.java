@@ -44,7 +44,7 @@ public class Nivel3 implements Screen,InputProcessor {
     texturaBoomeran,textIzq,textPinSalIzq,texturaPausa,texturaPausado,texturaResumen,texturaPerdiste,texturaSalir,texturaScore;
     private TiledMap mapa;
     private static final int celda = 64;
-    private static final float ancho = 800;
+    private static final float ancho = 896;
     private static final float alto = 1280;
     public static final float alto_mapa = 12800;
     private Boton btnSalto,btnDisparar,btnDer,btnIzq,btnPausa,btnResumen,btnSalir,btnRegresar;
@@ -131,9 +131,9 @@ public class Nivel3 implements Screen,InputProcessor {
         texturaSalto = manager.get("BtnArriba.png");
         texturaDisparo = manager.get("BtnBoom.png");
         btnSalto = new Boton(texturaSalto);
-        btnSalto.setPosicion(690,-20);
+        btnSalto.setPosicion(780,-20);
         btnDisparar = new Boton(texturaDisparo);
-        btnDisparar.setPosicion(690,90);
+        btnDisparar.setPosicion(780,90);
         texturaDerecha = manager.get("BtnDerecha.png");
         texturaIzquierda = manager.get("BtnIzquierda.png");
         btnDer = new Boton(texturaDerecha);
@@ -143,7 +143,7 @@ public class Nivel3 implements Screen,InputProcessor {
 
         texturaPausa = manager.get("BtnPausa.png");
         btnPausa = new Boton((texturaPausa));
-        btnPausa.setPosicion(690,1150);
+        btnPausa.setPosicion(780,1150);
         texturaPausado = manager.get("Pausa.png");
         fondoPausa = new Fondo(texturaPausado);
         texturaResumen = manager.get("BTN_Resumen.png");
@@ -288,12 +288,13 @@ public class Nivel3 implements Screen,InputProcessor {
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
             TiledMapTileLayer.Cell celdaIzq = capa.getCell(celdaX-1,celdaY);
+
             if(celdaIzq == null && celdaAbajo == null){
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
 
             }
-            else if (celdaIzq!= null && celdaAbajo == null){
+            else if ((celdaIzq!= null || celdaDerecha!=null) && celdaAbajo == null ){
                 pinguino.caer();
             }
             else{
