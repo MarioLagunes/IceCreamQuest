@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -38,14 +39,14 @@ public class Nivel3 implements Screen,InputProcessor {
     private OrthogonalTiledMapRenderer rendererMapa;
     private SpriteBatch batch;
     private Personaje pinguino;
-    private Fondo fondo1, fondo2,fondo3, fondo4,fondoPausa;
+    private Fondo fondo1, fondo2,fondo3, fondo4,fondoPausa,fondo22;
     private Texture fondo,fondoFin, fondoLopp, fondoUltimo, texuturaPersonaje ,texturaSal,texturaSalto,texturaDisparo,texturaIzquierda, texturaDerecha,
     texturaBoomeran,textIzq,textPinSalIzq,texturaPausa,texturaPausado,texturaResumen,texturaPerdiste,texturaSalir,texturaScore;
     private TiledMap mapa;
     private static final int celda = 64;
     private static final float ancho = 800;
     private static final float alto = 1280;
-    public static final float alto_mapa = 3840;
+    public static final float alto_mapa = 12800;
     private Boton btnSalto,btnDisparar,btnDer,btnIzq,btnPausa,btnResumen,btnSalir,btnRegresar;
     private EstadosJuego estadosJuego;
     private int velocidadX = 5, velocidadY = -5,velocidadItemY = -5,velocidadPosteX = 5,velocidadPosteY = -3,velocidadPinguino = 10;
@@ -54,7 +55,6 @@ public class Nivel3 implements Screen,InputProcessor {
     public static final float VELOCIDAD_X = 2;
     private Vector3 coordenadas = new Vector3();
     private float x,y;
-
     public Nivel3(Juego juego){
         this.juego = juego;
     }
@@ -93,7 +93,8 @@ public class Nivel3 implements Screen,InputProcessor {
 
         mapa = manager.get("Mapanivel3.tmx");
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
-        rendererMapa.setView(camara);
+        //rendererMapa.setView(camara);
+        //rendererMapa.setView(camaraHUD);
 
         //Pinguino
         /*texuturaPersonaje = manager.get("PinguinoChido2.png");
@@ -104,14 +105,16 @@ public class Nivel3 implements Screen,InputProcessor {
         ;*/
 
         fondo1 = new Fondo(fondo);
-        fondo2 = new Fondo(fondoFin);
-        fondo3 = new Fondo(fondoLopp);
-        fondo4 = new Fondo(fondoUltimo);
+        fondo2 = new Fondo(fondoLopp);
+        fondo22 = new Fondo(fondoLopp);
+        fondo3 = new Fondo(fondoUltimo);
+        fondo4 = new Fondo(fondoFin);
 
         fondo1.setPosicion(0,0);
-        fondo2.setPosicion(0,1280);
-        fondo3.setPosicion(0,2560);
-        fondo4.setPosicion(0,3840);
+        fondo2.setPosicion(0,3000);
+        fondo22.setPosicion(0,6000);
+        fondo3.setPosicion(0,9000);
+        fondo4.setPosicion(0,12000);
 
         //Pinguino
         texuturaPersonaje = manager.get("PinguinoChido2.png");
@@ -129,7 +132,6 @@ public class Nivel3 implements Screen,InputProcessor {
         texturaDisparo = manager.get("BtnBoom.png");
         btnSalto = new Boton(texturaSalto);
         btnSalto.setPosicion(690,-20);
-        //btnSalto.setPosicion(ancho/2,alto/2);
         btnDisparar = new Boton(texturaDisparo);
         btnDisparar.setPosicion(690,90);
         texturaDerecha = manager.get("BtnDerecha.png");
@@ -153,7 +155,6 @@ public class Nivel3 implements Screen,InputProcessor {
         marcador = new Sprite(texturaScore);
         marcador.setPosition(0,1050);
 
-
     }
     @Override
     public void show() {
@@ -170,7 +171,7 @@ public class Nivel3 implements Screen,InputProcessor {
 
 
         batch = new SpriteBatch();
-        vista = new FitViewport(alto,ancho,camara);
+        vista = new StretchViewport(alto,ancho,camara);
         vistaHUD = new StretchViewport(alto,ancho,camaraHUD);
 
         Gdx.input.setInputProcessor(this);
@@ -180,10 +181,6 @@ public class Nivel3 implements Screen,InputProcessor {
         estadosJuego = EstadosJuego.JUGANDO;
 
         pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-
-
-
-
     }
 
     @Override
@@ -196,13 +193,12 @@ public class Nivel3 implements Screen,InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camara.combined);
-        batch.setProjectionMatrix(camaraHUD.combined);
-        rendererMapa.setView(camara);
-        //rendererMapa.setView(camaraHUD);
-
+        rendererMapa.setView(camaraHUD);
+        //rendererMapa.setView(camara);
          batch.begin();
             fondo1.draw(batch);
             fondo2.draw(batch);
+            fondo22.draw(batch);
             fondo3.draw(batch);
             fondo4.draw(batch);
         batch.end();
@@ -212,6 +208,7 @@ public class Nivel3 implements Screen,InputProcessor {
             pinguino.render(batch);
         batch.end();
 
+        batch.setProjectionMatrix(camaraHUD.combined);
         batch.begin();
             if(estadoJuego == EstadosJuego.PAUSADO){
                 fondoPausa.setPosicion(Juego.alto/16,Juego.ancho/4);
@@ -290,11 +287,13 @@ public class Nivel3 implements Screen,InputProcessor {
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
-            if((celdaAbajo == null && celdaDerecha == null)){
+            TiledMapTileLayer.Cell celdaIzq = capa.getCell(celdaX-1,celdaY);
+            if(celdaIzq == null && celdaAbajo == null){
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
+
             }
-            else if((celdaAbajo == null && celdaDerecha != null)){
+            else if (celdaIzq!= null && celdaAbajo == null){
                 pinguino.caer();
             }
             else{
@@ -308,6 +307,7 @@ public class Nivel3 implements Screen,InputProcessor {
                 break;
         }
     }
+
 
 
     @Override

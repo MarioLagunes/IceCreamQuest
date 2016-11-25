@@ -87,6 +87,8 @@ public class PantallaCargando3 implements Screen {
         manager.load("BtnPausa.png",Texture.class);
         manager.load("Pausa.png",Texture.class);
         manager.load("CuadroScore.png",Texture.class);
+        manager.load("Helado especial.mp3",Sound.class);
+        manager.load("Helado normal.mp3",Sound.class);
     }
 
     @Override
