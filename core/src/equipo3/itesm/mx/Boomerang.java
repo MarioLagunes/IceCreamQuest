@@ -18,8 +18,8 @@ import java.util.prefs.BackingStoreException;
 public class Boomerang {
 
     private Boomerang boomerang;
-    private Animation animacion,animacionRegreso;
-    private float tiempoAnimar,tiempoAnimarReg;
+    private Animation animacion,animacionRegreso,animacionNivel3,animacionRegresoNivel3;
+    private float tiempoAnimar,tiempoAnimarReg,tiempoAnimarNivel3,tiempoAnimarRegNivel3;
     private Sprite sprite;
     private boom estadosBoomerang;
     private float VelocidadX;
@@ -53,13 +53,13 @@ public class Boomerang {
 
         TextureRegion texturaCompleta = new TextureRegion(textura3);
         TextureRegion[][] texturaBoomeran = texturaCompleta.split(64,64);
-        animacion = new Animation(0.10f,texturaBoomeran[1][0], texturaBoomeran[2][0], texturaBoomeran[3][0],
+        animacionNivel3 = new Animation(0.10f,texturaBoomeran[1][0], texturaBoomeran[2][0], texturaBoomeran[3][0],
                 texturaBoomeran[4][0]);
-        animacionRegreso = new Animation(0.10f,texturaBoomeran[5][0],texturaBoomeran[6][0],texturaBoomeran[7][0]);
-        animacion.setPlayMode(Animation.PlayMode.LOOP);
-        animacionRegreso.setPlayMode(Animation.PlayMode.LOOP);
-        tiempoAnimar = 0;
-        tiempoAnimarReg = 0;
+        animacionRegresoNivel3 = new Animation(0.10f,texturaBoomeran[5][0],texturaBoomeran[6][0],texturaBoomeran[7][0]);
+        animacionNivel3.setPlayMode(Animation.PlayMode.LOOP);
+        animacionRegresoNivel3.setPlayMode(Animation.PlayMode.LOOP);
+        tiempoAnimarNivel3 = 0;
+        tiempoAnimarRegNivel3 = 0;
         sprite = new Sprite(texturaBoomeran[0][0]);
         estadosBoomerang = boom.GUARDADO;
 
@@ -81,14 +81,15 @@ public class Boomerang {
 
     public void renderNivel3 (SpriteBatch batch){
         if(estadosBoomerang == boom.LANZADO){
-            TextureRegion region = animacion.getKeyFrame(tiempoAnimar);
+            tiempoAnimarNivel3 += Gdx.graphics.getDeltaTime();
+            TextureRegion region = animacionNivel3.getKeyFrame(tiempoAnimarNivel3);
             y = sprite.getY()+velocidad;
             sprite.setY(y);
             sprite.setRegion(region);
         }
         if (estadosBoomerang == boom.REGRESANDO){
             tiempoAnimarReg += Gdx.graphics.getDeltaTime();
-            TextureRegion region = animacionRegreso.getKeyFrame(tiempoAnimarReg);
+            TextureRegion region = animacionRegresoNivel3.getKeyFrame(tiempoAnimarReg);
             y = sprite.getY()-velocidad;
             sprite.setY(y);
             sprite.setRegion(region);

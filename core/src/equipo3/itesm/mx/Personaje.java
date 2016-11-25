@@ -201,6 +201,29 @@ public class Personaje {
             }
         }
     }
+    public void recolectarToppings(TiledMap mapa,Sound topping){
+        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(1);
+        int x = (int)(sprite.getX()/64);
+        int y = (int)(sprite.getY()/64);
+        TiledMapTileLayer.Cell celda = capa.getCell(x,y);
+        if(celda != null){
+            Object tipo = celda.getTile().getProperties().get("tipo");
+            if("cereza".equals(tipo)){
+                puntos += 500;
+                if(Nivel3.ajusteSonido == false){
+                    topping.play();
+                }
+                capa.setCell(x,y,null);
+            }
+            else if("chispas".equals(tipo)){
+                puntos += 1000;
+                if(Nivel3.ajusteSonido == false){
+                    topping.play();
+                }
+                capa.setCell(x,y,null);
+            }
+        }
+    }
 
     /*public void moverHorizontal(TiledMap mapa){
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);

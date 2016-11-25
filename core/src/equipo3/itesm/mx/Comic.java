@@ -52,14 +52,14 @@ public class Comic implements Screen, InputProcessor {
         vista = vista1.crearVista(camara,vista);
         AssetManager manager = juego.getManager();
         manager.load("Comic.png",Texture.class);
-        manager.load("botonSiguiente.png",Texture.class);
+        manager.load("BtnSig_azul.png",Texture.class);
         manager.load("Comic.mp3",Music.class);
         manager.load("BtnSkip1.png",Texture.class);
         manager.finishLoading();
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
         texturaComic = manager.get("Comic.png");
-        texturaSiguiente = manager.get("botonSiguiente.png");
+        texturaSiguiente = manager.get("BtnSig_azul.png");
         texturaSkip = manager.get("BtnSkip1.png");
         btnSkip = new Boton(texturaSkip);
         fondoComic = new Fondo(texturaComic);
@@ -141,7 +141,7 @@ public class Comic implements Screen, InputProcessor {
             musica.stop();
         }
         if(btnSkip.contiene(x,y)){
-            juego.setScreen(new PantallaInstrucciones3(juego));
+            juego.setScreen(new PantallaInstrucciones(juego));
             musica.stop();
         }
         return true;

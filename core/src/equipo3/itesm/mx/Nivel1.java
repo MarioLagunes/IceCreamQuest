@@ -66,6 +66,8 @@ public class Nivel1 implements Screen,InputProcessor {
     public static Boolean ajuste = false;
     public static Boolean ajusteSonido = false;
     private boolean banderaGano = false, banderaPerdio = false;
+    public static int puntaje;
+    public static final int HIGSCORE = 2348;
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -186,10 +188,10 @@ public class Nivel1 implements Screen,InputProcessor {
         //enemigo3 = new Personaje(texturaEnemigo);
         //enemigo4 = new Personaje(texturaEnemigo);
         // enemigo5 = new Personaje(texturaEnemigo);
-        enemigo.setPosicion(1850,128);
-        enemigo1.setPosicion(6080,768);
+        enemigo.setPosicion(1850,64);
+        enemigo1.setPosicion(6400,640);
         enemigo2.setPosicion(4608,576);
-        enemigo3.setPosicion(10560,128);
+        enemigo3.setPosicion(10624,128);
         //enemigo.getSprite().setPosition(300,Juego.alto*0.06f);
         //enemigo1.getSprite().setPosition(400,Juego.alto*0.06f);
         //enemigo2.getSprite().setPosition(600,Juego.alto*0.06f);
@@ -308,10 +310,10 @@ public class Nivel1 implements Screen,InputProcessor {
             else if(enemigo.getSprite().getX() <= 1850){
                 enemigo.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
             }
-            if(enemigo1.getSprite().getX()>= 6592){
+            if(enemigo1.getSprite().getX()>= 6720){
                 enemigo1.setEstadoEnemigo(Enemigos.EstadoEnemigo.IZQUIERDA);
             }
-            else if(enemigo1.getSprite().getX() <= 6080){
+            else if(enemigo1.getSprite().getX() <= 6400){
                 enemigo1.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
             }
             if(enemigo2.getSprite().getX()>= 4928){
@@ -323,7 +325,7 @@ public class Nivel1 implements Screen,InputProcessor {
             if(enemigo3.getSprite().getX()>= 10816){
                 enemigo3.setEstadoEnemigo(Enemigos.EstadoEnemigo.IZQUIERDA);
             }
-            else if(enemigo3.getSprite().getX() == 10560){
+            else if(enemigo3.getSprite().getX() <= 10624){
                 enemigo3.setEstadoEnemigo(Enemigos.EstadoEnemigo.DERECHA);
             }
 
@@ -353,6 +355,16 @@ public class Nivel1 implements Screen,InputProcessor {
                 pinguino.getSprite().setAlpha(1);
             }*/
             }
+            if((dardo1.getX() >= pinguino.getX() && dardo1.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
+                    (dardo1.getY() >= pinguino.getY() && dardo1.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
+                vidas--;
+                dardo1.velocidadX = 0;
+                if(Nivel1.ajusteSonido == false){
+                    muere.play();
+                }
+                dardo1.setPosicion(-100,0);
+                //pinguino.getSprite().setAlpha(0.5f);
+            }
 
         //Gdx.app.log("boomerang",""+boomerang.getX()+"enemigo "+enemigo.getXEnemiga());
             if((dardo2.getX() >= pinguino.getX() && dardo2.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
@@ -366,16 +378,7 @@ public class Nivel1 implements Screen,InputProcessor {
 
                 //pinguino.getSprite().setAlpha(0.5f);
             }
-            if((dardo1.getX() >= pinguino.getX() && dardo1.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
-                    (dardo1.getY() >= pinguino.getY() && dardo1.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
-                vidas--;
-                dardo1.velocidadX = 0;
-                if(Nivel1.ajusteSonido == false){
-                    muere.play();
-                }
-                dardo1.setPosicion(-100,0);
-                //pinguino.getSprite().setAlpha(0.5f);
-            }
+
             if((dardo3.getX() >= pinguino.getX() && dardo3.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))&&
                     (dardo3.getY() >= pinguino.getY() && dardo3.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))){
                 vidas--;
@@ -444,7 +447,7 @@ public class Nivel1 implements Screen,InputProcessor {
                 texto.mostrarMensaje(batch," " + pinguino.puntos,150,Juego.alto * 0.93f);
                 texto.mostrarMensaje(batch," " + vidas,150,Juego.alto * 0.85f);
             }
-
+            puntaje = pinguino.puntos;
         batch.end();
 
     }

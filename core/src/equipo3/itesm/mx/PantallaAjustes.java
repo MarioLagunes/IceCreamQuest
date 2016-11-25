@@ -129,13 +129,13 @@ public class PantallaAjustes  extends PantallaDatos implements Screen {
         });
 
         if(Nivel1.ajuste == true && MenuPrincipal.ajuste == true && PantallaPuntaje.ajuste == true  && PantallaAcercaDe.ajuste == true && Nivel2.ajuste == true
-                && Comic.ajuste == true){
+                && Comic.ajuste == true && Nivel3.ajuste == true){
             btnMusica1.setVisible(true);
             musica2.stop();
             contador = 1;
         }
         else if(Nivel1.ajuste == false && MenuPrincipal.ajuste == false && PantallaPuntaje.ajuste == false  && PantallaAcercaDe.ajuste == false && Nivel2.ajuste == false
-                && Comic.ajuste == false){
+                && Comic.ajuste == false && Nivel3.ajuste ==  false){
             btnMusica1.setVisible(false);
             musica2.play();
             contador = 0;
@@ -154,6 +154,7 @@ public class PantallaAjustes  extends PantallaDatos implements Screen {
                     PantallaAcercaDe.ajuste = true;
                     Nivel2.ajuste = true;
                     Comic.ajuste = true;
+                    Nivel3.ajuste = true;
                     //ajusteBandera = true;
                     contador ++;
                 }
@@ -166,12 +167,10 @@ public class PantallaAjustes  extends PantallaDatos implements Screen {
                     PantallaAcercaDe.ajuste = false;
                     Nivel2.ajuste = false;
                     Comic.ajuste = false;
+                    Nivel3.ajuste = false;
                     contador --;
                     //ajusteBandera = false;
                 }
-                Gdx.app.log("clicked","TAP sobre el boton de no sonido");
-
-
             }
         });
 
@@ -188,6 +187,7 @@ public class PantallaAjustes  extends PantallaDatos implements Screen {
                     PantallaAcercaDe.ajuste = true;
                     Nivel2.ajuste = true;
                     Comic.ajuste = true;
+                    Nivel3.ajuste = true;
                     //ajusteBandera = true;
                     contador ++;
                 }
@@ -200,17 +200,18 @@ public class PantallaAjustes  extends PantallaDatos implements Screen {
                     PantallaAcercaDe.ajuste = false;
                     Nivel2.ajuste = false;
                     Comic.ajuste = false;
+                    Nivel3.ajuste = false;
                     contador --;
                     //ajusteBandera = false;
                 }
             }
         });
 
-        if(PantallaAcercaDe.ajusteSonido == true && Nivel1.ajusteSonido == true && Nivel2.ajusteSonido == true){
+        if(PantallaAcercaDe.ajusteSonido == true && Nivel1.ajusteSonido == true && Nivel2.ajusteSonido == true && Nivel3.ajusteSonido == true){
             btnSonido1.setVisible(true);
             contador2 = 1;
         }
-        else if(PantallaAcercaDe.ajusteSonido == false && Nivel1.ajusteSonido == false && Nivel2.ajusteSonido == false){
+        else if(PantallaAcercaDe.ajusteSonido == false && Nivel1.ajusteSonido == false && Nivel2.ajusteSonido == false && Nivel3.ajusteSonido == false){
             btnSonido1.setVisible(false);
             contador2 = 0;
         }
@@ -222,12 +223,14 @@ public class PantallaAjustes  extends PantallaDatos implements Screen {
                     PantallaAcercaDe.ajusteSonido = true;
                     Nivel1.ajusteSonido = true;
                     Nivel2.ajusteSonido = true;
+                    Nivel3.ajusteSonido = true;
                     contador2 ++;
                 }
                 else if(contador2 == 1){
                     PantallaAcercaDe.ajusteSonido = false;
                     Nivel1.ajusteSonido = false;
                     Nivel2.ajusteSonido = false;
+                    Nivel3.ajusteSonido = false;
                     contador2 --;
                 }
 
@@ -242,12 +245,14 @@ public class PantallaAjustes  extends PantallaDatos implements Screen {
                     PantallaAcercaDe.ajusteSonido = true;
                     Nivel1.ajusteSonido = true;
                     Nivel2.ajusteSonido = true;
+                    Nivel3.ajusteSonido = true;
                     contador2 ++;
                 }
                 else if(contador2 == 1){
                     PantallaAcercaDe.ajusteSonido = false;
                     Nivel1.ajusteSonido = false;
                     Nivel2.ajusteSonido = false;
+                    Nivel3.ajusteSonido = false;
                     contador2 --;
                 }
 

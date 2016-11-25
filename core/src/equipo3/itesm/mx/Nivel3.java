@@ -29,6 +29,7 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 public class Nivel3 implements Screen,InputProcessor {
     private Juego juego;
     private Music musica;
+    private Musica musicaNivel3;
     private EstadosJuego estadoJuego;
     private Sprite sprite,marcador;
     private Boomerang boomerang;
@@ -55,6 +56,11 @@ public class Nivel3 implements Screen,InputProcessor {
     public static final float VELOCIDAD_X = 2;
     private Vector3 coordenadas = new Vector3();
     private float x,y;
+    public static boolean ajusteSonido = false;
+    public static boolean ajuste = false;
+    private Sound musicaTopping;
+    private Texto texto;
+    private int vidas = 5;
     public Nivel3(Juego juego){
         this.juego = juego;
     }
@@ -125,7 +131,7 @@ public class Nivel3 implements Screen,InputProcessor {
         pinguino.getSprite().setPosition(500,60);
 
         texturaBoomeran = manager.get("SpriteBoom_ver.png");
-        boomerang = new Boomerang(texturaBoomeran,0);
+        //boomerang = new Boomerang(texturaBoomeran,0);
 
         //botones
         texturaSalto = manager.get("BtnArriba.png");
@@ -154,6 +160,9 @@ public class Nivel3 implements Screen,InputProcessor {
         texturaScore = manager.get("CuadroScore.png");
         marcador = new Sprite(texturaScore);
         marcador.setPosition(0,1050);
+        musicaTopping = manager.get("Toppings.wav");
+        musica = manager.get("Nivel3.mp3");
+        musicaNivel3 = new Musica(musica,true,ajuste);
 
     }
     @Override
@@ -179,6 +188,7 @@ public class Nivel3 implements Screen,InputProcessor {
         //crearTexturas();
         cargarObjetos();
         estadosJuego = EstadosJuego.JUGANDO;
+        texto = new Texto();
 
         pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
     }
@@ -206,6 +216,53 @@ public class Nivel3 implements Screen,InputProcessor {
 
         batch.begin();
             pinguino.render(batch);
+        if(boomerang != null){
+            boomerang.renderNivel3(batch);
+            boomerang.tiempo ++;
+            if(boomerang.tiempo >= 30){
+                boomerang.setBoom(Boomerang.boom.REGRESANDO);
+                //if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && )
+            }
+            if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && (boomerang.getY() >= pinguino.getY() && boomerang.getY()<= (pinguino.getY()+pinguino.getSprite().getHeight()))&&
+                    (boomerang.getX() >= pinguino.getX() && boomerang.getX()<= (pinguino.getX()+pinguino.getSprite().getWidth()))){
+                boomerang.setBoom(Boomerang.boom.GUARDADO);
+                boomerang.setPosicion(-1000,0);
+                btnDisparar.setPosicion(780,90);
+                //btnDisparar.setDisabled(false);
+                //btnDisparar.setDisabled(false);
+            }
+            else if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && boomerang.getY() <= pinguino.getY()){
+                boomerang.setBoom(Boomerang.boom.GUARDADO);
+                boomerang.setPosicion(-1000,0);
+                btnDisparar.setPosicion(780,90);
+                //btnDisparar.setDisabled(false);
+                //btnDisparar.setDisabled(false);
+            }
+
+            /*if((boomerang.getX() >= enemigo.getX() && boomerang.getX()<= (enemigo.getX()+enemigo.getSprite().getWidth()))&&
+                    (boomerang.getY() >= enemigo.getY() && boomerang.getY()<= (enemigo.getY()+enemigo.getSprite().getHeight()))){
+                enemigo.setPosicion(10,3000);
+            }
+
+            if((boomerang.getX() >= enemigo1.getX() && boomerang.getX()<= (enemigo1.getX()+enemigo1.getSprite().getWidth()))&&
+                    (boomerang.getY() >= enemigo1.getY() && boomerang.getY()<= (enemigo1.getY()+enemigo1.getSprite().getHeight()))){
+                enemigo1.setPosicion(10,3000);
+            }
+
+            if((boomerang.getX() >= enemigo2.getX() && boomerang.getX()<= (enemigo2.getX()+enemigo2.getSprite().getWidth()))&&
+                    (boomerang.getY() >= enemigo2.getY() && boomerang.getY()<= (enemigo2.getY()+enemigo2.getSprite().getHeight()))){
+                enemigo2.setPosicion(10,3000);
+            }
+
+            if((boomerang.getX() >= enemigo3.getX() && boomerang.getX()<= (enemigo3.getX()+enemigo3.getSprite().getWidth()))&&
+                    (boomerang.getY() >= enemigo3.getY() && boomerang.getY()<= (enemigo3.getY()+enemigo3.getSprite().getHeight()))){
+                enemigo3.setPosicion(10,3000);
+            }*/
+            if(pinguino.getX() <= 0){
+                boomerang.setPosicion(-100,0);
+                boomerang.setBoom(Boomerang.boom.GUARDADO);
+            }
+        }
         batch.end();
 
         batch.setProjectionMatrix(camaraHUD.combined);
@@ -230,6 +287,8 @@ public class Nivel3 implements Screen,InputProcessor {
                 btnDer.render(batch);
                 btnPausa.render(batch);
                 marcador.draw(batch);
+                texto.mostrarMensaje(batch," " + pinguino.puntos,150,1240);
+                texto.mostrarMensaje(batch," " + vidas,150,1160);
             }
 
 
@@ -307,6 +366,7 @@ public class Nivel3 implements Screen,InputProcessor {
                 pinguino.actualizarSalto();
                 break;
         }
+        pinguino.recolectarToppings(mapa,musicaTopping);
     }
 
 
@@ -330,12 +390,34 @@ public class Nivel3 implements Screen,InputProcessor {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        juego.getManager().unload("Fondo3.png");
+        juego.getManager().unload("Fondo3fin.png");
+        juego.getManager().unload("Fondo3loop.png");
+        juego.getManager().unload("Fondo3ultima.png");
+        juego.getManager().unload("Mapanivel3.tmx");
+        juego.getManager().unload("PinguinoChido2.png");
+        juego.getManager().unload("Saltar.png");
+        juego.getManager().unload("BtnArriba.png");
+        juego.getManager().unload("BtnBoom.png");
+        juego.getManager().unload("BtnDerecha.png");
+        juego.getManager().unload("BtnIzquierda.png");
+        juego.getManager().unload("PinguinoChido2.png");
+        juego.getManager().unload("Saltar.png");
+        juego.getManager().unload("SaltarIZQ.png");
+        juego.getManager().unload("Walkgud_IZQ.png");
+        juego.getManager().unload("SpriteBoom_ver.png");
+        juego.getManager().unload("BTN_Resumen.png");
+        juego.getManager().unload("BTN_Salir.png");
+        juego.getManager().unload("BtnPausa.png");
+        juego.getManager().unload("Pausa.png");
+        juego.getManager().unload("CuadroScore.png");
+        juego.getManager().unload("Toppings.wav");
+        juego.getManager().unload("Nivel3.mp3");
     }
 
     @Override
@@ -363,10 +445,11 @@ public class Nivel3 implements Screen,InputProcessor {
             pinguino.saltar();
         }
         else if(btnDisparar.contiene(x,y)){
-            boomerang = new Boomerang(texturaBoomeran);
+            boomerang = new Boomerang(texturaBoomeran,0);
             boomerang.setPosicion(pinguino.getX(),(int)pinguino.getY());
             boomerang.salir();
             //btnDisparar.setPosicion(0,-100);
+            btnDisparar.setPosicion(0,-100);
 
         }
         else if (btnDer.contiene(x,y)){
