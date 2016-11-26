@@ -41,8 +41,9 @@ public class PantallaDatos {
     }
 
     public OrthographicCamera crearCamaraNivel3(OrthographicCamera camara1){
-        camara1 = new OrthographicCamera(alto,ancho);
+        camara1 = new OrthographicCamera(alto2,ancho);
         camara1.position.set(alto2/2,ancho/2,0);
+        camara1.rotate(90);
         camara1.update();
         return camara1;
     }

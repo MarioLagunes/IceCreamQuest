@@ -141,7 +141,7 @@ public class Comic implements Screen, InputProcessor {
             musica.stop();
         }
         if(btnSkip.contiene(x,y)){
-            juego.setScreen(new PantallaInstrucciones(juego));
+            juego.setScreen(new PantallaInstrucciones3(juego));
             musica.stop();
         }
         return true;
