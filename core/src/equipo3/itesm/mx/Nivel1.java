@@ -494,103 +494,22 @@ public class Nivel1 implements Screen,InputProcessor {
                 break;
         }
 
-       /*int celdaX = (int) ((pinguino.getX() + pinguino.getSprite().getWidth() / 2) / tamcelda);
-       int celdaY = (int) ((pinguino.getY()) / tamcelda);
-       TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
-       TiledMapTileLayer.Cell celda = capa.getCell(celdaX, celdaY);
-       if (esCuadroPiso(celda)) {
-           if(pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO){
-               pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
-           }
-       } else if (esHelado(celda) || esHeladoEspecial(celda)) {
-           if(pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO){
-               pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
-           }
-       } else {
-           if(pinguino.getEstadoSalto()!= Personaje.EstadoSalto.SUBIENDO)
-               pinguino.setEstadoSalto(Personaje.EstadoSalto.BAJANDO);
-       }*/
-
-
-
         if(pinguino.getEstadoMovimiento() != Personaje.EstadoMovimiento.INICIANDO && (pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO)){
             int celdaX = (int) ((pinguino.getSprite().getX()+pinguino.getSprite().getWidth()/2)/tamcelda);
             int celdaY = (int) ((pinguino.getY()+pinguino.velocidadY)/ tamcelda);
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
             TiledMapTileLayer.Cell celdaAbajo = capa.getCell(celdaX,celdaY);
-            /*if(celdaAbajo != null){
-                Object tipo = celdaAbajo.getTile().getProperties().get("tipo");
-                if(!"esCuadroPiso".equals(tipo)){
-                    celdaAbajo = null;
-                    pinguino.caer();
-                }
-            }*/
+
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(celdaX+1,celdaY);
             TiledMapTileLayer.Cell celdaAbajoAbajo = capa.getCell(celdaX,celdaY-1);
             TiledMapTileLayer.Cell celdaAbajoDerecha = capa.getCell(celdaX+1,celdaY-1);
-            //System.out.println("celda x " + celdaX);
-            //System.out.println("celda y " + (celdaY-1));
-            /*if(celdaDerecha != null){
-                Object tipo = celdaDerecha.getTile().getProperties().get("tipo");
-                if(!"esCuadroPiso".equals(tipo)){
-                    celdaDerecha = null;
-                    pinguino.caer();
-                }
-            }*/
+
             if((celdaAbajo == null && (celdaDerecha == null || celdaDerecha != null)) || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
-                //System.out.println("HOLA SOY EL IF QUE TE DEJA CAER");
                 pinguino.caer();
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.CAIDALIBRE);
                 //pinguino.probarCaida(mapa);
             }
-            /*else if(esCuadroPiso(celdaAbajo) || esCuadroPiso(celdaDerecha)){
-                pinguino.setPosicion(pinguino.getSprite().getX(),(celdaY+1)* celda);
-                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-            }*/
-            /*else if((celdaAbajo == null && celdaDerecha != null )|| esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
-                //System.out.println("HOLA SOY EL IF QUE TE DEJA CAER Y SI MUERES NO TENGO PEDOS");
-                //if (celdaAbajo == null && celdaDerecha != null && celdaAbajoDerecha != null && celdaAbajoAbajo == null) {
-                    pinguino.probarCaida(mapa);
-                //}
-                //pinguino.probarCaida(mapa);
-            }*/
-
-            /*else if(celdaAbajo == null && celdaDerecha != null && celdaAbajoDerecha != null && celdaAbajoAbajo == null && pinguino.getEstadoSalto() != Personaje.EstadoSalto.SUBIENDO || esHelado(celdaAbajo) || esHelado(celdaDerecha)||esHeladoEspecial(celdaAbajo)||esHeladoEspecial(celdaDerecha)){
-                System.out.println("HOLA SOY EL IF QUE TE DEJA CON EL CORAZON ROTO Y ME LO CHUPAS");
-                pinguino.probarCaida(mapa);
-            }*/
-            /*else if(celdaAbajo == null && celdaDerecha != null && celdaAbajoDerecha != null && celdaAbajoAbajo == null){
-                System.out.println("HOLA SOY EL IF Al QUE LE GUSTA EL PENE");
-                //pinguino.probarCaida(mapa);
-                pinguino.caer();
-            }
-            else if(celdaAbajo == null && celdaDerecha == null && celdaAbajoAbajo == null && celdaAbajoDerecha != null){
-                pinguino.caer();
-            }
-            else if(celdaAbajo != null && celdaDerecha == null && celdaAbajoAbajo == null && celdaAbajoDerecha == null){
-                pinguino.caer();
-            }
-            else if(celdaAbajo == null && celdaDerecha != null && celdaAbajoAbajo == null && celdaAbajoDerecha == null ){
-                pinguino.caer();
-            }*/
-            /*else if((celdaAbajo == null && celdaDerecha == null)&&(celdaAbajoDerecha != null && celdaAbajoAbajo == null)){
-                pinguino.probarCaida(mapa);
-            }*/
-            /*else if( (celdaAbajoDerecha == null && celdaAbajoAbajo != null)){
-                pinguino.probarCaida(mapa);
-            }
-            else if( (celdaAbajoDerecha == null && celdaAbajoAbajo != null)){
-                pinguino.probarCaida(mapa);
-            }
-            /*else if((celdaAbajo != null && celdaDerecha != null)){
-                pinguino.setPosicion(pinguino.getX(),(celdaY + 1)*celda);
-                pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
-            }*/
-            /*else if((celdaAbajo == null && celdaDerecha != null)){
-                pinguino.caer();
-            }*/
             else{
-                //System.out.println("HOLA SOY EL IF QUE NO DEJA CAER Y TE SOSTIENE EN LA VIDA");
                 pinguino.setPosicion(pinguino.getX(),(celdaY +1)*tamcelda);
                 pinguino.setEstadoSalto(Personaje.EstadoSalto.ABAJO);
             }
@@ -669,52 +588,6 @@ public class Nivel1 implements Screen,InputProcessor {
 
     }
 
-
-
-
-    /*private void probarColisiones() {
-        Personaje.EstadoMovimiento estado = pinguino.getEstadoMovimiento();
-        if(estado != Personaje.EstadoMovimiento.DER){
-            return;
-        }
-        float px = pinguino.getSprite().getX();
-        //px = pinguino.getEstadoMovimiento() == Personaje.EstadoMovimiento.DER? px + Personaje.velocidadX:
-          //  px-Personaje.velocidadX;
-        int celdaX = (int)((px+128)/celda);
-        if(pinguino.getEstadoMovimiento() == Personaje.EstadoMovimiento.DER){
-            celdaX++;
-        }
-        int celdaY = (int)(pinguino.getSprite().getY()/celda);
-        TiledMapTileLayer capaPlataforma1 = (TiledMapTileLayer) mapa.getLayers().get(1);
-        if(capaPlataforma1.getCell(celdaX,celdaY) != null || capaPlataforma1.getCell(celdaX,celdaY+1) != null){
-            if(esHelado(capaPlataforma1.getCell(celdaX,celdaY))){
-                heladosRecolectados +=500;
-                capaPlataforma1.setCell(celdaX,celdaY,null);
-            }
-            else if(esHeladoEspecial(capaPlataforma1.getCell(celdaX,celdaY))){
-                heladosRecolectados += 1000;
-                capaPlataforma1.setCell(celdaX,celdaY,null);
-            }
-            else {
-                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-            }
-        }
-        else{
-            pinguino.actualizar();
-        }
-        /*TiledMapTileLayer capaPlatadorma2 = (TiledMapTileLayer)mapa.getLayers().get(0);
-        if(capaPlatadorma2.getCell(celdaX,celdaY) != null || capaPlatadorma2.getCell(celdaX,celdaY+1) != null){
-            if(esCuadroPiso(capaPlatadorma2.getCell(celdaX,celdaY))){
-                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-            }
-        }
-        else{
-            pinguino.actualizar();
-        }*/
-
-
-    //}
-
     private boolean esHelado(TiledMapTileLayer.Cell cell) {
         if(cell == null){
             return  false;
@@ -762,31 +635,6 @@ public class Nivel1 implements Screen,InputProcessor {
 
     @Override
     public void dispose() {
-        /*PantallaCargando car = new PantallaCargando(juego);
-        car.borrar();*/
-        //mapa.dispose();
-        /*rendererMapa.dispose();
-        textSiguiente.dispose();
-        textRegresar.dispose();
-        texturaPausado.dispose();
-        texturaPausa.dispose();
-        texturaGano.dispose();
-        texturaPerdiste.dispose();
-        textPinIzq.dispose();
-        texturaSal.dispose();
-        texturaSalto.dispose();
-        texturaSalir.dispose();
-        texturaScore.dispose();
-        texturaFondo1.dispose();
-        textPinSalIzq.dispose();
-        texturaBoomeran.dispose();
-        texturaDardo.dispose();
-        texturaEnemigo.dispose();
-        texturaEnemigoReg.dispose();
-        texturaDisparo.dispose();
-        texturaFondo2.dispose();
-        texturaFondo3.dispose();
-        texturaResumen.dispose();*/
         juego.getManager().unload("Fondo64.tmx");
         juego.getManager().unload("PinguinoChido2.png");
         juego.getManager().unload("BtnBoom.png");
@@ -815,8 +663,6 @@ public class Nivel1 implements Screen,InputProcessor {
         juego.getManager().unload("botonSiguiente.png");
         juego.getManager().unload("botonRegresar.png");
     }
-
-    //public class ProcesadorEntrada extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {

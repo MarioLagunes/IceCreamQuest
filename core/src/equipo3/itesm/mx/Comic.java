@@ -119,6 +119,7 @@ public class Comic implements Screen, InputProcessor {
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK){
             juego.setScreen(new MenuPrincipal(juego));
+            musica.stop();
         }
         return true;
     }
