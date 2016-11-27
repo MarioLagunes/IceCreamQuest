@@ -16,7 +16,9 @@ public class PantallaDatos {
     protected Viewport vista;
     protected final int ancho = 1280;
     protected final int alto = 800;
-    protected final int alto2 = 896;
+
+    private static final float ANCHO=896;
+    private static final float ALTO=1280;
 
     public PantallaDatos() {
 
@@ -40,12 +42,12 @@ public class PantallaDatos {
         return camara;
     }
 
-    public OrthographicCamera crearCamaraNivel3(OrthographicCamera camara1){
-        camara1 = new OrthographicCamera(alto2,ancho);
-        camara1.position.set(alto2/2,ancho/2,0);
-        camara1.rotate(90);
-        camara1.update();
-        return camara1;
+    public OrthographicCamera crearCamaraNivel3(){
+        OrthographicCamera camara = new OrthographicCamera(ANCHO,ALTO);
+        camara.position.set(ANCHO/2,ALTO/2,0);
+        camara.rotate(90);
+        camara.update();
+        return camara;
     }
 
     public Viewport crearVista(OrthographicCamera camara, Viewport vista){

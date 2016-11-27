@@ -35,6 +35,10 @@ public class Nivel3 implements Screen,InputProcessor {
     private Boomerang boomerang;
     private OrthographicCamera camara;
     private Viewport vista;
+
+    private static final float ANCHO=800;
+    private static final float ALTO=1280;
+
     private StretchViewport vistaHUD;
     private OrthographicCamera camaraHUD;
     private OrthogonalTiledMapRenderer rendererMapa;
@@ -42,7 +46,7 @@ public class Nivel3 implements Screen,InputProcessor {
     private Personaje pinguino;
     private Fondo fondo1, fondo2,fondo3, fondo4,fondoPausa,fondo22;
     private Texture fondo,fondoFin, fondoLopp, fondoUltimo, texuturaPersonaje ,texturaSal,texturaSalto,texturaDisparo,texturaIzquierda, texturaDerecha,
-    texturaBoomeran,textIzq,textPinSalIzq,texturaPausa,texturaPausado,texturaResumen,texturaPerdiste,texturaSalir,texturaScore;
+            texturaBoomeran,textIzq,textPinSalIzq,texturaPausa,texturaPausado,texturaResumen,texturaPerdiste,texturaSalir,texturaScore;
     private TiledMap mapa;
     private static final int celda = 64;
     private static final float ancho = 896;
@@ -99,7 +103,7 @@ public class Nivel3 implements Screen,InputProcessor {
 
         mapa = manager.get("Mapanivel3.tmx");
         rendererMapa = new OrthogonalTiledMapRenderer(mapa,batch);
-        //rendererMapa.setView(camara);
+        rendererMapa.setView(camara);
         //rendererMapa.setView(camaraHUD);
 
         //Pinguino
@@ -137,19 +141,19 @@ public class Nivel3 implements Screen,InputProcessor {
         texturaSalto = manager.get("BtnArriba.png");
         texturaDisparo = manager.get("BtnBoom.png");
         btnSalto = new Boton(texturaSalto);
-        btnSalto.setPosicion(780,-20);
+        btnSalto.setPosicion(740,-20);
         btnDisparar = new Boton(texturaDisparo);
-        btnDisparar.setPosicion(780,90);
+        btnDisparar.setPosicion(740,90);
         texturaDerecha = manager.get("BtnDerecha.png");
         texturaIzquierda = manager.get("BtnIzquierda.png");
         btnDer = new Boton(texturaDerecha);
         btnDer.setPosicion(150,-20);
         btnIzq = new Boton(texturaIzquierda);
-        btnIzq.setPosicion(-20,-20);
+        btnIzq.setPosicion(20,-20);
 
         texturaPausa = manager.get("BtnPausa.png");
         btnPausa = new Boton((texturaPausa));
-        btnPausa.setPosicion(780,1150);
+        btnPausa.setPosicion(740,1150);
         texturaPausado = manager.get("Pausa.png");
         fondoPausa = new Fondo(texturaPausado);
         texturaResumen = manager.get("BTN_Resumen.png");
@@ -159,7 +163,7 @@ public class Nivel3 implements Screen,InputProcessor {
 
         texturaScore = manager.get("CuadroScore.png");
         marcador = new Sprite(texturaScore);
-        marcador.setPosition(0,1050);
+        marcador.setPosition(20,1050);
         musicaTopping = manager.get("Toppings.wav");
         musica = manager.get("Nivel3.mp3");
         musicaNivel3 = new Musica(musica,true,ajuste);
@@ -167,20 +171,22 @@ public class Nivel3 implements Screen,InputProcessor {
     }
     @Override
     public void show() {
+
         PantallaDatos camara1 = new PantallaDatos(camara);
         PantallaDatos vista1 = new PantallaDatos(vista);
         PantallaDatos camaraHUD1 = new PantallaDatos(camaraHUD);
         PantallaDatos vistaHUD1 = new PantallaDatos(vistaHUD);
 
-        camara = camara1.crearCamaraNivel3(camara);
-        camaraHUD = camaraHUD1.crearCamaraNivel3(camaraHUD);
-        //camaraHUD.rotate(90);
+        camara = camara1.crearCamaraNivel3();
+
+        camaraHUD = camaraHUD1.crearCamaraNivel3();
+
         //vistaHUD = vistaHUD1.crearVistaHUDNivel33(camaraHUD,vistaHUD);
 
 
         batch = new SpriteBatch();
-        vista = new StretchViewport(alto,ancho,camara);
-        vistaHUD = new StretchViewport(alto,ancho,camaraHUD);
+        vista = new StretchViewport(ALTO,ANCHO,camara);
+        vistaHUD = new StretchViewport(ALTO,ANCHO,camaraHUD);
 
         Gdx.input.setInputProcessor(this);
 
@@ -202,20 +208,19 @@ public class Nivel3 implements Screen,InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camara.combined);
-        rendererMapa.setView(camaraHUD);
-         batch.begin();
-            fondo1.draw(batch);
-            fondo2.draw(batch);
-            fondo22.draw(batch);
-            fondo3.draw(batch);
-            fondo4.draw(batch);
-        batch.end();
-
         rendererMapa.setView(camara);
+        //rendererMapa.setView(camara);
+        batch.begin();
+        fondo1.draw(batch);
+        fondo2.draw(batch);
+        fondo22.draw(batch);
+        fondo3.draw(batch);
+        fondo4.draw(batch);
+        batch.end();
         rendererMapa.render();
 
         batch.begin();
-            pinguino.render(batch);
+        pinguino.render(batch);
         if(boomerang != null){
             boomerang.renderNivel3(batch);
             boomerang.tiempo ++;
@@ -234,7 +239,7 @@ public class Nivel3 implements Screen,InputProcessor {
             else if(boomerang.getBoom() == Boomerang.boom.REGRESANDO && boomerang.getY() <= pinguino.getY()){
                 boomerang.setBoom(Boomerang.boom.GUARDADO);
                 boomerang.setPosicion(-1000,0);
-                btnDisparar.setPosicion(780,90);
+                btnDisparar.setPosicion(740,90);
                 //btnDisparar.setDisabled(false);
                 //btnDisparar.setDisabled(false);
             }
@@ -267,48 +272,50 @@ public class Nivel3 implements Screen,InputProcessor {
 
         batch.setProjectionMatrix(camaraHUD.combined);
         batch.begin();
-            if(estadoJuego == EstadosJuego.PAUSADO){
-                fondoPausa.setPosicion(Juego.alto/16,Juego.ancho/4);
-                pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
-                fondoPausa.draw(batch);
-                btnResumen.setPosicion(Juego.ancho/7.6f,Juego.ancho/2);
-                btnSalir.setPosicion(Juego.ancho/7.6f,Juego.alto/2);
-                btnResumen.render(batch);
-                btnSalir.render(batch);
-            }
-            else if(estadoJuego == EstadosJuego.PERDIO){
-                btnRegresar.render(batch);
-                btnRegresar.setPosicion(0,0);
-            }
-            else{
-                btnSalto.render(batch);
-                btnDisparar.render(batch);
-                btnIzq.render(batch);
-                btnDer.render(batch);
-                btnPausa.render(batch);
-                marcador.draw(batch);
-                texto.mostrarMensaje(batch," " + pinguino.puntos,150,1240);
-                texto.mostrarMensaje(batch," " + vidas,150,1160);
-            }
+        if(estadoJuego == EstadosJuego.PAUSADO){
+            fondoPausa.setPosicion(Juego.alto/8,Juego.ancho/4);
+            pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
+            fondoPausa.draw(batch);
+            btnResumen.setPosicion(Juego.ancho/6.5f,Juego.ancho/2);
+            btnSalir.setPosicion(Juego.ancho/6.5f,Juego.alto/2);
+            btnResumen.render(batch);
+            btnSalir.render(batch);
+        }
+        else if(estadoJuego == EstadosJuego.PERDIO){
+            btnRegresar.render(batch);
+            btnRegresar.setPosicion(0,0);
+        }
+        else{
+            btnSalto.render(batch);
+            btnDisparar.render(batch);
+            btnIzq.render(batch);
+            btnDer.render(batch);
+            btnPausa.render(batch);
+            marcador.draw(batch);
+            texto.mostrarMensaje(batch," " + pinguino.puntos,150,1240);
+            texto.mostrarMensaje(batch," " + vidas,150,1160);
+        }
 
 
         batch.end();
 
 
-
-
     }
     private void actualizarCamara(){
         float PosY = pinguino.getY();
-        if(PosY >= Juego.alto/2 && PosY <= alto_mapa - Juego.alto/2 ){
-            camara.position.set(camara.position.x,(int)PosY,0);
-        }
-        else if (PosY > alto_mapa - Juego.alto/2){
-            camara.position.set(camara.position.x,alto_mapa-Juego.alto/2,0);
-        }
-        else if (PosY < Juego.alto/2){
-            camara.position.set(Juego.ancho/2,Juego.alto/2,0);
+        if (PosY > 12155){
+            camara.position.set(camara.position.x,12155,0);
+            Gdx.app.log("actualizarCamara", String.valueOf(PosY));
 
+
+        }
+        else if(PosY >= alto/2 && PosY <= alto_mapa - alto/2 ){
+            camara.position.set(camara.position.x,(int)PosY,0);
+
+
+        }
+        else if (PosY >= alto_mapa - Juego.alto/2){
+            camara.position.set(camara.position.x,alto_mapa-Juego.alto/2,0);
         }
         camara.update();
     }
@@ -319,7 +326,7 @@ public class Nivel3 implements Screen,InputProcessor {
         switch (pinguino.getEstadoMovimiento()) {
             case DER:
                 float x = 0;
-                if (pinguino.getX() >= 840) {
+                if (pinguino.getX() >= 740) {
                     x = pinguino.getSprite().getX();
                     pinguino.getSprite().setX(x);
                 } else {
@@ -373,7 +380,7 @@ public class Nivel3 implements Screen,InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-        vista.update(width,height);
+        vista.update(height,width);
         vistaHUD.update(width,height);
 
     }
