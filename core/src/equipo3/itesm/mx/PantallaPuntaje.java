@@ -3,6 +3,7 @@ package equipo3.itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -27,12 +28,16 @@ public class PantallaPuntaje extends PantallaDatos implements Screen{
     private Stage escena;
     private OrthographicCamera camara;
     private Viewport vista;
-    private Texture texturaBack,texturaInstrucciones;
+    private Texture texturaBack,texturaInstrucciones,texturaReset;
     private Music musica;
     private Musica muscaPuntaje;
     public static Boolean ajuste = false;
     private Texto texto;
     private SpriteBatch batch;
+    public Preferences score = Gdx.app.getPreferences("ScoreNivel1");
+    public Preferences score2 = Gdx.app.getPreferences("ScoreNivel2");
+    public Preferences score3 = Gdx.app.getPreferences("ScoreNivel3");
+    int puntaje,puntaje2,puntaje3;
 
     public PantallaPuntaje(Juego juego) {
         this.juego = juego;
@@ -52,7 +57,9 @@ public class PantallaPuntaje extends PantallaDatos implements Screen{
             cargarFondo();
             cargarBotones();
             batch = new SpriteBatch();
-
+            puntaje = score.getInteger("Nivel1",0);
+            puntaje2 = score2.getInteger("Nivel2",0);
+            puntaje3 = score3.getInteger("Nivel3",0);
         //*** FIN DE CARGAR IMAGENES, FONDO, BOTONES Y FUNCIONALIDADES***\\
     }
 
@@ -65,9 +72,24 @@ public class PantallaPuntaje extends PantallaDatos implements Screen{
         btonBack.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //Gdx.app.log("Presionaste:", "atrás");
                 juego.setScreen(new MenuPrincipal(juego));
 
+            }
+        });
+        TextureRegionDrawable textReset = new TextureRegionDrawable(new TextureRegion(texturaReset));
+        ImageButton btnReset = new ImageButton(textReset);
+        btnReset.setPosition(1030,80);
+        escena.addActor(btnReset);
+        btnReset.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                score.clear();
+                score2.clear();
+                score3.clear();
+                score.flush();
+                score2.flush();
+                score3.flush();
+                juego.setScreen(new PantallaPuntaje(juego));
             }
         });
     }
@@ -76,10 +98,12 @@ public class PantallaPuntaje extends PantallaDatos implements Screen{
         AssetManager manager = juego.getManager();
         manager.load("ScorePantalla.png",Texture.class);
         manager.load("botonRegresar.png",Texture.class);
+        manager.load("BtnReset.png",Texture.class);
         manager.load("Score.mp3",Music.class);
         manager.finishLoading();
         texturaInstrucciones = manager.get("ScorePantalla.png");
         texturaBack = manager.get("botonRegresar.png");
+        texturaReset = manager.get("BtnReset.png");
         musica = manager.get("Score.mp3");
         muscaPuntaje = new Musica(musica,true,ajuste);
         texto = new Texto();
@@ -99,9 +123,14 @@ public class PantallaPuntaje extends PantallaDatos implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         escena.setViewport(vista);
         escena.draw();
+        batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        texto.mostrarMensaje(batch,"Beast ",120,310);
-        texto.mostrarMensaje(batch,"1000000 ",220,300);
+        texto.mostrarMensaje(batch,"Nivel 1 ",240,510);
+        texto.mostrarMensaje(batch," " + puntaje,410,490);
+        texto.mostrarMensaje(batch,"Nivel 2 ",240,400);
+        texto.mostrarMensaje(batch," " + puntaje2,410,380);
+        texto.mostrarMensaje(batch,"Nivel 3 ",230,290);
+        texto.mostrarMensaje(batch," " + puntaje3,410,270);
         batch.end();
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
             juego.setScreen(new MenuPrincipal(juego));
@@ -135,47 +164,4 @@ public class PantallaPuntaje extends PantallaDatos implements Screen{
         manager.unload("botonRegresar.png");
         manager.unload("Score.mp3");
     }
-
-    /*@Override
-    public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.BACK){
-            juego.setScreen(new MenuPrincipal(juego));
-        }
-        return true;
-    }
-
-    /*@Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }*/
 }

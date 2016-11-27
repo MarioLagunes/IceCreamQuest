@@ -16,26 +16,19 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
  * Created by Mario Lagunes(3) on 26/09/2016.
  */
 public class Personaje {
-    private Sprite sprite,spriteEnemigo,spriteSalto,spriteQuieto,spriteNivel2;
+    private Sprite sprite,spriteNivel2;
     public static final float velocidadY = -4f;
-    public float velX;
     public float velocidadX = 4;
-    private Animation animacion,animar,animarSalto,animarQuieto,animarReg,animarIzq,animarSaltoIZQ,animarDer2,animarIzq2;
+    private Animation animacion,animar,animarSalto,animarIzq,animarSaltoIZQ,animarDer2,animarIzq2;
     public float timerAnimacion,tiempoAnimar,timerSalto,timerAnimacion3,timerSalto3,timerIzq,timerSaltoIzq,tiempoAnimarIzq,tiempoAnimarDer;
     private EstadoMovimiento estadoMovimiento = EstadoMovimiento.INICIANDO;
-    //private Texture texturaSalto;
     private EstadoSalto estadoSalto = EstadoSalto.ABAJO;
-    private EstadosEnemigo estadoEnemigo;
     private static final float V0 = 70.0f;
     private static final float G = 9.81f;
     private static final float G_2 = G/2f;
     private float yInicial;
     private float tiempoVuelo;
     private  float tiempoSalto;
-    //private TextureRegion region;
-    private TextureRegion textfinalSalto,pinguQuieto;
-    private Texture salto;
-    private Dardos dardos;
     public int puntos;
     float xavance,x;
 
@@ -44,13 +37,6 @@ public class Personaje {
         SUBIENDO,
         BAJANDO,
         CAIDALIBRE
-    }
-
-    public enum EstadosEnemigo{
-        INICIO,
-        DERECHA,
-        IZQUIERDA,
-        BORRADO
     }
 
     public  Personaje(Texture textura,Texture texturaSaltos,Texture texturaIzq,Texture texuraSaltoIzq){
@@ -104,8 +90,6 @@ public class Personaje {
             timerAnimacion += Gdx.graphics.getDeltaTime();
             TextureRegion region = animacion.getKeyFrame(timerAnimacion);
             sprite.setRegion(region);
-            //xavance += velocidadX;
-            //sprite.setX(xavance);
         }
         if(estadoMovimiento == EstadoMovimiento.IZQ && estadoSalto == EstadoSalto.ABAJO){
             timerIzq += Gdx.graphics.getDeltaTime();
@@ -116,45 +100,15 @@ public class Personaje {
             timerSalto += Gdx.graphics.getDeltaTime();
             TextureRegion regionSalto = animarSalto.getKeyFrame(timerSalto);
             sprite.setRegion(regionSalto);
-            //xavance += velocidadX;
-            //sprite.setX(xavance);
         }
         if(estadoMovimiento == EstadoMovimiento.IZQ && (estadoSalto == EstadoSalto.SUBIENDO || estadoSalto == EstadoSalto.BAJANDO || estadoSalto == EstadoSalto.CAIDALIBRE)){
             timerSaltoIzq += Gdx.graphics.getDeltaTime();
             TextureRegion regionSalto = animarSaltoIZQ.getKeyFrame(timerSaltoIzq);
             sprite.setRegion(regionSalto);
         }
-        sprite.draw(batch);//batch.draw(sprite,sprite.getX(),sprite.getY());*/
-    }
 
-    /*public void renderNivel3(SpriteBatch batch){
-        //Movimientos a la derecha
-        if(estadoMovimiento == estadoMovimiento.DER && estadoSalto == EstadoSalto.ABAJO){
-            timerAnimacion += Gdx.graphics.getDeltaTime();
-            TextureRegion region = animacion.getKeyFrame(timerAnimacion);
-            sprite.setRegion(region);
-        }
-        if(estadoSalto == EstadoSalto.SUBIENDO || estadoSalto == EstadoSalto.BAJANDO || estadoSalto == EstadoSalto.CAIDALIBRE){
-            timerSalto += Gdx.graphics.getDeltaTime();
-            TextureRegion regionSalto = animarSalto.getKeyFrame(timerSalto);
-            sprite.setRegion(regionSalto);
-        }
-
-        //Movimientos a la izquierda
-        if(estadoMovimiento == estadoMovimiento.IZQ && estadoSalto == EstadoSalto.ABAJO){
-            timerAnimacion3 += Gdx.graphics.getDeltaTime();
-            TextureRegion region3 = animacion.getKeyFrame(timerAnimacion3);
-            sprite.setRegion(region3);
-        }
-        if(estadoSalto == EstadoSalto.SUBIENDO || estadoSalto == EstadoSalto.BAJANDO || estadoSalto == EstadoSalto.CAIDALIBRE){
-            timerSalto3 += Gdx.graphics.getDeltaTime();
-            TextureRegion regionSalto3 = animarSalto.getKeyFrame(timerSalto3);
-            sprite.setRegion(regionSalto3);
-        }
         sprite.draw(batch);
-
-
-    }*/
+    }
 
     public void renderNivel2(SpriteBatch batch){
 
@@ -214,6 +168,7 @@ public class Personaje {
                     topping.play();
                 }
                 capa.setCell(x,y,null);
+                capa.setCell(x,y,capa.getCell(0,4));
             }
             else if("chispas".equals(tipo)){
                 puntos += 1000;
@@ -221,6 +176,7 @@ public class Personaje {
                     topping.play();
                 }
                 capa.setCell(x,y,null);
+                capa.setCell(x,y,capa.getCell(0,4));
             }
         }
     }

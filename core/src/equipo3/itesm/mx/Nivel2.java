@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -64,6 +65,7 @@ public class Nivel2 implements Screen,InputProcessor{
     public static Boolean ajusteSonido = false;
     private Sound sonidoCono,sonidoConoDorado,muere,sonidoBote,sonidoMoco;;
     private int contador = 0;
+    public Preferences score2 = Gdx.app.getPreferences("ScoreNivel2");
 
 
     public Nivel2(Juego juego){
@@ -769,6 +771,12 @@ public class Nivel2 implements Screen,InputProcessor{
         batch.setProjectionMatrix(camaraHUD.combined);
         batch.begin();
         if(estadosJuego == EstadosJuego.GANO ){
+            int scoreA = score2.getInteger("Nivel2",0);
+            if (pinguino.puntos > scoreA) {
+                score2.clear();
+                score2.putInteger("Nivel2",pinguino.puntos);
+                score2.flush();
+            }
             ganar.render(batch);
             pinguino.setEstadoMovimiento(Personaje.EstadoMovimiento.QUIETO);
             j=0;
@@ -924,6 +932,12 @@ public class Nivel2 implements Screen,InputProcessor{
         }
         if(tiempo >= 75 && pinguino.puntos > 0){
             estadosJuego = EstadosJuego.GANO;
+            int scoreA = score2.getInteger("Nivel2",0);
+            if (pinguino.puntos > scoreA) {
+                score2.clear();
+                score2.putInteger("Nivel2",pinguino.puntos);
+                score2.flush();
+            }
         }
 
         switch(pinguino.getEstadoSalto()){
@@ -964,8 +978,6 @@ public class Nivel2 implements Screen,InputProcessor{
         manager.unload("edificiosDER.png");
         manager.unload("banquetaIZQ.png");
         manager.unload("banquetaDER.png");
-        manager.unload("cono.png");
-        manager.unload("cono_dor.png");
         manager.unload("BtnPausa.png");
         manager.unload("Btnsalto_Naranja.png");
         manager.unload("CuadroScore.png");
@@ -976,7 +988,6 @@ public class Nivel2 implements Screen,InputProcessor{
         manager.unload("BTN_Salir.png");
         manager.unload("poste.png");
         manager.unload("poste_der.png");
-        manager.unload("moco.png");
         manager.unload("Btnder_Naranja.png");
         manager.unload("Btnizq_Naranja.png");
         manager.unload("Sprite_deslizar.png");

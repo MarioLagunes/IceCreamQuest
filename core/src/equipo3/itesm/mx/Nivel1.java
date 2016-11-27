@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.assets.AssetErrorListener;
@@ -68,6 +69,7 @@ public class Nivel1 implements Screen,InputProcessor {
     private boolean banderaGano = false, banderaPerdio = false;
     public static int puntaje;
     public static final int HIGSCORE = 2348;
+    public Preferences score = Gdx.app.getPreferences("ScoreNivel1");
 
     public Nivel1(Juego juego){
         this.juego = juego;
@@ -411,6 +413,12 @@ public class Nivel1 implements Screen,InputProcessor {
         batch.setProjectionMatrix(camaraHUD.combined);
         batch.begin();
             if(estadoJuego == EstadosJuego.GANO ){
+                int scoreA = score.getInteger("Nivel1",0);
+                if (pinguino.puntos > scoreA) {
+                    score.clear();
+                    score.putInteger("Nivel1",pinguino.puntos);
+                    score.flush();
+                }
                 btnGanar.render(batch);
                 btnSiguiente.render(batch);
                 btnSiguiente.setPosicion(1100,0);
@@ -596,6 +604,12 @@ public class Nivel1 implements Screen,InputProcessor {
                 dardo2.velocidadX = 0;
                 dardo3.velocidadX = 0;
                 enemigo.velocidad = 0;
+                int scoreA = score.getInteger("Nivel1",0);
+                if (pinguino.puntos > scoreA) {
+                    score.clear();
+                    score.putInteger("Nivel1",pinguino.puntos);
+                    score.flush();
+                }
             }
             else if(pinguino.getY() <= 0){
                 vidas --;

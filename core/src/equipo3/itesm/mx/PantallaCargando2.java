@@ -72,8 +72,6 @@ public class PantallaCargando2 implements Screen {
         manager.load("edificiosDER.png",Texture.class);
         manager.load("banquetaIZQ.png",Texture.class);
         manager.load("banquetaDER.png",Texture.class);
-        manager.load("cono.png",Texture.class);
-        manager.load("cono_dor.png",Texture.class);
         manager.load("BtnPausa.png",Texture.class);
         manager.load("Btnsalto_Naranja.png",Texture.class);
         manager.load("CuadroScore.png",Texture.class);
@@ -84,7 +82,6 @@ public class PantallaCargando2 implements Screen {
         manager.load("BTN_Salir.png",Texture.class);
         manager.load("poste.png",Texture.class);
         manager.load("poste_der.png",Texture.class);
-        manager.load("moco.png",Texture.class);
         manager.load("Btnder_Naranja.png",Texture.class);
         manager.load("Btnizq_Naranja.png",Texture.class);
         manager.load("Sprite_deslizar.png",Texture.class);

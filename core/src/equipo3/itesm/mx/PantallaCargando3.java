@@ -73,10 +73,10 @@ public class PantallaCargando3 implements Screen {
         manager.load("Mapanivel3.tmx",TiledMap.class);
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("Saltar.png",Texture.class);
-        manager.load("BtnArriba.png",Texture.class);
-        manager.load("BtnBoom.png",Texture.class);
-        manager.load("BtnDerecha.png",Texture.class);
-        manager.load("BtnIzquierda.png",Texture.class);
+        manager.load("Btnsalto3.png",Texture.class);
+        manager.load("BtnBoom3.png",Texture.class);
+        manager.load("BtnDer3.png",Texture.class);
+        manager.load("Btnizq3.png",Texture.class);
         manager.load("PinguinoChido2.png",Texture.class);
         manager.load("Saltar.png",Texture.class);
         manager.load("SaltarIZQ.png",Texture.class);
@@ -84,11 +84,17 @@ public class PantallaCargando3 implements Screen {
         manager.load("SpriteBoom_ver.png",Texture.class);
         manager.load("BTN_Resumen.png",Texture.class);
         manager.load("BTN_Salir.png",Texture.class);
-        manager.load("BtnPausa.png",Texture.class);
+        manager.load("BtnPausa_azul.png",Texture.class);
         manager.load("Pausa.png",Texture.class);
         manager.load("CuadroScore.png",Texture.class);
         manager.load("Toppings.wav",Sound.class);
         manager.load("Nivel3.mp3",Music.class);
+        manager.load("SpriteKicha.png",Texture.class);
+        manager.load("BtnSig_azul.png",Texture.class);
+        manager.load("BtnRegresar_azul.png",Texture.class);
+        manager.load("Ganaste_1.png",Texture.class);
+        manager.load("Perdiste_1.png",Texture.class);
+        manager.load("Meeehhpp!!.wav",Sound.class);
     }
 
     @Override

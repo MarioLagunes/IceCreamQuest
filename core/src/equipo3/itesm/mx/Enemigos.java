@@ -12,17 +12,23 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 
 public class Enemigos {
-    private Sprite sprite;
-    private Animation animarDer,animarIzq;
-    private float timerAnimarDer,timerAnimarIzq,x;
-    public float velocidad = 2;
+    private Sprite sprite,spriteKicha;
+    private Animation animarDer,animarIzq,animarKicha;
+    private float timerAnimarDer,timerAnimarIzq,x,tiempoAnimarKicha,xKicha;
+    public float velocidad = 2,velocidadKicha =1;
     private EstadoEnemigo estadoEnemigo;
+    private EstadoKicha estadoKicha;
 
     public enum EstadoEnemigo{
         INICIO,
         DERECHA,
         IZQUIERDA,
         MUERTO
+    }
+
+    public enum EstadoKicha{
+        INICIO,
+        BAJANDO
     }
 
     public Enemigos(Texture texturaDer, Texture texturaIzq){
@@ -37,6 +43,16 @@ public class Enemigos {
         timerAnimarDer = 0;
         timerAnimarIzq = 0;
         sprite = new Sprite(texturaSepDer[0][0]);
+    }
+
+    public Enemigos(Texture kicha){
+        TextureRegion texturaFullKicha = new TextureRegion(kicha);
+        TextureRegion[][] texturaSepKicha = texturaFullKicha.split(64,128);
+        animarKicha = new Animation(0.20f,texturaSepKicha[0][1],texturaSepKicha[0][2],texturaSepKicha[0][3],texturaSepKicha[0][4],texturaSepKicha[0][5],texturaSepKicha[0][6]);
+        animarKicha.setPlayMode(Animation.PlayMode.LOOP);
+        tiempoAnimarKicha = 0;
+        spriteKicha = new Sprite(texturaSepKicha[0][0]);
+
     }
 
     public void render(SpriteBatch batch){
@@ -57,6 +73,17 @@ public class Enemigos {
         batch.draw(sprite,sprite.getX(),sprite.getY());
     }
 
+    public void renderKicha(SpriteBatch batch){
+        if(estadoKicha == EstadoKicha.BAJANDO){
+            tiempoAnimarKicha += Gdx.graphics.getDeltaTime();
+            TextureRegion region = animarKicha.getKeyFrame(tiempoAnimarKicha);
+            xKicha = spriteKicha.getY();//+velocidadKicha;
+            spriteKicha.setY(xKicha);
+            spriteKicha.setRegion(region);
+        }
+        batch.draw(spriteKicha,spriteKicha.getX(),spriteKicha.getY());
+    }
+
     public Sprite getSprite(){
         return sprite;
     }
@@ -73,7 +100,27 @@ public class Enemigos {
         sprite.setPosition(x,y);
     }
 
+    public Sprite getSpriteKicha(){
+        return spriteKicha;
+    }
+
+    public float getXKicha(){
+        return spriteKicha.getX();
+    }
+
+    public float getYKicha(){
+        return spriteKicha.getY();
+    }
+
+    public void setPosicionKicha(float x, float y){
+        spriteKicha.setPosition(x,y);
+    }
+
     public void setEstadoEnemigo(EstadoEnemigo estadoEnemigo){
         this.estadoEnemigo = estadoEnemigo;
+    }
+
+    public void  setEstadoKicha(EstadoKicha estadoKicha){
+        this.estadoKicha = estadoKicha;
     }
 }

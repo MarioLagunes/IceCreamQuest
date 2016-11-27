@@ -144,6 +144,9 @@ public class PantallaInstrucciones3 implements Screen,InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         escena.setViewport(vista);
         escena.draw();
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
     }
 
     @Override
